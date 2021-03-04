@@ -1,4 +1,4 @@
-package com.example.slash_wise
+package com.codechrysalis.slash_wise
 
 import io.flutter.embedding.android.FlutterActivity
 
