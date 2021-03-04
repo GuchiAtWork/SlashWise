@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './models/group.dart';
+import './widgets/group_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/user.dart';

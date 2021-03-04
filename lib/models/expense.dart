@@ -3,11 +3,15 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
-class User {
-  User(this.name);
+class Expense {
+  Expense(this.name, this.amount);
 
   @required
   String id = uuid.v4();
   @required
   String name;
+  @required
+  int amount;
+  @required
+  DateTime date = DateTime.now();
 }
