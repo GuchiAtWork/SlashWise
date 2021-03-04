@@ -1,16 +1,16 @@
 import "package:firebase_auth/firebase_auth.dart";
-import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // create user obj based on FirebaseUser
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  UserAuth _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? UserAuth(uid: user.uid) : null;
   }
 
   // auth change user stream
-  Stream<User> get user {
+  Stream<UserAuth> get user {
     return _auth.onAuthStateChanged
         .map((FirebaseUser user) => _userFromFirebaseUser(user));
   }
