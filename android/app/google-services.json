@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081852714565",
+    "project_id": "slashwise",
+    "storage_bucket": "slashwise.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081852714565:android:9ea87adfae4a9aaafe4d2c",
+        "android_client_info": {
+          "package_name": "com.codechrysalis.slash_wise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081852714565-1gv0o8joeonbu705mt4hua8611h8s83b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0_rkS7hGcLHT6IqiC8LX5vdzieF8cdZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081852714565-1gv0o8joeonbu705mt4hua8611h8s83b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
