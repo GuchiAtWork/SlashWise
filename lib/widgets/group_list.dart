@@ -10,7 +10,7 @@ class GroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 600,
       child: _groups.isEmpty
           ? Column(
               children: <Widget>[Text('No Group added yet!')],
@@ -18,6 +18,7 @@ class GroupList extends StatelessWidget {
           : ListView.builder(
               itemBuilder: (_, index) {
                 return Card(
+                  elevation: 6,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
@@ -31,8 +32,9 @@ class GroupList extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(Icons.delete_forever),
                       color: Theme.of(context).errorColor,
-                      onPressed: _deleteGroup,
+                      onPressed: () => _deleteGroup(_groups[index].id),
                     ),
+                    onLongPress: () {},
                   ),
                 );
               },
