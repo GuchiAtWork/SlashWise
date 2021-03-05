@@ -5,7 +5,6 @@ import 'package:slash_wise/models/group.dart';
 import 'package:slash_wise/screens/home/user_list.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:slash_wise/services/database.dart';
 import 'package:slash_wise/widgets/group_list.dart';
 import 'package:slash_wise/widgets/new_group.dart';
