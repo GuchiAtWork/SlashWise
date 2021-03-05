@@ -17,7 +17,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return StreamProvider<AuthUser>.value(
+=======
+    return StreamProvider<UserAuth>.value(
+>>>>>>> staging
         value: AuthService().user,
         child: MaterialApp(
           home: Wrapper(),
