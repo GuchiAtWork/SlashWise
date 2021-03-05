@@ -5,7 +5,6 @@ import 'package:slash_wise/services/database.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // create user obj based on FirebaseUser
-<<<<<<< HEAD
   AuthUser _userFromFirebaseUser(User user) {
     //AuthUser
     //FirebaseUser => User
@@ -18,16 +17,6 @@ class AuthService {
     return _auth
         .authStateChanges() //onAuthStateChanged
         .map((User user) => _userFromFirebaseUser(user)); //FirebaseUser => User
-=======
-  UserAuth _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? UserAuth(uid: user.uid) : null;
-  }
-
-  // auth change user stream
-  Stream<UserAuth> get user {
-    return _auth.onAuthStateChanged
-        .map((FirebaseUser user) => _userFromFirebaseUser(user));
->>>>>>> staging
   }
 
   // sign in anon
