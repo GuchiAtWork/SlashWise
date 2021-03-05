@@ -1,5 +1,5 @@
 import "package:firebase_auth/firebase_auth.dart";
-import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/database.dart';
 
 class AuthService {
