@@ -54,9 +54,15 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return StreamProvider<List<DbGroup>>.value(
       initialData: List(),
       value: DatabaseServiceGroup().groups,
+=======
+    return StreamProvider<List<DbUser>>.value(
+      //initialData: List(),
+      value: DatabaseService().users,
+>>>>>>> bbb78ccf14e22e57d9cbb82210ad60de03be48cd
       child: Scaffold(
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
@@ -64,9 +70,9 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.blue[400],
             elevation: 0.0,
             actions: <Widget>[
-              FlatButton.icon(
+              TextButton.icon(
                 icon: Icon(Icons.person),
-                label: Text("logout"),
+                label: Text("Logout"),
                 onPressed: () async {
                   await _auth.signOut();
                 },

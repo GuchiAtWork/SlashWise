@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
     return StreamProvider<AuthUser>.value(
       value: AuthService().user,
       child: MaterialApp(
-        home: Wrapper(),
-        // initialRoute: GroupScreen.routeName,
-        // routes: {
-        //   '/': (context) => Wrapper(),
-        //   GroupScreen.routeName: (context) => GroupScreen(),
+        //home: Wrapper(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Wrapper(),
+        },
       ),
     );
   }
