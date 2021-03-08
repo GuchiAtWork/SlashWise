@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:slash_wise/models/dbUser.dart';
 import 'package:slash_wise/models/group.dart';
-import 'package:slash_wise/screens/home/user_list.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/services/database.dart';
@@ -49,7 +48,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<DbUser>>.value(
-      initialData: List(),
+      //initialData: List(),
       value: DatabaseService().users,
       child: Scaffold(
         backgroundColor: Colors.blue[50],
@@ -58,9 +57,9 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.blue[400],
             elevation: 0.0,
             actions: <Widget>[
-              FlatButton.icon(
+              TextButton.icon(
                 icon: Icon(Icons.person),
-                label: Text("logout"),
+                label: Text("Logout"),
                 onPressed: () async {
                   await _auth.signOut();
                 },
