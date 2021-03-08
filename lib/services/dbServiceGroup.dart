@@ -9,7 +9,9 @@ class DatabaseServiceGroup {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
-  Future updateGroupData(String name, Timestamp date) async {
+  updateGroupData(String name, Timestamp date) async {
+    //Map<String, dynamic>
+    //groupCollection.add(data)
     return await groupCollection.doc(uid).set({
       'name': name,
       'date': date,

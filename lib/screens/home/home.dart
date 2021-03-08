@@ -8,7 +8,7 @@ import 'package:slash_wise/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 //import 'package:slash_wise/widgets/group_list.dart';
-//import 'package:slash_wise/widgets/new_group.dart';
+import 'package:slash_wise/widgets/new_group.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,22 +24,27 @@ class _HomeState extends State<Home> {
     Group('CC17')
   ];
 
-  // void _addNewGroup(String name) {
-  //   final newGroup = Group(name);
+  void _addNewGroup(String name) {
+    // final newGroup = Group(name);
+    var task = <String, dynamic>{
+      "name": name,
+      "timestamp": DateTime.now().millisecondsSinceEpoch
+    };
+    DatabaseServiceGroup.updateGroupData(task);
+    // setState(() {
+    //   _groups.add(newGroup);
+    // });
+  }
 
-  //   setState(() {
-  //     _groups.add(newGroup);
-  //   });
-  // }
-
-  // void _showAddNewGroup(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (_) {
-  //       return NewGroup(_addNewGroup);
-  //     },
-  //   );
-  // }
+  // Display Add Task Dialog
+  void _showAddNewGroup(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return NewGroup(_addNewGroup);
+      },
+    );
+  }
 
   // void _deleteGroup(String id) {
   //   setState(() {
@@ -68,10 +73,34 @@ class _HomeState extends State<Home> {
               )
             ]),
         body: GroupList(),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: () => {_showAddNewGroup(context)},
-        // ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => {
+            //_showAddNewGroup(context)
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => {
+                return Card(
+      elevation: 5,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'name',
+                icon: Icon(Icons.group_add),
+              ),
+            ),
+            ElevatedButton(
+              child: Text('Add Group'),
+              onPressed: () => Text("test"),
+            )
+  };
+            )
+          },
+        ),
       ),
     );
   }
