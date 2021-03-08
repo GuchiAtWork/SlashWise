@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
           elevation: 0.0,
           title: Text("Sign in to SlashWise"),
           actions: <Widget>[
-            FlatButton.icon(
+            TextButton.icon(
               icon: Icon(Icons.person),
               label: Text("Register"),
               onPressed: () {
@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                    decoration: InputDecoration(hintText: "password"),
+                    decoration: InputDecoration(hintText: "Password"),
                     validator: (val) => val.length < 6
                         ? 'Enter an password 6+ chars long'
                         : null,
