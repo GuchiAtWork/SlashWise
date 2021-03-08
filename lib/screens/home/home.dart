@@ -5,9 +5,9 @@ import 'package:slash_wise/models/group.dart';
 import 'package:slash_wise/screens/home/user_list.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:slash_wise/services/database.dart';
-import 'package:slash_wise/widgets/group_list.dart';
-import 'package:slash_wise/widgets/new_group.dart';
+import 'package:slash_wise/services/dbServiceUser.dart';
+//import 'package:slash_wise/widgets/group_list.dart';
+//import 'package:slash_wise/widgets/new_group.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return StreamProvider<List<DbUser>>.value(
       initialData: List(),
-      value: DatabaseService().users,
+      value: DatabaseServiceUser().users,
       child: Scaffold(
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
                 },
               )
             ]),
-        body: GroupList(_groups, _deleteGroup),
+        body: GroupList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () => {_showAddNewGroup(context)},

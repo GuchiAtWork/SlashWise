@@ -1,6 +1,6 @@
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:slash_wise/models/user_auth.dart';
-import 'package:slash_wise/services/database.dart';
+import 'package:slash_wise/services/dbServiceUser.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -65,7 +65,7 @@ class AuthService {
           .user;
 
       // create a new document  for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData(email, 100);
+      await DatabaseServiceUser(uid: user.uid).updateUserData(email, 100);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
