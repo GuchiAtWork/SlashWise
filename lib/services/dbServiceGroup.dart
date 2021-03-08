@@ -1,18 +1,44 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/group.dart';
+
+// RFHPJcUFxcf0q5BqxHGiG2UooT63
 
 class DatabaseServiceGroup {
-  final String uid;
-  DatabaseServiceGroup({this.uid});
-
   //collection reference
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
+  Future<void> getGroups(String userID) async {
+    final docRefs = await groupCollection
+        .where("users",
+            arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+          querySnapshot.docs.forEach((doc) => {
+            print(doc["name"]);
+          })
+        });
+  }
+
+  Future<void> addGroup(String userID, String groupName) {
+    final referenceArray = [];
+    referenceArray.add(FirebaseFirestore.instance.doc("users/" + userID));
+
+    return groupCollection.add({
+      "name": groupName,
+      // MUST CONVERT TO DATETIME, TIMESTAMP IS NOT SAME AS DATETIME
+      // https://stackoverflow.com/questions/55547133/how-to-convert-flutter-date-to-timestamp/55547142
+      "date": Timestamp.fromDate(DateTime.now()),
+      "expenses": [],
+      "users": referenceArray,
+    }).then((docReference) => print("User Successfully Added"));
+  }
+
   updateGroupData(String name, Timestamp date) async {
     //Map<String, dynamic>
     //groupCollection.add(data)
-    return await groupCollection.doc(uid).set({
+    return await groupCollection.doc().set({
       'name': name,
       'date': date,
     });

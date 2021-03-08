@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
       "name": name,
       "timestamp": DateTime.now().millisecondsSinceEpoch
     };
-    DatabaseServiceGroup.updateGroupData(task);
+    // DatabaseServiceGroup.updateGroupData(task);
     // setState(() {
     //   _groups.add(newGroup);
     // });
@@ -54,60 +54,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return StreamProvider<List<DbGroup>>.value(
-      initialData: List(),
-      value: DatabaseServiceGroup().groups,
-=======
-    return StreamProvider<List<DbUser>>.value(
-      //initialData: List(),
-      value: DatabaseService().users,
->>>>>>> bbb78ccf14e22e57d9cbb82210ad60de03be48cd
-      child: Scaffold(
-        backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-            title: Text("SlashWise"),
-            backgroundColor: Colors.blue[400],
-            elevation: 0.0,
-            actions: <Widget>[
-              TextButton.icon(
-                icon: Icon(Icons.person),
-                label: Text("Logout"),
-                onPressed: () async {
-                  await _auth.signOut();
-                },
-              )
-            ]),
-        body: GroupList(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => {
-            //_showAddNewGroup(context)
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => {
-                return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'name',
-                icon: Icon(Icons.group_add),
-              ),
-            ),
-            ElevatedButton(
-              child: Text('Add Group'),
-              onPressed: () => Text("test"),
-            )
-  };
-            )
-          },
-        ),
-      ),
+    return Scaffold(
+      body: Text("Test"),
     );
   }
 }
