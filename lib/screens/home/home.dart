@@ -16,14 +16,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final List<Group> _groups = [
-    Group('ulteam'),
-    Group('vromvrom'),
-    Group('aladin'),
-    Group('CC17')
+    Group('ulteam', [], []),
+    Group('vromvrom', [], []),
+    Group('aladin', [], []),
+    Group('CC17', [], []),
   ];
 
   void _addNewGroup(String name) {
-    final newGroup = Group(name);
+    final newGroup = Group(name, [], []);
 
     setState(() {
       _groups.add(newGroup);
