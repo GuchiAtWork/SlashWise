@@ -18,22 +18,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final List<Group> _groups = [
-    Group('ulteam'),
-    Group('vromvrom'),
-    Group('aladin'),
-    Group('CC17')
+    Group("2", 'ulteam', [], [], DateTime.now()),
+    Group("3", 'vromvrom', [], [], DateTime.now()),
+    Group("4", 'aladin', [], [], DateTime.now()),
+    Group("5", 'CC17', [], [], DateTime.now()),
   ];
 
   void _addNewGroup(String name) {
-    // final newGroup = Group(name);
-    var task = <String, dynamic>{
-      "name": name,
-      "timestamp": DateTime.now().millisecondsSinceEpoch
-    };
-    // DatabaseServiceGroup.updateGroupData(task);
-    // setState(() {
-    //   _groups.add(newGroup);
-    // });
+    final newGroup = Group("1", name, [], [], DateTime.now());
+
+    setState(() {
+      _groups.add(newGroup);
+    });
   }
 
   // Display Add Task Dialog
