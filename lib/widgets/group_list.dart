@@ -7,6 +7,7 @@ class GroupList extends StatelessWidget {
   final Function _deleteGroup;
 
   GroupList(this._groups, this._deleteGroup);
+
   @override
   Widget build(BuildContext context) {
     return Container(
