@@ -58,6 +58,49 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
+  void _createPaymentDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Payment'),
+            content: Container(
+              height: 120,
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 50),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('RECORD A CASH PAYMENT'),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 50),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('PAYPAL'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              MaterialButton(
+                onPressed: () => Navigator.of(context).pop(),
+                elevation: 6,
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,8 +112,8 @@ class _GroupScreenState extends State<GroupScreen> {
               primary: Colors.white,
             ),
             label: Text("Pay now!"),
-            icon: Icon(Icons.attach_money),
-            onPressed: () {},
+            icon: Icon(Icons.payment),
+            onPressed: () => _createPaymentDialog(context),
           ),
         ],
       ),
