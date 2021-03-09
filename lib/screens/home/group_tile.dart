@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:slash_wise/models/dbGroup.dart';
-
+/*
 class GroupTile extends StatelessWidget {
   final DbGroup group;
   GroupTile({this.group});
@@ -16,3 +16,4 @@ class GroupTile extends StatelessWidget {
             )));
   }
 }
+*/
