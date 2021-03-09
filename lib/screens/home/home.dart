@@ -43,7 +43,6 @@ class _HomeState extends State<Home> {
       },
     );
   }
-
   // void _deleteGroup(String id) {
   //   setState(() {
   //     _groups.removeWhere((group) => group.id == id);

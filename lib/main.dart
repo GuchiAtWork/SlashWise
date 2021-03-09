@@ -15,19 +15,6 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  final dbInterface = DatabaseServiceGroup();
-  print("#################");
-  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
-  print(test[0]);
-  print("@@@@@@@@@@@@@@");
-/*
-  final test =
-      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
-  print(test["name"]);
-  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
-  */
-
   runApp(MyApp());
 }
 
