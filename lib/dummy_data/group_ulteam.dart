@@ -21,4 +21,5 @@ var expense3 = Expense("Taxi", 200, nahoko, [keizo, fred]);
 
 List<Expense> expenses = [expense1, expense2, expense3];
 
-Group ulteam = Group('ulteam', members, expenses);
+//Group ulteam = Group('ulteam', members, expenses);
+Group ulteam = Group('dummyid', 'ulteam', members, expenses, DateTime.now());

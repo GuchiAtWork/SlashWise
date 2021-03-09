@@ -8,6 +8,7 @@ import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import "package:slash_wise/services/dbServiceGroup.dart";
+import 'dart:convert';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -16,9 +17,16 @@ void main() async {
   await Firebase.initializeApp();
 
   final dbInterface = DatabaseServiceGroup();
-  dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
-
-  dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  print("#################");
+  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  print(test[0]);
+  print("@@@@@@@@@@@@@@");
+/*
+  final test =
+      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
+  print(test["name"]);
+  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
+  */
 
   runApp(MyApp());
 }

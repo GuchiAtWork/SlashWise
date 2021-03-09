@@ -9,9 +9,9 @@ class DatabaseServiceGroup {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
-  Future<void> getGroups(String userID) async {
-    final List<Group> groups = [];
-
+  Future<List<Map<String, dynamic>>> getGroups(String userID) async {
+    //final List<Group> groups = [];
+/*
     await groupCollection
         .where("users",
             arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
@@ -23,9 +23,20 @@ class DatabaseServiceGroup {
                   }),
               print(groups)
             });
+*/
+    final List<Map<String, dynamic>> groups = [];
+    await groupCollection
+        .where("users",
+            arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
+        .get()
+        .then((QuerySnapshot q) => {
+              q.docs.forEach((doc) => {groups.add(doc.data())})
+            });
+    //print(ans.docs[0].data());
+    return groups;
   }
 
-  Future<void> addGroup(String userID, String groupName) {
+  Future<Map<String, dynamic>> addGroup(String userID, String groupName) {
     final referenceArray = [];
     referenceArray.add(FirebaseFirestore.instance.doc("users/" + userID));
 
@@ -36,7 +47,11 @@ class DatabaseServiceGroup {
       "date": Timestamp.fromDate(DateTime.now()),
       "expenses": [],
       "users": referenceArray,
-    }).then((docReference) => print("User Successfully Added"));
+    }).then((docReference) => docReference.get().then((doc) => doc.data()));
+  }
+
+  Future<void> deleteGroup(String userID) async {
+    await groupCollection.doc(userID).delete();
   }
 
   updateGroupData(String name, Timestamp date) async {
