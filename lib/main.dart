@@ -7,6 +7,7 @@ import 'package:slash_wise/screens/home/home.dart';
 import 'package:slash_wise/screens/wrapper.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:slash_wise/widgets/theme.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
-        //home: Wrapper(),
+        theme: myTheme,
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),

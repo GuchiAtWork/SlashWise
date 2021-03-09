@@ -20,11 +20,10 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
-      appBar: AppBar(title: Text("Sign in to SlashWise"), actions: <Widget>[
+      appBar: AppBar(title: Text("SignIn"), actions: <Widget>[
         TextButton.icon(
           style: TextButton.styleFrom(
-            primary: Colors.white,
+            primary: Colors.black,
           ),
           icon: Icon(Icons.person),
           label: Text("Register"),
@@ -61,7 +60,6 @@ class _SignInState extends State<SignIn> {
                 ElevatedButton(
                     child: Text(
                       "Sign in",
-                      style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {

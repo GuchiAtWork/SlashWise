@@ -38,52 +38,47 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              color: Colors.blue[50],
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  buildListTile(
-                    'Home',
-                    Icons.home,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Settings',
-                    Icons.settings,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Scan code',
-                    Icons.qr_code_scanner,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Rate me',
-                    Icons.rate_review,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Contact us',
-                    Icons.mail,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Donate to Fred',
-                    Icons.attach_money,
-                    () {},
-                  ),
-                  buildListTile(
-                    'Log out',
-                    Icons.logout,
-                    () async {
-                      await _auth.signOut();
-                    },
-                  ),
-                ],
+          Column(
+            children: [
+              SizedBox(height: 20),
+              buildListTile(
+                'Home',
+                Icons.home,
+                () {},
               ),
-            ),
+              buildListTile(
+                'Settings',
+                Icons.settings,
+                () {},
+              ),
+              buildListTile(
+                'Scan code',
+                Icons.qr_code_scanner,
+                () {},
+              ),
+              buildListTile(
+                'Rate me',
+                Icons.rate_review,
+                () {},
+              ),
+              buildListTile(
+                'Contact us',
+                Icons.mail,
+                () {},
+              ),
+              buildListTile(
+                'Donate to Fred',
+                Icons.attach_money,
+                () {},
+              ),
+              buildListTile(
+                'Log out',
+                Icons.logout,
+                () async {
+                  await _auth.signOut();
+                },
+              ),
+            ],
           ),
         ],
       ),
