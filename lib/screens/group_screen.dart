@@ -102,6 +102,7 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[400],
       appBar: AppBar(
         title: Text('GroupDetails'),
         actions: <Widget>[

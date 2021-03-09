@@ -59,6 +59,9 @@ class _HomeState extends State<Home> {
             elevation: 0.0,
             actions: <Widget>[
               TextButton.icon(
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                ),
                 icon: Icon(Icons.person),
                 label: Text("Logout"),
                 onPressed: () async {
