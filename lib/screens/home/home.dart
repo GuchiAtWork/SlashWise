@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:slash_wise/models/dbUser.dart';
 import 'package:slash_wise/models/group.dart';
@@ -48,7 +47,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<DbUser>>.value(
-      //initialData: List(),
+      initialData: [],
       value: DatabaseService().users,
       child: Scaffold(
         backgroundColor: Colors.blue[50],
