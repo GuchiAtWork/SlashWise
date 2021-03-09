@@ -60,4 +60,8 @@ class DatabaseServiceUser {
 
     return user;
   }
+
+  Future<void> deleteUser(String userID) async {
+    await userCollection.doc(userID).delete();
+  }
 }
