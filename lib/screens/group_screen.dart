@@ -103,7 +103,7 @@ class _GroupScreenState extends State<GroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Page'),
+        title: Text('GroupDetails'),
         actions: <Widget>[
           TextButton.icon(
             style: TextButton.styleFrom(

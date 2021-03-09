@@ -22,28 +22,30 @@ class _NewGroupState extends State<NewGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'name',
-                icon: Icon(Icons.group_add),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'name',
+                  icon: Icon(Icons.group_add),
+                ),
+                controller: _nameController,
+                onSubmitted: (_) => () {
+                  _submitData();
+                },
               ),
-              controller: _nameController,
-              onSubmitted: (_) => () {
-                _submitData();
-              },
-            ),
-            ElevatedButton(
-              child: Text('Add Group'),
-              onPressed: _submitData,
-            )
-          ],
+              ElevatedButton(
+                child: Text('Add Group'),
+                onPressed: _submitData,
+              )
+            ],
+          ),
         ),
       ),
     );
