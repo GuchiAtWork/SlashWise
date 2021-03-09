@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
 import '../dummy_data/group_ulteam.dart';
-import 'package:intl/intl.dart';
 
 class GroupScreen extends StatefulWidget {
   static const routeName = '/group';
