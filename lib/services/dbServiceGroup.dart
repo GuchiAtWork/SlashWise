@@ -10,15 +10,19 @@ class DatabaseServiceGroup {
       FirebaseFirestore.instance.collection('groups');
 
   Future<void> getGroups(String userID) async {
-    final docRefs = await groupCollection
+    final List<Group> groups = [];
+
+    await groupCollection
         .where("users",
             arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
         .get()
         .then((QuerySnapshot querySnapshot) => {
-          querySnapshot.docs.forEach((doc) => {
-            print(doc["name"]);
-          })
-        });
+              querySnapshot.docs.forEach((doc) => {
+                    groups.add(Group(doc.id, doc["name"], doc["users"],
+                        doc["expenses"], doc["date"].toDate()))
+                  }),
+              print(groups)
+            });
   }
 
   Future<void> addGroup(String userID, String groupName) {

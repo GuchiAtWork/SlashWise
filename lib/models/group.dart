@@ -3,9 +3,9 @@ import '../models/expense.dart';
 import '../models/user.dart';
 
 class Group {
-  Group(this.name);
+  Group(this.id, this.name, this.users, this.expenses, this.date);
   @required
-  String id = DateTime.now().toString();
+  String id;
   @required
   String name;
   @required
@@ -13,5 +13,5 @@ class Group {
   @required
   List<Expense> expenses;
   @required
-  DateTime date = DateTime.now();
+  DateTime date;
 }
