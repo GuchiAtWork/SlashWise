@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/models/group.dart';
 import 'package:slash_wise/models/user.dart';
