@@ -64,15 +64,15 @@ class DatabaseServiceGroup {
   }
 
   // group list from snapshot
-  List<DbGroup> _groupListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return DbGroup(
-          name: doc.data()['name'] ?? "", date: doc.data()['date'] ?? "");
-    }).toList();
-  }
+  // List<DbGroup> _groupListFromSnapshot(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     return DbGroup(
+  //         name: doc.data()['name'] ?? "", date: doc.data()['date'] ?? "");
+  //   }).toList();
+  // }
 
-  // get groups stream
-  Stream<List<DbGroup>> get groups {
-    return groupCollection.snapshots().map(_groupListFromSnapshot);
-  }
+  // // get groups stream
+  // Stream<List<DbGroup>> get groups {
+  //   return groupCollection.snapshots().map(_groupListFromSnapshot);
+  // }
 }

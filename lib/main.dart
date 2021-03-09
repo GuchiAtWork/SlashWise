@@ -19,9 +19,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final dbInterface = DatabaseServiceUser(uid: "RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  final dbInterface = DatabaseServiceExpense();
   print("#################");
-  final test = await dbInterface.getUser("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  final test = await dbInterface.calculateExpenses(
+      "RFHPJcUFxcf0q5BqxHGiG2UooT63", "OwbmQTPeWwgpSBxgWY0z");
   print("@@@@@@@@@@@@@@");
 /*
   final test =

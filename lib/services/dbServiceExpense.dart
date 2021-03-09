@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/expense.dart';
 
 class DatabaseServiceExpense {
@@ -36,5 +37,25 @@ class DatabaseServiceExpense {
     });
 
     return groupExpenses;
+  }
+
+  Future<Map<String, num>> calculateExpenses(
+      String userID, String groupID) async {
+    final Map<String, num> calculatedDebt = {};
+
+    final expenses = await getExpenses(groupID);
+    final groupDetails = await FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupID)
+        .get()
+        .then((DocumentSnapshot docRef) {
+      final caughtGroup = DbGroup(
+          docRef.id, docRef["name"], docRef["users"], docRef["date"].toDate());
+      return caughtGroup;
+    });
+
+    print(groupDetails);
+
+    return calculatedDebt;
   }
 }
