@@ -1,5 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbUser.dart';
+import "package:slash_wise/models/user.dart";
 
 class DatabaseServiceUser {
   final String uid;
@@ -32,5 +33,15 @@ class DatabaseServiceUser {
   // get users stream
   Stream<List<DbUser>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
+  }
+
+  Future<User> getUser(String userID) async {
+    final user =
+        await userCollection.doc(userID).get().then((DocumentSnapshot doc) {
+      final caughtUser = User(doc.id, doc["name"]);
+      return caughtUser;
+    });
+
+    return user;
   }
 }

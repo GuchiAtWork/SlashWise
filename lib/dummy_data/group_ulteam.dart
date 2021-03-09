@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/models/group.dart';
 import 'package:slash_wise/models/user.dart';
 
-var keizo = User('keizo');
-var fred = User('Fred');
-var hiroki = User('hiroki');
-var nahoko = User('nahoko');
+var keizo = User("1", 'keizo');
+var fred = User("2", 'Fred');
+var hiroki = User("3", 'hiroki');
+var nahoko = User("4", 'nahoko');
 
 List<User> members = [keizo, fred, hiroki, nahoko];
 

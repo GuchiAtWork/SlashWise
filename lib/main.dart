@@ -11,16 +11,17 @@ import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceGroup.dart";
 import 'dart:convert';
 
+import 'package:slash_wise/services/dbServiceUser.dart';
+
 FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final dbInterface = DatabaseServiceGroup();
+  final dbInterface = DatabaseServiceUser(uid: "RFHPJcUFxcf0q5BqxHGiG2UooT63");
   print("#################");
-  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
-  print(test[0]);
+  final test = await dbInterface.getUser("RFHPJcUFxcf0q5BqxHGiG2UooT63");
   print("@@@@@@@@@@@@@@");
 /*
   final test =
