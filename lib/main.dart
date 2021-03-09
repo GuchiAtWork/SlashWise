@@ -17,13 +17,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-<<<<<<< HEAD
-  final dbInterface = DatabaseServiceExpense();
-  final expense = await dbInterface.getExpenses("OwbmQTPeWwgpSBxgWY0z");
-
-  print("main.dart: ");
-  print(expense);
-=======
   final dbInterface = DatabaseServiceGroup();
   print("#################");
   final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
@@ -35,7 +28,6 @@ void main() async {
   print(test["name"]);
   dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
   */
->>>>>>> d896deedb989b8bbb1991ec3059e37bbe0d01a46
 
   runApp(MyApp());
 }
