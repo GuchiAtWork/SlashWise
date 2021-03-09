@@ -83,4 +83,8 @@ class DatabaseServiceExpense {
 
     return calculatedDebtName;
   }
+
+  Future<void> deleteExpense(String expenseID) async {
+    await expenseCollection.doc(expenseID).delete();
+  }
 }
