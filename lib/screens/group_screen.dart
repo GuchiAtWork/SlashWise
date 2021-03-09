@@ -14,37 +14,37 @@ class _GroupScreenState extends State<GroupScreen> {
   final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
   var userExpenses = {};
 
-  Map<String, num> _calculateExpenses(User appUser) {
-    Map<String, num> oweTabs = {};
-    final appUserName = appUser.name;
+  // Map<String, num> _calculateExpenses(User appUser) {
+  //   Map<String, num> oweTabs = {};
+  //   final appUserName = appUser.name;
 
-    for (var i = 0; i < ulteam.users.length; i++) {
-      final userName = ulteam.users[i].name;
+  //   for (var i = 0; i < ulteam.users.length; i++) {
+  //     final userName = ulteam.users[i].name;
 
-      if (!(userName == appUserName)) {
-        oweTabs[userName] = 0;
-      }
-    }
+  //     if (!(userName == appUserName)) {
+  //       oweTabs[userName] = 0;
+  //     }
+  //   }
 
-    for (var j = 0; j < ulteam.expenses.length; j++) {
-      final payerName = ulteam.expenses[j].payer.name;
-      final amount = ulteam.expenses[j].amount;
-      final amountOfPayees = ulteam.expenses[j].payees.length;
-      final splitAmount = amount / (amountOfPayees + 1);
+  //   for (var j = 0; j < ulteam.expenses.length; j++) {
+  //     final payerName = ulteam.expenses[j].payer.name;
+  //     final amount = ulteam.expenses[j].amount;
+  //     final amountOfPayees = ulteam.expenses[j].payees.length;
+  //     final splitAmount = amount / (amountOfPayees + 1);
 
-      if (payerName == appUserName) {
-        oweTabs.forEach((name, _) => {oweTabs[name] += splitAmount});
-      } else {
-        oweTabs[payerName] -= splitAmount;
-      }
-    }
+  //     if (payerName == appUserName) {
+  //       oweTabs.forEach((name, _) => {oweTabs[name] += splitAmount});
+  //     } else {
+  //       oweTabs[payerName] -= splitAmount;
+  //     }
+  //   }
 
-    return oweTabs;
-  }
+  //   return oweTabs;
+  // }
 
   @override
   void initState() {
-    userExpenses = _calculateExpenses(appUser);
+    // userExpenses = _calculateExpenses(appUser);
     super.initState();
   }
 

@@ -6,6 +6,7 @@ import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/screens/wrapper.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:slash_wise/services/dbServiceExpense.dart';
 
 import "package:slash_wise/services/dbServiceGroup.dart";
 
@@ -15,10 +16,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final dbInterface = DatabaseServiceGroup();
-  dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
+  final dbInterface = DatabaseServiceExpense();
+  final expense = await dbInterface.getExpenses("OwbmQTPeWwgpSBxgWY0z");
 
-  dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  print("main.dart: ");
+  print(expense);
 
   runApp(MyApp());
 }
