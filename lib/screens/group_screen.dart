@@ -102,7 +102,7 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[400],
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         title: Text('GroupDetails'),
         actions: <Widget>[
@@ -120,10 +120,7 @@ class _GroupScreenState extends State<GroupScreen> {
         children: [
           Container(
             height: 150,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 254, 229, 1),
-              border: Border.all(color: Colors.grey),
-            ),
+            color: Colors.blue[100],
             width: double.infinity,
             child: Column(
               children: [

@@ -21,19 +21,18 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[100],
-      appBar: AppBar(
-          backgroundColor: Colors.blue[400],
-          elevation: 0.0,
-          title: Text("Sign up to SlashWise"),
-          actions: <Widget>[
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text("Sign In"),
-              onPressed: () {
-                widget.toggleView();
-              },
-            )
-          ]),
+      appBar: AppBar(title: Text("Sign up to SlashWise"), actions: <Widget>[
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            primary: Colors.white,
+          ),
+          icon: Icon(Icons.person),
+          label: Text("Sign In"),
+          onPressed: () {
+            widget.toggleView();
+          },
+        )
+      ]),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(

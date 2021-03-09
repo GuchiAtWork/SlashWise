@@ -21,6 +21,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      elevation: 5,
       child: Column(
         children: [
           Container(
@@ -37,43 +38,52 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
-          buildListTile(
-            'Home',
-            Icons.home,
-            () {},
-          ),
-          buildListTile(
-            'Settings',
-            Icons.settings,
-            () {},
-          ),
-          buildListTile(
-            'Scan code',
-            Icons.qr_code_scanner,
-            () {},
-          ),
-          buildListTile(
-            'Rate me',
-            Icons.rate_review,
-            () {},
-          ),
-          buildListTile(
-            'Contact us',
-            Icons.mail,
-            () {},
-          ),
-          buildListTile(
-            'Donate to Fred',
-            Icons.attach_money,
-            () {},
-          ),
-          buildListTile(
-            'Log out',
-            Icons.logout,
-            () async {
-              await _auth.signOut();
-            },
+          Expanded(
+            child: Container(
+              color: Colors.blue[50],
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  buildListTile(
+                    'Home',
+                    Icons.home,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Settings',
+                    Icons.settings,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Scan code',
+                    Icons.qr_code_scanner,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Rate me',
+                    Icons.rate_review,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Contact us',
+                    Icons.mail,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Donate to Fred',
+                    Icons.attach_money,
+                    () {},
+                  ),
+                  buildListTile(
+                    'Log out',
+                    Icons.logout,
+                    () async {
+                      await _auth.signOut();
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

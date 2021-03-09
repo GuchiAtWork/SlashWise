@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:slash_wise/screens/group_screen.dart';
 import '../models/group.dart';
 
 class GroupList extends StatelessWidget {
@@ -35,7 +36,8 @@ class GroupList extends StatelessWidget {
                       color: Theme.of(context).errorColor,
                       onPressed: () => _deleteGroup(_groups[index].id),
                     ),
-                    onLongPress: () {},
+                    onTap: () =>
+                        Navigator.pushNamed(context, GroupScreen.routeName),
                   ),
                 );
               },
