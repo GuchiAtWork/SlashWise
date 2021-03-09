@@ -63,6 +63,16 @@ class _GroupScreenState extends State<GroupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Group Page'),
+        actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+            ),
+            label: Text("Pay now!"),
+            icon: Icon(Icons.attach_money),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -106,17 +116,30 @@ class _GroupScreenState extends State<GroupScreen> {
                   return Card(
                     elevation: 6,
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Text('Picture'),
-                      ),
-                      title: Text(ulteam.users[index].name),
-                      subtitle: Text("\$20"),
-                      trailing: IconButton(
-                        icon: Icon(Icons.attach_money),
-                        color: Theme.of(context).errorColor,
-                        onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: FittedBox(
+                              child: Text(
+                                'Picture',
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          ulteam.users[index].name,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          '\$20',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   );
