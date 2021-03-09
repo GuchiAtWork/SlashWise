@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         //home: Wrapper(),
         initialRoute: '/',
         routes: {
-          '/': (context) => Home(),
+          '/': (context) => Wrapper(),
           GroupScreen.routeName: (context) => GroupScreen(),
         },
       ),
