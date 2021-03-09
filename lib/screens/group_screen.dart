@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/widgets/new_expense.dart';
 import '../dummy_data/group_ulteam.dart';
 import 'package:intl/intl.dart';
 
@@ -11,41 +12,50 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
-  var userExpenses = {};
+  // final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
+  // var userExpenses = {};
 
-  Map<String, num> _calculateExpenses(User appUser) {
-    Map<String, num> oweTabs = {};
-    final appUserName = appUser.name;
+  // Map<String, num> _calculateExpenses(User appUser) {
+  //   Map<String, num> oweTabs = {};
+  //   final appUserName = appUser.name;
 
-    for (var i = 0; i < ulteam.users.length; i++) {
-      final userName = ulteam.users[i].name;
+  //   for (var i = 0; i < ulteam.users.length; i++) {
+  //     final userName = ulteam.users[i].name;
 
-      if (!(userName == appUserName)) {
-        oweTabs[userName] = 0;
-      }
-    }
+  //     if (!(userName == appUserName)) {
+  //       oweTabs[userName] = 0;
+  //     }
+  //   }
 
-    for (var j = 0; j < ulteam.expenses.length; j++) {
-      final payerName = ulteam.expenses[j].payer.name;
-      final amount = ulteam.expenses[j].amount;
-      final amountOfPayees = ulteam.expenses[j].payees.length;
-      final splitAmount = amount / (amountOfPayees + 1);
+  //   for (var j = 0; j < ulteam.expenses.length; j++) {
+  //     final payerName = ulteam.expenses[j].payer.name;
+  //     final amount = ulteam.expenses[j].amount;
+  //     final amountOfPayees = ulteam.expenses[j].payees.length;
+  //     final splitAmount = amount / (amountOfPayees + 1);
 
-      if (payerName == appUserName) {
-        oweTabs.forEach((name, _) => {oweTabs[name] += splitAmount});
-      } else {
-        oweTabs[payerName] -= splitAmount;
-      }
-    }
+  //     if (payerName == appUserName) {
+  //       oweTabs.forEach((name, _) => {oweTabs[name] += splitAmount});
+  //     } else {
+  //       oweTabs[payerName] -= splitAmount;
+  //     }
+  //   }
 
-    return oweTabs;
-  }
+  //   return oweTabs;
+  // }
 
-  @override
-  void initState() {
-    userExpenses = _calculateExpenses(appUser);
-    super.initState();
+  // @override
+  // void initState() {
+  //   userExpenses = _calculateExpenses(appUser);
+  //   super.initState();
+  // }
+
+  void _showNewExpense(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) {
+          return NewExpense();
+        });
   }
 
   @override
@@ -53,6 +63,16 @@ class _GroupScreenState extends State<GroupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Group Page'),
+        actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+            ),
+            label: Text("Pay now!"),
+            icon: Icon(Icons.attach_money),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -90,26 +110,36 @@ class _GroupScreenState extends State<GroupScreen> {
           ),
           Expanded(
             child: Container(
-              height: 300,
+              //height: 300,
               child: ListView.builder(
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 6,
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Text('Picture'),
-                      ),
-                      title: Text(ulteam.users[index].name),
-                      subtitle: Text("Placeholder"),
-                      // userExpenses.containsKey(ulteam.users[index].name)
-                      //     ? Text(userExpenses[ulteam.users[index].name])
-                      //     : Text('Placeholder'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.attach_money),
-                        color: Theme.of(context).errorColor,
-                        onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: FittedBox(
+                              child: Text(
+                                'Picture',
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          ulteam.users[index].name,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          '\$20',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   );
@@ -119,6 +149,10 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showNewExpense(context),
+        child: Icon(Icons.add),
       ),
     );
   }
