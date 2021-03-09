@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
 import "package:slash_wise/services/dbServiceGroup.dart";
+import 'dart:convert';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -16,11 +17,25 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+<<<<<<< HEAD
   final dbInterface = DatabaseServiceExpense();
   final expense = await dbInterface.getExpenses("OwbmQTPeWwgpSBxgWY0z");
 
   print("main.dart: ");
   print(expense);
+=======
+  final dbInterface = DatabaseServiceGroup();
+  print("#################");
+  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  print(test[0]);
+  print("@@@@@@@@@@@@@@");
+/*
+  final test =
+      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
+  print(test["name"]);
+  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
+  */
+>>>>>>> d896deedb989b8bbb1991ec3059e37bbe0d01a46
 
   runApp(MyApp());
 }

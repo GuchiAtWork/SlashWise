@@ -21,4 +21,9 @@ var expense3 = Expense("3", "Taxi", 200, DateTime.now(), "3");
 
 List<Expense> expenses = [expense1, expense2, expense3];
 
+<<<<<<< HEAD
 Group ulteam = Group("1", 'ulteam', members, expenses, DateTime.now());
+=======
+//Group ulteam = Group('ulteam', members, expenses);
+Group ulteam = Group('dummyid', 'ulteam', members, expenses, DateTime.now());
+>>>>>>> d896deedb989b8bbb1991ec3059e37bbe0d01a46
