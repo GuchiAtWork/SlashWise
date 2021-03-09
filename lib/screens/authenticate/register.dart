@@ -20,14 +20,15 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
-      appBar: AppBar(title: Text("Sign up to SlashWise"), actions: <Widget>[
+      appBar: AppBar(title: Text("SignUp"), actions: <Widget>[
         TextButton.icon(
           style: TextButton.styleFrom(
-            primary: Colors.white,
+            primary: Colors.black,
           ),
           icon: Icon(Icons.person),
-          label: Text("Sign In"),
+          label: Text(
+            "Sign In",
+          ),
           onPressed: () {
             widget.toggleView();
           },
@@ -61,7 +62,6 @@ class _RegisterState extends State<Register> {
                 ElevatedButton(
                     child: Text(
                       "Register",
-                      style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {

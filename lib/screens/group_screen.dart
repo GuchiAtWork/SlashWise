@@ -102,13 +102,12 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         title: Text('GroupDetails'),
         actions: <Widget>[
           TextButton.icon(
             style: TextButton.styleFrom(
-              primary: Colors.white,
+              primary: Colors.black,
             ),
             label: Text("Pay now!"),
             icon: Icon(Icons.payment),
@@ -120,7 +119,7 @@ class _GroupScreenState extends State<GroupScreen> {
         children: [
           Container(
             height: 150,
-            color: Colors.blue[100],
+            color: Theme.of(context).colorScheme.background,
             width: double.infinity,
             child: Column(
               children: [

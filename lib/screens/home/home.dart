@@ -52,11 +52,10 @@ class _HomeState extends State<Home> {
       initialData: [],
       value: DatabaseService().users,
       child: Scaffold(
-        backgroundColor: Colors.blue[50],
         appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
           TextButton.icon(
             style: TextButton.styleFrom(
-              primary: Colors.white,
+              primary: Colors.black,
             ),
             icon: Icon(Icons.person),
             label: Text("Logout"),
