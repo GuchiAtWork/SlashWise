@@ -5,6 +5,7 @@ import 'package:slash_wise/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/services/database.dart';
 import 'package:slash_wise/widgets/group_list.dart';
+import 'package:slash_wise/widgets/main_drawer.dart';
 import 'package:slash_wise/widgets/new_group.dart';
 
 class Home extends StatefulWidget {
@@ -31,6 +32,7 @@ class _HomeState extends State<Home> {
 
   void _showAddNewGroup(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return NewGroup(_addNewGroup);
@@ -57,6 +59,9 @@ class _HomeState extends State<Home> {
             elevation: 0.0,
             actions: <Widget>[
               TextButton.icon(
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                ),
                 icon: Icon(Icons.person),
                 label: Text("Logout"),
                 onPressed: () async {
@@ -64,6 +69,7 @@ class _HomeState extends State<Home> {
                 },
               )
             ]),
+        drawer: MainDrawer(),
         body: GroupList(_groups, _deleteGroup),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
