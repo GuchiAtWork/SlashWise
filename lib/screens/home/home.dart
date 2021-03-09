@@ -53,22 +53,18 @@ class _HomeState extends State<Home> {
       value: DatabaseService().users,
       child: Scaffold(
         backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-            title: Text("SlashWise"),
-            backgroundColor: Colors.blue[400],
-            elevation: 0.0,
-            actions: <Widget>[
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                ),
-                icon: Icon(Icons.person),
-                label: Text("Logout"),
-                onPressed: () async {
-                  await _auth.signOut();
-                },
-              )
-            ]),
+        appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+            ),
+            icon: Icon(Icons.person),
+            label: Text("Logout"),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          )
+        ]),
         drawer: MainDrawer(),
         body: GroupList(_groups, _deleteGroup),
         floatingActionButton: FloatingActionButton(
