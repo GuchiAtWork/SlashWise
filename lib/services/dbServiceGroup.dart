@@ -25,14 +25,17 @@ class DatabaseServiceGroup {
     return groups;
   }*/
 
-  Future<List<Map<String, dynamic>>> getGroups(String userID) async {
-    final List<Map<String, dynamic>> groups = [];
-    final ans = await groupCollection
-        .where("users",
-            arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
+  Future<List<DbGroup>> getGroups(String userID) async {
+    final List<DbGroup> groups = [];
+    await groupCollection
+        .where("users", arrayContains: userID)
         .get()
         .then((QuerySnapshot q) => {
-              q.docs.forEach((doc) => {groups.add(doc.data())})
+              q.docs.forEach((doc) {
+                final DbGroup capturedGroup = DbGroup(doc.id, doc["name"],
+                    doc["users"]?.cast<String>(), doc["date"].toDate());
+                groups.add(capturedGroup);
+              })
             });
     return groups;
   }

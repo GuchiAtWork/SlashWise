@@ -19,10 +19,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final dbInterface = DatabaseServiceExpense();
+  final dbInterface = DatabaseServiceGroup();
   print("#################");
-  final test = await dbInterface.calculateExpenses(
-      "RFHPJcUFxcf0q5BqxHGiG2UooT63", "OwbmQTPeWwgpSBxgWY0z");
+  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  print(test);
   print("@@@@@@@@@@@@@@");
 /*
   final test =
