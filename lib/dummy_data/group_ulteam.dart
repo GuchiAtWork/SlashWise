@@ -2,10 +2,10 @@ import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/models/group.dart';
 import 'package:slash_wise/models/user.dart';
 
-var keizo = User("1", 'keizo');
-var fred = User("2", 'Fred');
-var hiroki = User("3", 'hiroki');
-var nahoko = User("4", 'nahoko');
+var keizo = User("1", 'keizo', "keizo@gmail.com");
+var fred = User("2", 'Fred', "fred@gmail.com");
+var hiroki = User("3", 'hiroki', "hiroki@gmail.com");
+var nahoko = User("4", 'nahoko', "nahoko@gmail.com");
 
 List<User> members = [keizo, fred, hiroki, nahoko];
 

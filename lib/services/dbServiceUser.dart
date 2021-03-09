@@ -38,8 +38,24 @@ class DatabaseServiceUser {
   Future<User> getUser(String userID) async {
     final user =
         await userCollection.doc(userID).get().then((DocumentSnapshot doc) {
-      final caughtUser = User(doc.id, doc["name"]);
+      final caughtUser = User(doc.id, doc["name"], doc["email"]);
       return caughtUser;
+    });
+
+    return user;
+  }
+
+  Future<User> getUserByEmail(String email) async {
+    final User user = await userCollection
+        .where("email", isEqualTo: email)
+        .get()
+        .then((QuerySnapshot doc) {
+      if (doc.docs.isNotEmpty) {
+        final caughtUser = User(doc.docs[0].id, doc.docs[0]["name"], email);
+        return caughtUser;
+      } else {
+        return null;
+      }
     });
 
     return user;

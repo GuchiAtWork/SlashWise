@@ -1,5 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
+import "package:slash_wise/services/dbServiceUser.dart";
 //import 'package:slash_wise/models/group.dart';
 
 // RFHPJcUFxcf0q5BqxHGiG2UooT63
@@ -24,6 +25,17 @@ class DatabaseServiceGroup {
             });
     return groups;
   }*/
+
+  Future<DbGroup> getGroup(String groupID) async {
+    return await groupCollection
+        .doc(groupID)
+        .get()
+        .then((DocumentSnapshot doc) {
+      final DbGroup caughtGroup = DbGroup(doc.id, doc["name"],
+          doc["users"]?.cast<String>(), doc["date"].toDate());
+      return caughtGroup;
+    });
+  }
 
   Future<List<DbGroup>> getGroups(String userID) async {
     final List<DbGroup> groups = [];
@@ -63,6 +75,24 @@ class DatabaseServiceGroup {
 
   Future<void> deleteGroup(String groupID) async {
     await groupCollection.doc(groupID).delete();
+  }
+
+  Future<void> addMemberToGroup(String groupID, String email) async {
+    final userDbInterface = DatabaseServiceUser();
+
+    final otherUser = await userDbInterface.getUserByEmail(email);
+
+    if (otherUser == null) {
+      print("User doesn't exist");
+      return;
+    }
+
+    final DbGroup group = await getGroup(groupID);
+    final List<String> groupMembers = group.users;
+    groupMembers.add(otherUser.id);
+
+    return groupCollection.doc(groupID).update({"users": groupMembers}).then(
+        (result) => print("User successfully added"));
   }
 
 /*
