@@ -21,7 +21,7 @@ void main() async {
 
   final dbInterface = DatabaseServiceGroup();
   print("#################");
-  final test = await dbInterface.getGroups("RFHPJcUFxcf0q5BqxHGiG2UooT63");
+  final test = await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Testing", DateTime.now());
   print(test);
   print("@@@@@@@@@@@@@@");
 /*

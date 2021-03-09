@@ -40,18 +40,25 @@ class DatabaseServiceGroup {
     return groups;
   }
 
-  Future<Map<String, dynamic>> addGroup(String userID, String groupName) {
-    final referenceArray = [];
-    referenceArray.add(FirebaseFirestore.instance.doc("users/" + userID));
+  Future<DbGroup> addGroup(
+      String userID, String groupName, DateTime date) async {
+    final List<String> referenceArray = [];
+    referenceArray.add(userID);
 
-    return groupCollection.add({
+    final newGroup = await groupCollection.add({
       "name": groupName,
       // MUST CONVERT TO DATETIME, TIMESTAMP IS NOT SAME AS DATETIME
       // https://stackoverflow.com/questions/55547133/how-to-convert-flutter-date-to-timestamp/55547142
-      "date": Timestamp.fromDate(DateTime.now()),
+      "date": Timestamp.fromDate(date),
       //"expenses": [],
       "users": referenceArray,
-    }).then((docReference) => docReference.get().then((doc) => doc.data()));
+    }).then((docReference) {
+      final newGroup =
+          DbGroup(docReference.id, groupName, referenceArray, date);
+      return newGroup;
+    });
+
+    return newGroup;
   }
 
   Future<void> deleteGroup(String groupID) async {
