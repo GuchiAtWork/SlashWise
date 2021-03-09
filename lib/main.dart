@@ -19,11 +19,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final dbInterface = DatabaseServiceGroup();
+  final dbInterface = DatabaseServiceExpense();
   print("#################");
-  final test = await dbInterface.addMemberToGroup(
-      "OwbmQTPeWwgpSBxgWY0z", "keio@gmail.com");
-  // print(test);
+  final test = await dbInterface.calculateExpenses(
+      "RFHPJcUFxcf0q5BqxHGiG2UooT63", "OwbmQTPeWwgpSBxgWY0z");
+  print(test);
   print("@@@@@@@@@@@@@@");
 /*
   final test =

@@ -1,6 +1,8 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/expense.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
+import 'package:slash_wise/services/dbServiceUser.dart';
 
 class DatabaseServiceExpense {
   // collection reference
@@ -41,21 +43,44 @@ class DatabaseServiceExpense {
 
   Future<Map<String, num>> calculateExpenses(
       String userID, String groupID) async {
-    final Map<String, num> calculatedDebt = {};
+    final groupDbInterface = DatabaseServiceGroup();
+    final userDbInterface = DatabaseServiceUser();
+
+    final Map<String, num> calculatedDebtID = {};
 
     final expenses = await getExpenses(groupID);
-    final groupDetails = await FirebaseFirestore.instance
-        .collection('groups')
-        .doc(groupID)
-        .get()
-        .then((DocumentSnapshot docRef) {
-      final caughtGroup = DbGroup(
-          docRef.id, docRef["name"], docRef["users"], docRef["date"].toDate());
-      return caughtGroup;
-    });
+    final groupDetails = await groupDbInterface.getGroup(groupID);
+    final amountOfMembers = groupDetails.users.length;
 
-    print(groupDetails);
+    for (var i = 0; i < amountOfMembers; i++) {
+      final curUserID = groupDetails.users[i];
 
-    return calculatedDebt;
+      if (curUserID != userID) {
+        calculatedDebtID[curUserID] = 0;
+      }
+    }
+
+    for (var j = 0; j < expenses.length; j++) {
+      final amount = expenses[j].amount;
+      final payerID = expenses[j].payer;
+      final splitAmount = amount / amountOfMembers;
+
+      if (payerID == userID) {
+        calculatedDebtID.forEach((key, _) {
+          calculatedDebtID[key] += splitAmount;
+        });
+      } else {
+        calculatedDebtID[payerID] -= splitAmount;
+      }
+    }
+
+    final Map<String, num> calculatedDebtName = {};
+
+    for (var key in calculatedDebtID.keys) {
+      final user = await userDbInterface.getUser(key);
+      calculatedDebtName[user.name] = calculatedDebtID[key];
+    }
+
+    return calculatedDebtName;
   }
 }
