@@ -1,48 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
-import '../models/group.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
 
 class GroupList extends StatelessWidget {
-  final List<Group> _groups;
-  final Function _deleteGroup;
-
-  GroupList(this._groups, this._deleteGroup);
+  final groupDatabase = DatabaseServiceGroup();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 600,
-      child: _groups.isEmpty
-          ? Column(
-              children: <Widget>[Text('No Group added yet!')],
-            )
-          : ListView.builder(
-              itemBuilder: (_, index) {
-                return Card(
-                  elevation: 6,
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Text('Picture'),
-                    ),
-                    title: Text(_groups[index].name),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(_groups[index].date),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete_forever),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () => _deleteGroup(_groups[index].id),
-                    ),
-                    onTap: () =>
-                        Navigator.pushNamed(context, GroupScreen.routeName),
+    final user = Provider.of<AuthUser>(context);
+
+    return FutureBuilder(
+      future: groupDatabase.getGroups(user.uid),
+      builder: (BuildContext context, AsyncSnapshot<List<DbGroup>> snapshot) {
+        if (snapshot.hasData) {
+          return Container(
+            height: 600,
+            child: snapshot.data.isEmpty
+                ? Column(
+                    children: <Widget>[Text('No Group added yet!')],
+                  )
+                : ListView.builder(
+                    itemBuilder: (_, index) {
+                      return Card(
+                        elevation: 6,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 30,
+                            child: Text('Picture'),
+                          ),
+                          title: Text(snapshot.data[index].name),
+                          subtitle: Text(
+                            snapshot.data[index].date.toString(),
+                          ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.delete_forever),
+                              color: Theme.of(context).errorColor,
+                              onPressed: () =>
+                                  //_deleteGroup(snapshot.data[index].id),
+                                  () {}),
+                          onTap: () => Navigator.pushNamed(
+                              context, GroupScreen.routeName),
+                        ),
+                      );
+                    },
+                    itemCount: snapshot.data.length,
                   ),
-                );
-              },
-              itemCount: _groups.length,
-            ),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }
