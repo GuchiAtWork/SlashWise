@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user_auth.dart';
@@ -35,7 +36,8 @@ class GroupList extends StatelessWidget {
                           ),
                           title: Text(snapshot.data[index].name),
                           subtitle: Text(
-                            snapshot.data[index].date.toString(),
+                            DateFormat.yMMMd()
+                                .format(snapshot.data[index].date),
                           ),
                           trailing: IconButton(
                               icon: Icon(Icons.delete_forever),
