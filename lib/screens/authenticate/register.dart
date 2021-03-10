@@ -20,20 +20,20 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
-      appBar: AppBar(
-          backgroundColor: Colors.blue[400],
-          elevation: 0.0,
-          title: Text("Sign up to SlashWise"),
-          actions: <Widget>[
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text("Sign In"),
-              onPressed: () {
-                widget.toggleView();
-              },
-            )
-          ]),
+      appBar: AppBar(title: Text("SignUp"), actions: <Widget>[
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            primary: Colors.black,
+          ),
+          icon: Icon(Icons.person),
+          label: Text(
+            "Sign In",
+          ),
+          onPressed: () {
+            widget.toggleView();
+          },
+        )
+      ]),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
@@ -59,11 +59,9 @@ class _RegisterState extends State<Register> {
                       setState(() => password = val);
                     }),
                 SizedBox(height: 20.0),
-                RaisedButton(
-                    color: Colors.deepOrange[500],
+                ElevatedButton(
                     child: Text(
                       "Register",
-                      style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {

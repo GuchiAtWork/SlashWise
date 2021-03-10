@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/widgets/new_expense.dart';
 import '../dummy_data/group_ulteam.dart';
-import 'package:intl/intl.dart';
 
 class GroupScreen extends StatefulWidget {
   static const routeName = '/group';
@@ -11,8 +10,8 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
-  var userExpenses = {};
+  // final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
+  // var userExpenses = {};
 
   // Map<String, num> _calculateExpenses(User appUser) {
   //   Map<String, num> oweTabs = {};
@@ -42,26 +41,85 @@ class _GroupScreenState extends State<GroupScreen> {
   //   return oweTabs;
   // }
 
-  @override
-  void initState() {
-    // userExpenses = _calculateExpenses(appUser);
-    super.initState();
+  // @override
+  // void initState() {
+  //   userExpenses = _calculateExpenses(appUser);
+  //   super.initState();
+  // }
+
+  void _showNewExpense(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) {
+          return NewExpense();
+        });
+  }
+
+  void _createPaymentDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Payment'),
+            content: Container(
+              height: 120,
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 50),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('RECORD A CASH PAYMENT'),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 50),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('PAYPAL'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              MaterialButton(
+                onPressed: () => Navigator.of(context).pop(),
+                elevation: 6,
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Page'),
+        title: Text('GroupDetails'),
+        actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+            ),
+            label: Text("Pay now!"),
+            icon: Icon(Icons.payment),
+            onPressed: () => _createPaymentDialog(context),
+          ),
+        ],
       ),
       body: Column(
         children: [
           Container(
             height: 150,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 254, 229, 1),
-              border: Border.all(color: Colors.grey),
-            ),
+            color: Theme.of(context).colorScheme.background,
             width: double.infinity,
             child: Column(
               children: [
@@ -90,26 +148,36 @@ class _GroupScreenState extends State<GroupScreen> {
           ),
           Expanded(
             child: Container(
-              height: 300,
+              //height: 300,
               child: ListView.builder(
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 6,
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Text('Picture'),
-                      ),
-                      title: Text(ulteam.users[index].name),
-                      subtitle: Text("Placeholder"),
-                      // userExpenses.containsKey(ulteam.users[index].name)
-                      //     ? Text(userExpenses[ulteam.users[index].name])
-                      //     : Text('Placeholder'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.attach_money),
-                        color: Theme.of(context).errorColor,
-                        onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: FittedBox(
+                              child: Text(
+                                'Picture',
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          ulteam.users[index].name,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          '\$20',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   );
@@ -119,6 +187,10 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showNewExpense(context),
+        child: Icon(Icons.add),
       ),
     );
   }
