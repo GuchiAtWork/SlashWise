@@ -10,11 +10,11 @@ class DatabaseServiceUser {
   final CollectionReference userCollection = FirebaseFirestore.instance
       .collection('users'); //Firestore => FirebaseFirestore
 
-  Future updateUserData(String email, int age) async {
+  Future updateUserData(String email, String username) async {
     return await userCollection.doc(uid).set({
       //document => doc, setData => set
       'email': email,
-      'age': age,
+      'username': username,
     });
   }
 
@@ -38,7 +38,7 @@ class DatabaseServiceUser {
   Future<User> getUser(String userID) async {
     final user =
         await userCollection.doc(userID).get().then((DocumentSnapshot doc) {
-      final caughtUser = User(doc.id, doc["name"], doc["email"]);
+      final caughtUser = User(doc.id, doc["username"], doc["email"]);
       return caughtUser;
     });
 
@@ -51,7 +51,7 @@ class DatabaseServiceUser {
         .get()
         .then((QuerySnapshot doc) {
       if (doc.docs.isNotEmpty) {
-        final caughtUser = User(doc.docs[0].id, doc.docs[0]["name"], email);
+        final caughtUser = User(doc.docs[0].id, doc.docs[0]["username"], email);
         return caughtUser;
       } else {
         return null;
