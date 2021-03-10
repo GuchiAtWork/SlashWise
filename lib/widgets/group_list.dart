@@ -20,8 +20,8 @@ class GroupList extends StatelessWidget {
           return Container(
             height: 600,
             child: snapshot.data.isEmpty
-                ? Column(
-                    children: <Widget>[Text('No Group added yet!')],
+                ? Center(
+                    child: Text('No Group added yet!, Please Create a Group.'),
                   )
                 : ListView.builder(
                     itemBuilder: (_, index) {
