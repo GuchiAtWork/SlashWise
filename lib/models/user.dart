@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:uuid/uuid.dart';
-
-var uuid = Uuid();
 
 class User {
-  User(this.name);
+  User(this.id, this.name, this.email);
 
   @required
-  String id = uuid.v4();
+  String id;
   @required
   String name;
+  @required
+  String email;
 }

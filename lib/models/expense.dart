@@ -5,18 +5,16 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class Expense {
-  Expense(this.name, this.amount, this.payer, this.payees);
+  Expense(this.id, this.name, this.amount, this.date, this.payer);
 
   @required
-  String id = uuid.v4();
+  String id;
   @required
   String name;
   @required
   int amount;
   @required
-  DateTime date = DateTime.now();
+  DateTime date;
   @required
-  User payer;
-  @required
-  List<User> payees;
+  String payer;
 }

@@ -6,9 +6,9 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class Group {
-  Group(this.name, this.users, this.expenses);
+  Group(this.id, this.name, this.users, this.expenses, this.date);
   @required
-  String id = uuid.v4();
+  String id;
   @required
   String name;
   @required
@@ -16,5 +16,5 @@ class Group {
   @required
   List<Expense> expenses;
   @required
-  DateTime date = DateTime.now();
+  DateTime date;
 }
