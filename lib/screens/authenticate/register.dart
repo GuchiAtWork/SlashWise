@@ -15,6 +15,7 @@ class _RegisterState extends State<Register> {
 
   // text field state
   String email = '';
+  String username = '';
   String password = '';
   String error = "";
   @override
@@ -50,6 +51,14 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                    decoration: InputDecoration(hintText: "Username"),
+                    validator: (val) =>
+                        val.isEmpty ? 'Enter an username' : null,
+                    onChanged: (val) {
+                      setState(() => username = val);
+                    }),
+                SizedBox(height: 20.0),
+                TextFormField(
                     decoration: InputDecoration(hintText: "Password"),
                     obscureText: true,
                     validator: (val) => val.length < 6
@@ -65,8 +74,9 @@ class _RegisterState extends State<Register> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                        dynamic result = await _auth
-                            .registerWithEmailAndPassword(email, password);
+                        dynamic result =
+                            await _auth.registerWithEmailAndPassword(
+                                email, username, password);
                         if (result == null) {
                           setState(() => error = "please supply a valid email");
                         }
