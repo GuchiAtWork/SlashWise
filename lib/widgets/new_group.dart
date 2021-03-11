@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NewGroup extends StatefulWidget {
-  NewGroup(this._addNewGroup);
+  NewGroup(this._addNewGroup, this._userID);
   final Function _addNewGroup;
+  final String _userID;
 
   @override
   _NewGroupState createState() => _NewGroupState();
@@ -15,7 +16,7 @@ class _NewGroupState extends State<NewGroup> {
     if (_nameController.text.isEmpty) return;
     final enteredName = _nameController.text;
 
-    widget._addNewGroup(enteredName);
+    widget._addNewGroup(enteredName, widget._userID);
 
     Navigator.of(context).pop();
   }
