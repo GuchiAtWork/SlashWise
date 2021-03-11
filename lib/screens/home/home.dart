@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
   _getGroupList(uid) {
     groupDatabase.getGroups(uid).then((value) => setState(() {
           _groupList = value;
+          print('setState called()');
         }));
   }
 
@@ -30,6 +31,7 @@ class _HomeState extends State<Home> {
         .addGroup(userID, newGroupName, DateTime.now())
         .then((newGroup) {
       setState(() {
+        print('setState called()');
         _groupList.add(newGroup);
       });
     });
@@ -39,6 +41,7 @@ class _HomeState extends State<Home> {
     groupDatabase
         .deleteGroup(_groupList[groupIndex].id)
         .then((_) => setState(() {
+              print('setState called()');
               _groupList.removeAt(groupIndex);
             }));
   }
@@ -53,9 +56,16 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
     final user = Provider.of<AuthUser>(context);
     _getGroupList(user.uid);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<AuthUser>(context);
+    //_getGroupList(user.uid);
 
     return Scaffold(
       appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
