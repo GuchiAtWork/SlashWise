@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/screens/group_screen.dart';
 
 class GroupList extends StatefulWidget {
   GroupList(this._groupList, this._deleteGroup);
@@ -39,7 +40,11 @@ class _GroupListState extends State<GroupList> {
                       color: Theme.of(context).errorColor,
                       onPressed: () => widget._deleteGroup(index),
                     ),
-                    onLongPress: () {},
+                    onTap: () {
+                      // pass to the GroupScreen _groupList[index]
+                      Navigator.pushNamed(context, GroupScreen.routeName,
+                          arguments: widget._groupList[index]);
+                    },
                   ),
                 );
               },

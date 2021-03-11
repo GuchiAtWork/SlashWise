@@ -35,6 +35,17 @@ class DatabaseServiceUser {
     return userCollection.snapshots().map(_userListFromSnapshot);
   }
 
+  Future<List<User>> getUsers(List<String> userIDs) async {
+    final mappedUserIDs = userIDs.map((userID) async {
+      return await getUser(userID);
+    }).toList();
+
+    Future<List<User>> futureList = Future.wait(mappedUserIDs);
+    List<User> result = await futureList;
+
+    return result;
+  }
+
   Future<User> getUser(String userID) async {
     final user =
         await userCollection.doc(userID).get().then((DocumentSnapshot doc) {
