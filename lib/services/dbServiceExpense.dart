@@ -87,4 +87,11 @@ class DatabaseServiceExpense {
   Future<void> deleteExpense(String expenseID) async {
     await expenseCollection.doc(expenseID).delete();
   }
+
+  Future<void> updateExpense(
+      String expenseID, String expenseName, int amount) async {
+    await expenseCollection
+        .doc(expenseID)
+        .update({'name': expenseName, 'price': amount});
+  }
 }
