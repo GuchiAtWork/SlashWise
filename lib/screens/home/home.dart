@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
         TextButton.icon(
           style: TextButton.styleFrom(
-            primary: Colors.black,
+            primary: Colors.white,
           ),
           icon: Icon(Icons.person),
           label: Text("Logout"),

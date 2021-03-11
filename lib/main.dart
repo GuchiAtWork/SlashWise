@@ -18,7 +18,7 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
 /*
   final test =
       await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
-        theme: myTheme,
+        //theme: myTheme,
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),
