@@ -1,7 +1,12 @@
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
+import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:slash_wise/widgets/group_list.dart';
 import 'package:slash_wise/widgets/main_drawer.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
+import 'package:slash_wise/widgets/new_group.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,9 +15,48 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  final groupDatabase = DatabaseServiceGroup();
+
+  List<DbGroup> _groupList = [];
+
+  _getGroupList(uid) {
+    groupDatabase.getGroups(uid).then((value) => setState(() {
+          _groupList = value;
+        }));
+  }
+
+  _addNewGroup(String newGroupName, String userID) {
+    groupDatabase
+        .addGroup(userID, newGroupName, DateTime.now())
+        .then((newGroup) {
+      setState(() {
+        _groupList.add(newGroup);
+      });
+    });
+  }
+
+  _deleteGroup(int groupIndex) {
+    groupDatabase
+        .deleteGroup(_groupList[groupIndex].id)
+        .then((_) => setState(() {
+              _groupList.removeAt(groupIndex);
+            }));
+  }
+
+  void _showAddNewGroup(BuildContext context, String userID) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (_) {
+          return NewGroup(_addNewGroup, userID);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthUser>(context);
+    _getGroupList(user.uid);
+
     return Scaffold(
       appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
         TextButton.icon(
@@ -27,10 +71,10 @@ class _HomeState extends State<Home> {
         )
       ]),
       drawer: MainDrawer(),
-      body: GroupList(),
+      body: GroupList(_groupList, _deleteGroup),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => {},
+        onPressed: () => {_showAddNewGroup(context, user.uid)},
       ),
     );
   }

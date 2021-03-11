@@ -3,35 +3,22 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user_auth.dart';
-import 'package:slash_wise/screens/group_screen.dart';
-import 'package:slash_wise/services/dbServiceGroup.dart';
 
 class GroupList extends StatefulWidget {
+  GroupList(this._groupList, this._deleteGroup);
+  final List<DbGroup> _groupList;
+  final Function _deleteGroup;
+
   @override
   _GroupListState createState() => _GroupListState();
 }
 
 class _GroupListState extends State<GroupList> {
-  final groupDatabase = DatabaseServiceGroup();
-
-  //await groupDatabase.getGroups(user.uid);
-
-  List<DbGroup> _groupList = [];
-
-  _getGroupList(uid) {
-    groupDatabase.getGroups(uid).then((value) => setState(() {
-          _groupList = value;
-        }));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthUser>(context);
-    _getGroupList(user.uid);
-
     return Container(
       height: 600,
-      child: _groupList.isEmpty
+      child: widget._groupList.isEmpty
           ? Column(
               children: <Widget>[Text('No Group added yet!')],
             )
@@ -45,20 +32,20 @@ class _GroupListState extends State<GroupList> {
                       radius: 30,
                       child: Text('Picture'),
                     ),
-                    title: Text(_groupList[index].name),
+                    title: Text(widget._groupList[index].name),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(_groupList[index].date),
+                      DateFormat.yMMMd().format(widget._groupList[index].date),
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.delete_forever),
                       color: Theme.of(context).errorColor,
-                      //onPressed: () => _deleteGroup(_groupList[index].id),
+                      //onPressed: () => _deleteGroup(widget._groupList[index].id),
                     ),
                     onLongPress: () {},
                   ),
                 );
               },
-              itemCount: _groupList.length,
+              itemCount: widget._groupList.length,
             ),
     );
   }
