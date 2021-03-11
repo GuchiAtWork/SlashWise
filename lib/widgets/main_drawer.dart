@@ -1,9 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:slash_wise/models/user_auth.dart';
+import 'package:slash_wise/services/dbServiceUser.dart';
+import "package:slash_wise/models/user.dart" as UserModel;
 
-FirebaseAuth _auth = FirebaseAuth.instance;
+class MainDrawer extends StatefulWidget {
+  @override
+  _MainDrawerState createState() => _MainDrawerState();
+}
 
-class MainDrawer extends StatelessWidget {
+class _MainDrawerState extends State<MainDrawer> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final _userDatabase = DatabaseServiceUser();
+  UserModel.User _userInfo = UserModel.User("", "", "");
+
+  _getUsername(uid) {
+    _userDatabase.getUser(uid).then((user) => setState(() {
+          _userInfo = user;
+        }));
+  }
+
   Widget buildListTile(String title, IconData icon, Function tapHandler) {
     return ListTile(
       leading: Icon(
@@ -20,22 +37,42 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthUser>(context);
+    _getUsername(user.uid);
+
     return Drawer(
       elevation: 5,
       child: Column(
         children: [
           Container(
-            height: 225,
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            alignment: Alignment.centerLeft,
             color: Theme.of(context).primaryColor,
-            child: Text(
-              'here is small profile description',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            'https://googleflutter.com/sample_image.jpg'),
+                        fit: BoxFit.fill),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  _userInfo.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  _userInfo.email,
+                ),
+              ],
             ),
           ),
           Column(
@@ -67,7 +104,7 @@ class MainDrawer extends StatelessWidget {
                 () {},
               ),
               buildListTile(
-                'Donate to Fred',
+                'Donate',
                 Icons.attach_money,
                 () {},
               ),

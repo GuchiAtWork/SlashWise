@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:slash_wise/screens/group_screen.dart';
-import '../models/group.dart';
+import 'package:slash_wise/models/dbGroup.dart';
 
-class GroupList extends StatelessWidget {
-  final List<Group> _groups;
+class GroupList extends StatefulWidget {
+  GroupList(this._groupList, this._deleteGroup);
+  final List<DbGroup> _groupList;
   final Function _deleteGroup;
 
-  GroupList(this._groups, this._deleteGroup);
+  @override
+  _GroupListState createState() => _GroupListState();
+}
 
+class _GroupListState extends State<GroupList> {
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 600,
-      child: _groups.isEmpty
+      child: widget._groupList.isEmpty
           ? Column(
               children: <Widget>[Text('No Group added yet!')],
             )
@@ -27,21 +30,20 @@ class GroupList extends StatelessWidget {
                       radius: 30,
                       child: Text('Picture'),
                     ),
-                    title: Text(_groups[index].name),
+                    title: Text(widget._groupList[index].name),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(_groups[index].date),
+                      DateFormat.yMMMd().format(widget._groupList[index].date),
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.delete_forever),
                       color: Theme.of(context).errorColor,
-                      onPressed: () => _deleteGroup(_groups[index].id),
+                      onPressed: () => widget._deleteGroup(index),
                     ),
-                    onTap: () =>
-                        Navigator.pushNamed(context, GroupScreen.routeName),
+                    onLongPress: () {},
                   ),
                 );
               },
-              itemCount: _groups.length,
+              itemCount: widget._groupList.length,
             ),
     );
   }
