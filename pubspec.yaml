@@ -32,6 +32,10 @@ dependencies:
   cupertino_icons: ^1.0.0
   uuid: ^3.0.1
   intl: ^0.17.0
+  shared_preferences: ^2.0.4
+  webview_flutter: ^2.0.2
+  http: ^0.13.0
+  http_auth: ^1.0.0
 
 dev_dependencies:
   flutter_test:
