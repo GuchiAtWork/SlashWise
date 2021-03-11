@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
-import 'package:slash_wise/models/user_auth.dart';
 
 class GroupList extends StatefulWidget {
   GroupList(this._groupList, this._deleteGroup);
@@ -39,7 +37,7 @@ class _GroupListState extends State<GroupList> {
                     trailing: IconButton(
                       icon: Icon(Icons.delete_forever),
                       color: Theme.of(context).errorColor,
-                      //onPressed: () => _deleteGroup(widget._groupList[index].id),
+                      onPressed: () => widget._deleteGroup(index),
                     ),
                     onLongPress: () {},
                   ),
