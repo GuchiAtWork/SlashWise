@@ -2,11 +2,29 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class DatabaseServiceExpense {
   // collection reference
   final CollectionReference expenseCollection =
       FirebaseFirestore.instance.collection('expenses');
+
+  Future<void> upload() async {
+    //final picker = ImagePicker();
+    //final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    //String fileName = pickedImage.path;
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String filePath = "${appDocDir.absolute}/orange.jpg";
+    print("########");
+    print(appDocDir.path);
+    final File img = File(filePath);
+    await FirebaseStorage.instance.ref('testes/test.png').putFile(img);
+    //UploadTask task = ref.putFile(img);
+    //TaskSnapshot snapshot = await task.
+  }
 
   Future<Expense> addExpense(
       String expenseName, int amount, DateTime date, String payerID) async {
