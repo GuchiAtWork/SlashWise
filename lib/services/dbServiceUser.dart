@@ -40,7 +40,7 @@ class DatabaseServiceUser {
       return await getUser(userID);
     }).toList();
 
-    Future<List<User>> futureList = Future.wait(mappedUserIDs);
+    final futureList = Future.wait(mappedUserIDs);
     List<User> result = await futureList;
 
     return result;
