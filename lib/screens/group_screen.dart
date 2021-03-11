@@ -79,7 +79,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     constraints: BoxConstraints.expand(height: 50),
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('PAYPAL'),
+                      child: Text('Pay back via PAYPAL'),
                     ),
                   ),
                 ],
