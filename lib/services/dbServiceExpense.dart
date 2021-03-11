@@ -1,5 +1,4 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
@@ -86,5 +85,12 @@ class DatabaseServiceExpense {
 
   Future<void> deleteExpense(String expenseID) async {
     await expenseCollection.doc(expenseID).delete();
+  }
+
+  Future<void> updateExpense(
+      String expenseID, String expenseName, int amount) async {
+    await expenseCollection
+        .doc(expenseID)
+        .update({'name': expenseName, 'price': amount});
   }
 }

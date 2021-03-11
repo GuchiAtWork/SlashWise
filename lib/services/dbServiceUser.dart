@@ -75,4 +75,8 @@ class DatabaseServiceUser {
   Future<void> deleteUser(String userID) async {
     await userCollection.doc(userID).delete();
   }
+
+  Future<void> changeUserName(String userID, String newName) async {
+    await userCollection.doc(userID).update({'username': newName});
+  }
 }
