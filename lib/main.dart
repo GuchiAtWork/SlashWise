@@ -10,14 +10,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceGroup.dart";
 import 'package:slash_wise/services/dbServiceUser.dart';
-import 'package:slash_wise/widgets/theme.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+/*
+  final test =
+      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
+  print(test["name"]);
+  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
+  */
   runApp(MyApp());
 }
 
@@ -28,7 +32,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
-        theme: myTheme,
+        theme: ThemeData(primarySwatch: Colors.purple),
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),

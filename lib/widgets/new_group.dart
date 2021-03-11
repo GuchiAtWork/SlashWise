@@ -27,7 +27,7 @@ class _NewGroupState extends State<NewGroup> {
       child: Card(
         elevation: 5,
         child: Container(
-          padding: EdgeInsets.all(10),
+          //padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

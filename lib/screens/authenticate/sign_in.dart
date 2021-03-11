@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(title: Text("SignIn"), actions: <Widget>[
         TextButton.icon(
           style: TextButton.styleFrom(
-            primary: Colors.black,
+            primary: Colors.white,
           ),
           icon: Icon(Icons.person),
           label: Text("Register"),

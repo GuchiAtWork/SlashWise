@@ -24,7 +24,7 @@ class _GroupListState extends State<GroupList> {
           : ListView.builder(
               itemBuilder: (_, index) {
                 return Card(
-                  elevation: 6,
+                  elevation: 5,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
@@ -36,7 +36,7 @@ class _GroupListState extends State<GroupList> {
                       DateFormat.yMMMd().format(widget._groupList[index].date),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete_forever),
+                      icon: Icon(Icons.exit_to_app),
                       color: Theme.of(context).errorColor,
                       onPressed: () => widget._deleteGroup(index),
                     ),
