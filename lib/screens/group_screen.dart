@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/models/user_auth.dart';
+import 'package:slash_wise/models/user_auth.dart';
+import 'package:slash_wise/services/dbServiceExpense.dart';
+import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
-import '../dummy_data/group_ulteam.dart';
 
 class GroupScreen extends StatefulWidget {
   static const routeName = '/group';
@@ -9,43 +17,14 @@ class GroupScreen extends StatefulWidget {
   _GroupScreenState createState() => _GroupScreenState();
 }
 
+List<User> team = [];
+Map<String, num> owe = {};
+
+// owe[team[index].name];
+
 class _GroupScreenState extends State<GroupScreen> {
-  // final appUser = ulteam.users.firstWhere((user) => user.name == "keizo");
-  // var userExpenses = {};
-
-  // Map<String, num> _calculateExpenses(User appUser) {
-  //   Map<String, num> oweTabs = {};
-  //   final appUserName = appUser.name;
-
-  //   for (var i = 0; i < ulteam.users.length; i++) {
-  //     final userName = ulteam.users[i].name;
-
-  //     if (!(userName == appUserName)) {
-  //       oweTabs[userName] = 0;
-  //     }
-  //   }
-
-  //   for (var j = 0; j < ulteam.expenses.length; j++) {
-  //     final payerName = ulteam.expenses[j].payer.name;
-  //     final amount = ulteam.expenses[j].amount;
-  //     final amountOfPayees = ulteam.expenses[j].payees.length;
-  //     final splitAmount = amount / (amountOfPayees + 1);
-
-  //     if (payerName == appUserName) {
-  //       oweTabs.forEach((name, _) => {oweTabs[name] += splitAmount});
-  //     } else {
-  //       oweTabs[payerName] -= splitAmount;
-  //     }
-  //   }
-
-  //   return oweTabs;
-  // }
-
-  // @override
-  // void initState() {
-  //   userExpenses = _calculateExpenses(appUser);
-  //   super.initState();
-  // }
+  final expenseDatabase = DatabaseServiceExpense();
+  final userDatabase = DatabaseServiceUser();
 
   void _showNewExpense(BuildContext context) {
     showModalBottomSheet(
@@ -99,8 +78,48 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
+  // forEach
+
+  // DbGroup -> List of User ids -> Send all user ids to backend using the getUser method 8
+  void _getListUsers(DbGroup group, String currUserID) {
+    userDatabase.getUsers(group.users).then((value) => setState(() {
+          print('setState called()');
+          var filteredList =
+              value.where((user) => user.id != currUserID).toList();
+
+          print(filteredList);
+          team = filteredList;
+        }));
+  }
+
+  void _getOtherExpenses(String userID, String groupID) {
+    expenseDatabase
+        .calculateExpenses(userID, groupID)
+        .then((owes) => setState(() {
+              print('setState called()');
+              owe = owes;
+            }));
+  }
+
+  var userID;
+  var group;
+
+  @override
+  void didChangeDependencies() {
+    userID = Provider.of<AuthUser>(context).uid;
+    group = ModalRoute.of(context).settings.arguments as DbGroup;
+    _getOtherExpenses(userID, group.id);
+    _getListUsers(group, userID);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userID = Provider.of<AuthUser>(context).uid;
+    final group = ModalRoute.of(context).settings.arguments as DbGroup;
+    // _getOtherExpenses(userID, group.id);
+    // _getListUsers(group, userID);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('GroupDetails'),
@@ -136,13 +155,13 @@ class _GroupScreenState extends State<GroupScreen> {
                   ),
                 ),
                 Text(
-                  'Ul\'team',
+                  group.name,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text('Created on Mars 1, 2021'),
+                Text(DateFormat.yMMMd().format(group.date)),
               ],
             ),
           ),
@@ -169,12 +188,12 @@ class _GroupScreenState extends State<GroupScreen> {
                           ),
                         ),
                         title: Text(
-                          ulteam.users[index].name,
+                          team[index].name, // TODO add a team
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         trailing: Text(
-                          '\$20',
+                          '\$ ${owe[team[index].name]}',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -182,7 +201,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                   );
                 },
-                itemCount: ulteam.users.length,
+                itemCount: team.length, // TODO add a team
               ),
             ),
           )
