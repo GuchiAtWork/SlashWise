@@ -17,6 +17,7 @@ class _MainDrawerState extends State<MainDrawer> {
 
   _getUsername(uid) {
     _userDatabase.getUser(uid).then((user) => setState(() {
+          print('setState() called');
           _userInfo = user;
         }));
   }
@@ -36,10 +37,14 @@ class _MainDrawerState extends State<MainDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
     final user = Provider.of<AuthUser>(context);
     _getUsername(user.uid);
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Drawer(
       elevation: 5,
       child: Column(

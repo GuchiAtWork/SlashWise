@@ -11,7 +11,6 @@ import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceGroup.dart";
 import 'dart:convert';
 import 'package:slash_wise/services/dbServiceUser.dart';
-import 'package:slash_wise/widgets/theme.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
-        //theme: myTheme,
+        theme: ThemeData(primarySwatch: Colors.purple),
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),
