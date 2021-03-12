@@ -219,16 +219,15 @@ class _GroupScreenState extends State<GroupScreen> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://googleflutter.com/sample_image.jpg'),
-                            fit: BoxFit.fill),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ClipOval(
+                      child: Image.network(
+                        "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
+                        fit: BoxFit.cover,
+                        width: 70.0,
+                        height: 70.0,
                       ),
                     ),
                     Text(
@@ -255,17 +254,13 @@ class _GroupScreenState extends State<GroupScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              child: Padding(
-                                padding: const EdgeInsets.all(6),
-                                child: FittedBox(
-                                  child: Text(
-                                    'Picture',
-                                  ),
-                                ),
-                              ),
-                            ),
+                            leading: ClipOval(
+                                child: Image.network(
+                              "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
+                              fit: BoxFit.cover,
+                              width: 60.0,
+                              height: 60.0,
+                            )),
                             title: Text(
                               team[index].name,
                               style: TextStyle(

@@ -38,9 +38,13 @@ class _GroupListState extends State<GroupList> {
                   elevation: 5,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Text('Picture'),
+                    leading: ClipOval(
+                      child: Image.network(
+                        "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
+                        fit: BoxFit.cover,
+                        width: 60.0,
+                        height: 60.0,
+                      ),
                     ),
                     title: Text(filteredGroupList[index].name),
                     subtitle: Text(
