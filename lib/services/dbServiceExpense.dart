@@ -10,7 +10,6 @@ class DatabaseServiceExpense {
   // collection reference
   final CollectionReference expenseCollection =
       FirebaseFirestore.instance.collection('expenses');
-
 /*
 how to use uploadReceiptURL/getReceiptURL
   import 'package:image_picker/image_picker.dart';
@@ -34,19 +33,34 @@ how to use uploadReceiptURL/getReceiptURL
     return downloadURL;
   }
 
-  Future<Expense> addExpense(
-      String expenseName, int amount, DateTime date, String payerID) async {
+  Future<void> addExpense(String expenseName, int amount, DateTime date,
+      String payerID, String groupID) async {
     final createdExpense = await expenseCollection.add({
       "name": expenseName,
       "date": Timestamp.fromDate(date),
       "price": amount,
       "payer": payerID,
+      "groupID": groupID,
     }).then((ref) {
-      final expense = Expense(ref.id, expenseName, amount, date, payerID);
+      final expense =
+          Expense(ref.id, expenseName, amount, date, payerID, groupID);
       return expense;
     });
 
     return createdExpense;
+  }
+
+  Stream<List<Expense>> expenses() {
+    return expenseCollection.snapshots().map((QuerySnapshot querySnapshot) =>
+        querySnapshot.docs
+            .map((e) => Expense(
+                e.id,
+                e.data()['name'],
+                e.data()['price'],
+                e.data()['date'].toDate(),
+                e.data()["payer"],
+                e.data()["groupID"]))
+            .toList());
   }
 
   Future<List<Expense>> getExpenses(String groupID) async {
@@ -57,8 +71,13 @@ how to use uploadReceiptURL/getReceiptURL
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((expense) {
-        final newExpense = Expense(expense.id, expense["name"],
-            expense["price"], expense["date"].toDate(), expense["payer"]);
+        final newExpense = Expense(
+            expense.id,
+            expense["name"],
+            expense["price"],
+            expense["date"].toDate(),
+            expense["payer"],
+            expense["groupID"]);
         groupExpenses.add(newExpense);
       });
     });

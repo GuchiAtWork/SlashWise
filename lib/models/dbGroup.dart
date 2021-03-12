@@ -7,7 +7,7 @@ class DbGroup {
   @required
   String name;
   @required
-  List<String> users;
+  List users;
   @required
-  DateTime date;
+  var date;
 }

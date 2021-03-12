@@ -10,6 +10,17 @@ class DatabaseServiceUser {
   final CollectionReference userCollection = FirebaseFirestore.instance
       .collection('users'); //Firestore => FirebaseFirestore
 
+  // Stream<List<User>> users() {
+  //   return groupCollection
+  //       .snapshots()
+  //       .map((QuerySnapshot querySnapshot) => querySnapshot.docs
+  //           .map(
+  //             (e) => User(e.id, e.data()['name'],
+  //                 e.data()['users']?.cast<String>(), e.data()['date'].toDate()),
+  //           )
+  //           .toList());
+  // }
+
   Future updateUserData(String email, String username) async {
     return await userCollection.doc(uid).set({
       //document => doc, setData => set
@@ -31,8 +42,14 @@ class DatabaseServiceUser {
   }
 
   // get users stream
-  Stream<List<DbUser>> get users {
-    return userCollection.snapshots().map(_userListFromSnapshot);
+  Stream<List<User>> users() {
+    return userCollection
+        .snapshots()
+        .map((QuerySnapshot querySnapshot) => querySnapshot.docs
+            .map(
+              (e) => User(e.id, e.data()['name'], e.data()['email']),
+            )
+            .toList());
   }
 
   Future<List<User>> getUsers(List<String> userIDs) async {

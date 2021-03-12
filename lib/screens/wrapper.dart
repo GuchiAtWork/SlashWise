@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
+import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/authenticate/authenticate.dart';
 import 'package:slash_wise/screens/home/home.dart';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/models/user_auth.dart';
-import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
 
@@ -20,18 +20,29 @@ class GroupScreen extends StatefulWidget {
 List<User> team = [];
 Map<String, num> owe = {};
 
-// owe[team[index].name];
-
 class _GroupScreenState extends State<GroupScreen> {
   final expenseDatabase = DatabaseServiceExpense();
   final userDatabase = DatabaseServiceUser();
+  final _emailController = TextEditingController();
 
-  void _showNewExpense(BuildContext context) {
+  String _showUsernameByID(String userID) {
+    String username = "";
+
+    for (int i = 0; i < team.length; i++) {
+      if (team[i].id == userID) {
+        username = team[i].name;
+      }
+    }
+
+    return username;
+  }
+
+  void _showNewExpense(BuildContext context, String userID, String groupID) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (_) {
-          return NewExpense();
+          return NewExpense(userID, groupID);
         });
   }
 
@@ -78,17 +89,64 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
+  void _submitData(String groupID) async {
+    if (_emailController.text.isEmpty) return;
+    final enteredEmail = _emailController.text;
+
+    // TODO action to add a member
+    // DatabaseServiceGroup
+    // getUserByEmail(String email)
+    // addMemberToGroup(String groupID, String email)
+
+    var userToAdd = await DatabaseServiceUser().getUserByEmail(enteredEmail);
+    if (userToAdd != null) {
+      DatabaseServiceGroup().addMemberToGroup(groupID, enteredEmail);
+      setState(() {
+        print('setState() called when add a member');
+        team.add(userToAdd);
+        print(team);
+      });
+    }
+    Navigator.of(context).pop();
+  }
+
+  void _createAddMemberDialog(BuildContext context, String groupID) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Add member'),
+            content: TextField(
+              decoration: InputDecoration(
+                hintText: 'Email',
+                icon: Icon(Icons.group_add),
+              ),
+              controller: _emailController,
+              onSubmitted: (_) => () {
+                _submitData(groupID);
+              },
+            ),
+            actions: [
+              ElevatedButton(
+                child: Text('Add Member'),
+                onPressed: () => _submitData(groupID),
+              ),
+            ],
+          );
+        });
+  }
+
   // forEach
 
   // DbGroup -> List of User ids -> Send all user ids to backend using the getUser method 8
   void _getListUsers(DbGroup group, String currUserID) {
     userDatabase.getUsers(group.users).then((value) => setState(() {
-          print('setState called()');
+          print('setState called() 1');
           var filteredList =
               value.where((user) => user.id != currUserID).toList();
 
-          print(filteredList);
           team = filteredList;
+          print(team);
         }));
   }
 
@@ -96,18 +154,22 @@ class _GroupScreenState extends State<GroupScreen> {
     expenseDatabase
         .calculateExpenses(userID, groupID)
         .then((owes) => setState(() {
-              print('setState called()');
+              print('setState called() 2');
               owe = owes;
             }));
   }
 
-  var userID;
-  var group;
+  //var userID;
+  //var group;
 
   @override
   void didChangeDependencies() {
-    userID = Provider.of<AuthUser>(context).uid;
-    group = ModalRoute.of(context).settings.arguments as DbGroup;
+    var userID = Provider.of<AuthUser>(context).uid;
+    var group = ModalRoute.of(context).settings.arguments as DbGroup;
+    final allGroup = Provider.of<List<DbGroup>>(context);
+
+    group = allGroup.firstWhere((oneGroup) => oneGroup.id == group.id);
+
     _getOtherExpenses(userID, group.id);
     _getListUsers(group, userID);
     super.didChangeDependencies();
@@ -117,14 +179,19 @@ class _GroupScreenState extends State<GroupScreen> {
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthUser>(context).uid;
     final group = ModalRoute.of(context).settings.arguments as DbGroup;
-    // _getOtherExpenses(userID, group.id);
-    // _getListUsers(group, userID);
+
+    // All expenses from the database - NEEDS TO BE FILTERED
+    final allExpenses = Provider.of<List<Expense>>(context);
+
+    // Expenses made by group
+    var filteredExpenses =
+        allExpenses.where((expense) => expense.groupID == group.id).toList();
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('GroupDetails'),
+          title: Text('Group Details'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.payment),
@@ -132,7 +199,7 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => _createPaymentDialog(context),
+              onPressed: () => _createAddMemberDialog(context, group.id),
             ),
           ],
           bottom: TabBar(
@@ -205,7 +272,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             trailing: Text(
-                              '\$ ${owe[team[index].name]}',
+                              '¥ ${owe[team[index].name]}',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -242,13 +309,14 @@ class _GroupScreenState extends State<GroupScreen> {
                           ),
                         ),
                         title: Text(
-                          'Restaurant',
+                          filteredExpenses[index].name,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text('Hiroki paid'),
+                        subtitle: Text(
+                            '${_showUsernameByID(filteredExpenses[index].payer)}'),
                         trailing: Text(
-                          '\$ 75',
+                          '\¥ ${filteredExpenses[index].amount}',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -256,14 +324,14 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                   );
                 },
-                itemCount: 2,
+                itemCount: filteredExpenses.length,
               ),
             ),
           )
         ]),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _showNewExpense(context),
-          child: Icon(Icons.add),
+          onPressed: () => _showNewExpense(context, userID, group.id),
+          child: Icon(Icons.add), // Add a member to the team
         ),
       ),
     );

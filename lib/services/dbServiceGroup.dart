@@ -9,6 +9,17 @@ class DatabaseServiceGroup {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
+  Stream<List<DbGroup>> groups() {
+    return groupCollection
+        .snapshots()
+        .map((QuerySnapshot querySnapshot) => querySnapshot.docs
+            .map(
+              (e) => DbGroup(e.id, e.data()['name'],
+                  e.data()['users']?.cast<String>(), e.data()['date'].toDate()),
+            )
+            .toList());
+  }
+
   Future<DbGroup> getGroup(String groupID) async {
     return await groupCollection
         .doc(groupID)
