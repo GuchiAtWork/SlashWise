@@ -107,7 +107,7 @@ class _MainDrawerState extends State<MainDrawer> {
               buildListTile(
                 'Home',
                 Icons.home,
-                () => _createWipDialog(context),
+                () => Navigator.pop(context),
               ),
               buildListTile(
                 'Settings',
