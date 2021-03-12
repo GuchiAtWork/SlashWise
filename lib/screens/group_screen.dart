@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user.dart';
-import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
@@ -124,7 +122,7 @@ class _GroupScreenState extends State<GroupScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('GroupDetails'),
+          title: Text('GroupScreen'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.payment),

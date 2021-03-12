@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
 
 class GroupList extends StatefulWidget {
-  GroupList(this._groupList, this._deleteGroup);
-  final List<DbGroup> _groupList;
-  final Function _deleteGroup;
-
   @override
   _GroupListState createState() => _GroupListState();
 }
 
 class _GroupListState extends State<GroupList> {
+  final groupDatabase = DatabaseServiceGroup();
+
+  _deleteGroup(String groupID) {
+    groupDatabase.deleteGroup(groupID);
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<DbGroup> groupList = Provider.of<List<DbGroup>>(context);
+    final authUser = Provider.of<AuthUser>(context);
+
+    var filteredGroupList =
+        groupList.where((group) => group.users.contains(authUser.uid)).toList();
+
     return Container(
       height: 600,
-      child: widget._groupList.isEmpty
+      child: (filteredGroupList.isEmpty)
           ? Column(
               children: <Widget>[Text('No Group added yet!')],
             )
@@ -31,24 +42,25 @@ class _GroupListState extends State<GroupList> {
                       radius: 30,
                       child: Text('Picture'),
                     ),
-                    title: Text(widget._groupList[index].name),
+                    title: Text(filteredGroupList[index].name),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(widget._groupList[index].date),
+                      DateFormat.yMMMd().format(filteredGroupList[index].date),
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.exit_to_app),
                       color: Theme.of(context).errorColor,
-                      onPressed: () => widget._deleteGroup(index),
+                      onPressed: () =>
+                          _deleteGroup(filteredGroupList[index].id),
                     ),
                     onTap: () {
                       // pass to the GroupScreen _groupList[index]
                       Navigator.pushNamed(context, GroupScreen.routeName,
-                          arguments: widget._groupList[index]);
+                          arguments: filteredGroupList[index]);
                     },
                   ),
                 );
               },
-              itemCount: widget._groupList.length,
+              itemCount: filteredGroupList.length,
             ),
     );
   }

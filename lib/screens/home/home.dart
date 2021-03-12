@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
-import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:slash_wise/widgets/group_list.dart';
@@ -17,33 +16,8 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final groupDatabase = DatabaseServiceGroup();
 
-  List<DbGroup> _groupList = [];
-
-  _getGroupList(uid) {
-    groupDatabase.getGroups(uid).then((value) => setState(() {
-          _groupList = value;
-          print('setState called()');
-        }));
-  }
-
-  _addNewGroup(String newGroupName, String userID) {
-    groupDatabase
-        .addGroup(userID, newGroupName, DateTime.now())
-        .then((newGroup) {
-      setState(() {
-        print('setState called()');
-        _groupList.add(newGroup);
-      });
-    });
-  }
-
-  _deleteGroup(int groupIndex) {
-    groupDatabase
-        .deleteGroup(_groupList[groupIndex].id)
-        .then((_) => setState(() {
-              print('setState called()');
-              _groupList.removeAt(groupIndex);
-            }));
+  void _addNewGroup(String newGroupName, String userID) {
+    groupDatabase.addGroup(userID, newGroupName, DateTime.now());
   }
 
   void _showAddNewGroup(BuildContext context, String userID) {
@@ -56,32 +30,25 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void didChangeDependencies() {
-    final user = Provider.of<AuthUser>(context);
-    _getGroupList(user.uid);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthUser>(context);
-    //_getGroupList(user.uid);
 
     return Scaffold(
-      appBar: AppBar(title: Text("SlashWise"), actions: <Widget>[
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            primary: Colors.white,
+      appBar: AppBar(
+        title: Text("SlashWise"),
+        actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(primary: Colors.white),
+            icon: Icon(Icons.person),
+            label: Text("Logout"),
+            onPressed: () async {
+              await _auth.signOut();
+            },
           ),
-          icon: Icon(Icons.person),
-          label: Text("Logout"),
-          onPressed: () async {
-            await _auth.signOut();
-          },
-        )
-      ]),
+        ],
+      ),
       drawer: MainDrawer(),
-      body: GroupList(_groupList, _deleteGroup),
+      body: GroupList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => {_showAddNewGroup(context, user.uid)},
