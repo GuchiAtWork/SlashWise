@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("SlashWise"),
+        title: Text("Home"),
         actions: <Widget>[
           TextButton.icon(
             style: TextButton.styleFrom(primary: Colors.white),

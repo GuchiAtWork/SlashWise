@@ -6,11 +6,13 @@ import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/screens/wrapper.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceGroup.dart";
 import 'package:slash_wise/services/dbServiceUser.dart';
 import './models/user.dart' as userModel;
 
 import 'models/dbGroup.dart';
+import 'models/expense.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -42,6 +44,10 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<userModel.User>>.value(
           initialData: [],
           value: DatabaseServiceUser().users(),
+        ),
+        StreamProvider<List<Expense>>.value(
+          initialData: [],
+          value: DatabaseServiceExpense().expenses(),
         ),
       ],
       child: MaterialApp(
