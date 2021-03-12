@@ -92,14 +92,11 @@ class _GroupScreenState extends State<GroupScreen> {
   void _submitData(String groupID) async {
     if (_emailController.text.isEmpty) return;
     final enteredEmail = _emailController.text;
-
-    // TODO action to add a member
-    // DatabaseServiceGroup
-    // getUserByEmail(String email)
-    // addMemberToGroup(String groupID, String email)
+    var result = 'User doesn\'t exist';
 
     var userToAdd = await DatabaseServiceUser().getUserByEmail(enteredEmail);
     if (userToAdd != null) {
+      result = 'User successfully added';
       DatabaseServiceGroup().addMemberToGroup(groupID, enteredEmail);
       setState(() {
         print('setState() called when add a member');
@@ -108,6 +105,13 @@ class _GroupScreenState extends State<GroupScreen> {
       });
     }
     Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result),
+        action: SnackBarAction(label: 'Clear', onPressed: () {}),
+      ),
+    );
   }
 
   void _createAddMemberDialog(BuildContext context, String groupID) {
