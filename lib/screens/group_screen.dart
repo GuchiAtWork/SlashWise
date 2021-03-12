@@ -270,11 +270,21 @@ class _GroupScreenState extends State<GroupScreen> {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            trailing: Text(
-                              '¥ ${owe[team[index].name]}',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
+                            trailing: owe[team[index].name] < 0
+                                ? Text(
+                                    '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).errorColor),
+                                  )
+                                : Text(
+                                    '¥ ${owe[team[index].name].toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                  ),
                           ),
                         ),
                       );
