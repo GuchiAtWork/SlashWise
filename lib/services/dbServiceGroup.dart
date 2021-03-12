@@ -67,8 +67,20 @@ class DatabaseServiceGroup {
     return newGroup;
   }
 
-  Future<void> deleteGroup(String groupID) async {
-    await groupCollection.doc(groupID).delete();
+  Future<void> removeMemberFromGroup(String groupID, String currUserID) async {
+    final group = await getGroup(groupID);
+    List<String> memberList = group.users;
+    List<String> updatedMemberList =
+        memberList.where((member) => member != currUserID).toList();
+
+    if (updatedMemberList.length == 0) {
+      await groupCollection.doc(groupID).delete();
+    } else {
+      await groupCollection
+          .doc(groupID)
+          .update({"users": updatedMemberList}).then(
+              (res) => print("User successfully removed from group"));
+    }
   }
 
   Future<void> addMemberToGroup(String groupID, String email) async {

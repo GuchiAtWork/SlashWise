@@ -14,8 +14,8 @@ class GroupList extends StatefulWidget {
 class _GroupListState extends State<GroupList> {
   final groupDatabase = DatabaseServiceGroup();
 
-  _deleteGroup(String groupID) {
-    groupDatabase.deleteGroup(groupID);
+  _deleteGroup(String groupID, String currUserID) {
+    groupDatabase.removeMemberFromGroup(groupID, currUserID);
   }
 
   @override
@@ -49,8 +49,8 @@ class _GroupListState extends State<GroupList> {
                     trailing: IconButton(
                       icon: Icon(Icons.exit_to_app),
                       color: Theme.of(context).errorColor,
-                      onPressed: () =>
-                          _deleteGroup(filteredGroupList[index].id),
+                      onPressed: () => _deleteGroup(
+                          filteredGroupList[index].id, authUser.uid),
                     ),
                     onTap: () {
                       // pass to the GroupScreen _groupList[index]
