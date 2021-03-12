@@ -72,10 +72,14 @@ class _MainDrawerState extends State<MainDrawer> {
                 ),
                 Text(
                   _userInfo.name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20),
                 ),
                 Text(
                   _userInfo.email,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ],
             ),

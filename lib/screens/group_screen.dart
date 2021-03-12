@@ -293,12 +293,15 @@ class _GroupScreenState extends State<GroupScreen> {
                       padding: const EdgeInsets.all(8),
                       child: ListTile(
                         leading: CircleAvatar(
+                          backgroundColor: Colors.grey,
                           radius: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: FittedBox(
-                              child: Text(
-                                'Picture',
+                          child: ClipOval(
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: Image.asset(
+                                'assets/money.png',
+                                fit: BoxFit.scaleDown,
                               ),
                             ),
                           ),
@@ -308,8 +311,11 @@ class _GroupScreenState extends State<GroupScreen> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(
-                            '${_showUsernameByID(filteredExpenses[index].payer)}'),
+                        subtitle: Text(_showUsernameByID(
+                                    filteredExpenses[index].payer) ==
+                                ''
+                            ? 'Remunerator: You'
+                            : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
                         trailing: Text(
                           '\¥ ${filteredExpenses[index].amount}',
                           style: TextStyle(
