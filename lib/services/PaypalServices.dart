@@ -4,7 +4,6 @@ import 'dart:convert' as convert;
 import 'package:http_auth/http_auth.dart';
 
 class PaypalServices {
-  var domain = 'https://api.sandbox.paypal.com'; // for sandbox mode
 
   // change clientId and secret with your own, provided by paypal
   String clientId = 'AYlmUFKawzpk_ud8eL_Fly4_UxgQF8E1JIgShw3EjD0gzK5l0MSyuO-GNgfw6fDQhAbOe6MSIfnmZdxs';
@@ -14,7 +13,7 @@ class PaypalServices {
   Future<String> getAccessToken() async {
     try {
       var client = BasicAuthClient(clientId, secret);
-      var uri = Uri.dataFromString('$domain/v1/oauth2/token?grant_type=client_credentials');
+      var uri = Uri.parse('https://api.sandbox.paypal.com/v1/oauth2/token?grant_type=client_credentials');
       var response = await client.post(uri);
    
       if (response.statusCode == 200) {
@@ -31,8 +30,8 @@ class PaypalServices {
   Future<Map<String, String>> createPaypalPayment(
       transactions, accessToken) async {
     try {
-      var endpoint = "$domain/v1/payments/payment";
-      var response = await http.post(Uri.dataFromString(endpoint),
+      var uri = Uri.parse('https://api.sandbox.paypal.com/v1/payments/payment');
+      var response = await http.post(uri,
           body: convert.jsonEncode(transactions),
           headers: {
             "content-type": "application/json",

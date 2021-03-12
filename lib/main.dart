@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/screens/home/home.dart';
-import 'package:slash_wise/screens/paypal_test.dart';
 import 'package:slash_wise/screens/wrapper.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +12,8 @@ import "package:slash_wise/services/dbServiceGroup.dart";
 import 'dart:convert';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/theme.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:slash_wise/screens/paypal_test.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -38,10 +39,10 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         theme: myTheme,
-        initialRoute: PaypalTest.routeName,
+        initialRoute: PaypalPayment.routeName,
         routes: {
           '/': (context) => Wrapper(),
-          PaypalTest.routeName: (context) => PaypalTest(),
+          PaypalPayment.routeName: (context) => PaypalPayment(),
           GroupScreen.routeName: (context) => GroupScreen(),
         },
       ),
