@@ -6,6 +6,7 @@ import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
+import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
 
@@ -88,16 +89,28 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
-  void _submitData() {
+  void _submitData(String groupID) async {
     if (_emailController.text.isEmpty) return;
     final enteredEmail = _emailController.text;
 
     // TODO action to add a member
+    // DatabaseServiceGroup
+    // getUserByEmail(String email)
+    // addMemberToGroup(String groupID, String email)
 
+    var userToAdd = await DatabaseServiceUser().getUserByEmail(enteredEmail);
+    if (userToAdd != null) {
+      DatabaseServiceGroup().addMemberToGroup(groupID, enteredEmail);
+      setState(() {
+        print('setState() called when add a member');
+        team.add(userToAdd);
+        print(team);
+      });
+    }
     Navigator.of(context).pop();
   }
 
-  void _createAddMemberDialog(BuildContext context) {
+  void _createAddMemberDialog(BuildContext context, String groupID) {
     showDialog(
         context: context,
         builder: (_) {
@@ -110,13 +123,13 @@ class _GroupScreenState extends State<GroupScreen> {
               ),
               controller: _emailController,
               onSubmitted: (_) => () {
-                _submitData();
+                _submitData(groupID);
               },
             ),
             actions: [
               ElevatedButton(
                 child: Text('Add Member'),
-                onPressed: _submitData,
+                onPressed: () => _submitData(groupID),
               ),
             ],
           );
@@ -128,11 +141,12 @@ class _GroupScreenState extends State<GroupScreen> {
   // DbGroup -> List of User ids -> Send all user ids to backend using the getUser method 8
   void _getListUsers(DbGroup group, String currUserID) {
     userDatabase.getUsers(group.users).then((value) => setState(() {
-          print('setState called()');
+          print('setState called() 1');
           var filteredList =
               value.where((user) => user.id != currUserID).toList();
 
           team = filteredList;
+          print(team);
         }));
   }
 
@@ -140,18 +154,22 @@ class _GroupScreenState extends State<GroupScreen> {
     expenseDatabase
         .calculateExpenses(userID, groupID)
         .then((owes) => setState(() {
-              print('setState called()');
+              print('setState called() 2');
               owe = owes;
             }));
   }
 
-  var userID;
-  var group;
+  //var userID;
+  //var group;
 
   @override
   void didChangeDependencies() {
-    userID = Provider.of<AuthUser>(context).uid;
-    group = ModalRoute.of(context).settings.arguments as DbGroup;
+    var userID = Provider.of<AuthUser>(context).uid;
+    var group = ModalRoute.of(context).settings.arguments as DbGroup;
+    final allGroup = Provider.of<List<DbGroup>>(context);
+
+    group = allGroup.firstWhere((oneGroup) => oneGroup.id == group.id);
+
     _getOtherExpenses(userID, group.id);
     _getListUsers(group, userID);
     super.didChangeDependencies();
@@ -181,7 +199,7 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => _createAddMemberDialog(context),
+              onPressed: () => _createAddMemberDialog(context, group.id),
             ),
           ],
           bottom: TabBar(
@@ -313,7 +331,7 @@ class _GroupScreenState extends State<GroupScreen> {
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _showNewExpense(context, userID, group.id),
-          child: Icon(Icons.add),
+          child: Icon(Icons.add), // Add a member to the team
         ),
       ),
     );

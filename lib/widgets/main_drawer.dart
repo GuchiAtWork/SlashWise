@@ -17,7 +17,7 @@ class _MainDrawerState extends State<MainDrawer> {
 
   _getUsername(uid) {
     _userDatabase.getUser(uid).then((user) => setState(() {
-          print('setState() called');
+          print('setState() called 3');
           _userInfo = user;
         }));
   }

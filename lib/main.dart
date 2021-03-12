@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple),
+        theme: ThemeData(primarySwatch: Colors.indigo),
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),
