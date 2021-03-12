@@ -1,7 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
 import "package:slash_wise/services/dbServiceUser.dart";
-//import 'package:slash_wise/models/group.dart';
 
 // RFHPJcUFxcf0q5BqxHGiG2UooT63
 
@@ -9,22 +8,6 @@ class DatabaseServiceGroup {
   //collection reference
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
-  /*
-  Future<List<DbGroup>> getGroups2(String userID) async {
-    final List<DbGroup> groups = [];
-
-    await groupCollection
-        .where("users",
-            arrayContains: FirebaseFirestore.instance.doc("users/" + userID))
-        .get()
-        .then((QuerySnapshot querySnapshot) => {
-              querySnapshot.docs.forEach((doc) => {
-                    groups.add(DbGroup(doc.data()["id"], doc.data()["name"],
-                        doc.data()["users"], doc.data()["date"].toDate()))
-                  }),
-            });
-    return groups;
-  }*/
 
   Stream<List<DbGroup>> groups() {
     return groupCollection
@@ -104,6 +87,10 @@ class DatabaseServiceGroup {
 
     return groupCollection.doc(groupID).update({"users": groupMembers}).then(
         (result) => print("User successfully added"));
+  }
+
+  Future<void> updateGroup(String groupID, String groupName) async {
+    await groupCollection.doc(groupID).update({'name': groupName});
   }
 
 /*

@@ -17,14 +17,12 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
 /*
   final test =
       await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
   print(test["name"]);
   dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
   */
-
   runApp(MyApp());
 }
 
