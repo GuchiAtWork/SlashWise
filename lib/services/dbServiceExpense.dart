@@ -2,11 +2,36 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class DatabaseServiceExpense {
   // collection reference
   final CollectionReference expenseCollection =
       FirebaseFirestore.instance.collection('expenses');
+/*
+how to use uploadReceiptURL/getReceiptURL
+  import 'package:image_picker/image_picker.dart';
+  final picker = ImagePicker();
+  final pickedImage = await picker.getImage(source: ImageSource.gallery);
+  await DatabaseServiceExpense().uploadReceipt("expenseID", pickedImage);
+  final url = await DatabaseServiceExpense().getReceiptURL("expenseID");
+*/
+  Future<String> uploadReceipt(String expenseID, PickedFile pickedImage) async {
+    File img = File(pickedImage.path);
+    await FirebaseStorage.instance.ref('$expenseID').putFile(img);
+    String downloadURL =
+        await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> getReceipt(String expenseID) async {
+    String downloadURL =
+        await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
+
+    return downloadURL;
+  }
 
   Future<void> addExpense(String expenseName, int amount, DateTime date,
       String payerID, String groupID) async {
