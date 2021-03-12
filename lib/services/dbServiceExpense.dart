@@ -21,15 +21,17 @@ how to use uploadReceiptURL/getReceiptURL
 */
   Future<String> uploadReceipt(String expenseID, PickedFile pickedImage) async {
     File img = File(pickedImage.path);
-    await FirebaseStorage.instance.ref('$expenseID').putFile(img);
-    String downloadURL =
-        await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
+    await FirebaseStorage.instance.ref('Receipt/$expenseID').putFile(img);
+    String downloadURL = await FirebaseStorage.instance
+        .ref('Receipt/$expenseID')
+        .getDownloadURL();
     return downloadURL;
   }
 
   Future<String> getReceipt(String expenseID) async {
-    String downloadURL =
-        await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
+    String downloadURL = await FirebaseStorage.instance
+        .ref('Receipt/$expenseID')
+        .getDownloadURL();
 
     return downloadURL;
   }

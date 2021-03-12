@@ -1,4 +1,7 @@
+import 'dart:io';
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:slash_wise/models/dbUser.dart';
 import "package:slash_wise/models/user.dart";
 
@@ -7,12 +10,28 @@ class DatabaseServiceUser {
   DatabaseServiceUser({this.uid});
 
   //collection reference
-  final CollectionReference userCollection = FirebaseFirestore.instance
-      .collection('users'); //Firestore => FirebaseFirestore
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<String> uploadUserImage(String userID, PickedFile pickedImage) async {
+    File img = File(pickedImage.path);
+    await FirebaseStorage.instance.ref('UserImage/$userID').putFile(img);
+    String downloadURL = await FirebaseStorage.instance
+        .ref('UserImage/$userID')
+        .getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> getUserImage(String userID) async {
+    String downloadURL = await FirebaseStorage.instance
+        .ref('UserImage/$userID')
+        .getDownloadURL();
+
+    return downloadURL;
+  }
 
   Future updateUserData(String email, String username) async {
     return await userCollection.doc(uid).set({
-      //document => doc, setData => set
       'email': email,
       'username': username,
     });
@@ -21,11 +40,8 @@ class DatabaseServiceUser {
   // user list from snapshot
   List<DbUser> _userListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //documents => docs
-      //print(doc.data()['email']);
       return DbUser(
         email: doc.data()['email'] ?? "",
-        //age: doc.data['age'] ?? 0,
       );
     }).toList();
   }

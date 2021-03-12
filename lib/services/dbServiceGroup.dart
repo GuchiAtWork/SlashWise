@@ -1,4 +1,7 @@
+import 'dart:io';
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:slash_wise/models/dbGroup.dart';
 import "package:slash_wise/services/dbServiceUser.dart";
 
@@ -8,6 +11,24 @@ class DatabaseServiceGroup {
   //collection reference
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
+
+  Future<String> uploadGroupImage(
+      String groupID, PickedFile pickedImage) async {
+    File img = File(pickedImage.path);
+    await FirebaseStorage.instance.ref('GroupImage/$groupID').putFile(img);
+    String downloadURL = await FirebaseStorage.instance
+        .ref('GroupImage/$groupID')
+        .getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> getGroupImage(String groupID) async {
+    String downloadURL = await FirebaseStorage.instance
+        .ref('GroupImage/$groupID')
+        .getDownloadURL();
+
+    return downloadURL;
+  }
 
   Future<DbGroup> getGroup(String groupID) async {
     return await groupCollection
@@ -81,29 +102,4 @@ class DatabaseServiceGroup {
   Future<void> updateGroup(String groupID, String groupName) async {
     await groupCollection.doc(groupID).update({'name': groupName});
   }
-
-/*
-  updateGroupData(String name, Timestamp date) async {
-    //Map<String, dynamic>
-    //groupCollection.add(data)
-    return await groupCollection.doc().set({
-      'name': name,
-      'date': date,
-    });
-  }
-
-  // group list from snapshot
-  // List<DbGroup> _groupListFromSnapshot(QuerySnapshot snapshot) {
-  //   return snapshot.docs.map((doc) {
-  //     return DbGroup(
-  //         name: doc.data()['name'] ?? "", date: doc.data()['date'] ?? "");
-  //   }).toList();
-  // }
-
-  // // get groups stream
-  // Stream<List<DbGroup>> get groups {
-  //   return groupCollection.snapshots().map(_groupListFromSnapshot);
-  // }
-}
-*/
 }
