@@ -13,7 +13,7 @@ import 'dart:convert';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:slash_wise/screens/paypal_test.dart';
+import 'package:slash_wise/screens/PayPalPayment.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 

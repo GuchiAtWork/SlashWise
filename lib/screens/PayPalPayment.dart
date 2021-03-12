@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:slash_wise/services/PaypalServices.dart';
+import 'package:slash_wise/screens/group_screen.dart';
 
 class PaypalPayment extends StatefulWidget {
   static const routeName = "/paypal_test";
@@ -15,13 +16,6 @@ class PaypalPayment extends StatefulWidget {
   State<StatefulWidget> createState() {
     return PaypalPaymentState();
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     child: Text("PAY MEEEE")
-  //   );
-  // }
 }
 
 class PaypalPaymentState extends State<PaypalPayment> {
@@ -39,7 +33,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
 
   String returnURL = 'return.example.com';
   String cancelURL= 'cancel.example.com';
-
 
   @override
   void initState() {
@@ -119,30 +112,30 @@ class PaypalPaymentState extends State<PaypalPayment> {
                   ((-1.0) * shippingDiscountCost).toString()
             }
           },
-          "description": "The payment transaction description.",
+          "description": "Here is your payment transaction description.",
           "payment_options": {
             "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
           },
-          "item_list": {
-            "items": items,
-            if (isEnableShipping &&
-                isEnableAddress)
-              "shipping_address": {
-                "recipient_name": userFirstName +
-                    " " +
-                    userLastName,
-                "line1": addressStreet,
-                "line2": "",
-                "city": addressCity,
-                "country_code": addressCountry,
-                "postal_code": addressZipCode,
-                "phone": addressPhoneNumber,
-                "state": addressState
-              },
-          }
+          // "item_list": {
+          //   "items": items,
+          //   if (isEnableShipping &&
+          //       isEnableAddress)
+          //     "shipping_address": {
+          //       "recipient_name": userFirstName +
+          //           " " +
+          //           userLastName,
+          //       "line1": addressStreet,
+          //       "line2": "",
+          //       "city": addressCity,
+          //       "country_code": addressCountry,
+          //       "postal_code": addressZipCode,
+          //       "phone": addressPhoneNumber,
+          //       "state": addressState
+          //     },
+          // }
         }
       ],
-      "note_to_payer": "Contact us for any questions on your order.",
+      "note_to_payer": "Contact us for any questions.",
       "redirect_urls": {
         "return_url": returnURL,
         "cancel_url": cancelURL
@@ -154,6 +147,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   @override
   Widget build(BuildContext context) {
     print(checkoutUrl);
+    print("🥑🥑🥑🥑🥑🥑");
 
     if (checkoutUrl != null) {
       return Scaffold(
