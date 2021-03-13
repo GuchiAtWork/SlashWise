@@ -92,14 +92,11 @@ class _GroupScreenState extends State<GroupScreen> {
   void _submitData(String groupID) async {
     if (_emailController.text.isEmpty) return;
     final enteredEmail = _emailController.text;
-
-    // TODO action to add a member
-    // DatabaseServiceGroup
-    // getUserByEmail(String email)
-    // addMemberToGroup(String groupID, String email)
+    var result = 'User doesn\'t exist';
 
     var userToAdd = await DatabaseServiceUser().getUserByEmail(enteredEmail);
     if (userToAdd != null) {
+      result = 'User successfully added';
       DatabaseServiceGroup().addMemberToGroup(groupID, enteredEmail);
       setState(() {
         print('setState() called when add a member');
@@ -108,6 +105,13 @@ class _GroupScreenState extends State<GroupScreen> {
       });
     }
     Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result),
+        action: SnackBarAction(label: 'Clear', onPressed: () {}),
+      ),
+    );
   }
 
   void _createAddMemberDialog(BuildContext context, String groupID) {
@@ -219,16 +223,15 @@ class _GroupScreenState extends State<GroupScreen> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://googleflutter.com/sample_image.jpg'),
-                            fit: BoxFit.fill),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ClipOval(
+                      child: Image.network(
+                        "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
+                        fit: BoxFit.cover,
+                        width: 70.0,
+                        height: 70.0,
                       ),
                     ),
                     Text(
@@ -255,27 +258,33 @@ class _GroupScreenState extends State<GroupScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              child: Padding(
-                                padding: const EdgeInsets.all(6),
-                                child: FittedBox(
-                                  child: Text(
-                                    'Picture',
-                                  ),
-                                ),
-                              ),
-                            ),
+                            leading: ClipOval(
+                                child: Image.network(
+                              "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
+                              fit: BoxFit.cover,
+                              width: 60.0,
+                              height: 60.0,
+                            )),
                             title: Text(
                               team[index].name,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            trailing: Text(
-                              '¥ ${owe[team[index].name]}',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
+                            trailing: owe[team[index].name] < 0
+                                ? Text(
+                                    '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).errorColor),
+                                  )
+                                : Text(
+                                    '¥ ${owe[team[index].name].toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                  ),
                           ),
                         ),
                       );
@@ -298,12 +307,15 @@ class _GroupScreenState extends State<GroupScreen> {
                       padding: const EdgeInsets.all(8),
                       child: ListTile(
                         leading: CircleAvatar(
+                          backgroundColor: Colors.grey,
                           radius: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: FittedBox(
-                              child: Text(
-                                'Picture',
+                          child: ClipOval(
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: Image.asset(
+                                'assets/money.png',
+                                fit: BoxFit.scaleDown,
                               ),
                             ),
                           ),
@@ -313,8 +325,11 @@ class _GroupScreenState extends State<GroupScreen> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(
-                            '${_showUsernameByID(filteredExpenses[index].payer)}'),
+                        subtitle: Text(_showUsernameByID(
+                                    filteredExpenses[index].payer) ==
+                                ''
+                            ? 'Remunerator: You'
+                            : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
                         trailing: Text(
                           '\¥ ${filteredExpenses[index].amount}',
                           style: TextStyle(

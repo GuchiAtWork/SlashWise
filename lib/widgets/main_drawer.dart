@@ -43,6 +43,23 @@ class _MainDrawerState extends State<MainDrawer> {
     super.didChangeDependencies();
   }
 
+  void _createWipDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Work In Progress'),
+            content: Text('Please Come Back Later!'),
+            actions: [
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -63,7 +80,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image: NetworkImage(
-                            'https://googleflutter.com/sample_image.jpg'),
+                            'https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg'),
                         fit: BoxFit.fill),
                   ),
                 ),
@@ -72,10 +89,14 @@ class _MainDrawerState extends State<MainDrawer> {
                 ),
                 Text(
                   _userInfo.name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20),
                 ),
                 Text(
                   _userInfo.email,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ],
             ),
@@ -86,32 +107,32 @@ class _MainDrawerState extends State<MainDrawer> {
               buildListTile(
                 'Home',
                 Icons.home,
-                () {},
+                () => Navigator.pop(context),
               ),
               buildListTile(
                 'Settings',
                 Icons.settings,
-                () {},
+                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Scan code',
                 Icons.qr_code_scanner,
-                () {},
+                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Rate me',
                 Icons.rate_review,
-                () {},
+                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Contact us',
                 Icons.mail,
-                () {},
+                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Donate',
                 Icons.attach_money,
-                () {},
+                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Log out',
