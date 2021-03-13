@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
 import "package:slash_wise/services/dbServiceUser.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 // RFHPJcUFxcf0q5BqxHGiG2UooT63
 
@@ -103,6 +107,32 @@ class DatabaseServiceGroup {
 
   Future<void> updateGroup(String groupID, String groupName) async {
     await groupCollection.doc(groupID).update({'name': groupName});
+  }
+
+  Future<String> uploadGroupIcon(String groupID, PickedFile pickedImage) async {
+    File img = File(pickedImage.path);
+
+    return FirebaseStorage.instance
+        .ref('$groupID')
+        .getMetadata()
+        .then((image) async {
+      await FirebaseStorage.instance.ref(groupID).delete();
+      await FirebaseStorage.instance.ref(groupID).putFile(img);
+      String downloadURL =
+          await FirebaseStorage.instance.ref(groupID).getDownloadURL();
+      return downloadURL;
+    }).catchError((onError) async {
+      await FirebaseStorage.instance.ref(groupID).putFile(img);
+      String downloadURL =
+          await FirebaseStorage.instance.ref(groupID).getDownloadURL();
+      return downloadURL;
+    });
+  }
+
+  Future<String> getGroupIcon(String groupID) async {
+    String downloadURL =
+        await FirebaseStorage.instance.ref(groupID).getDownloadURL();
+    return downloadURL;
   }
 
 /*
