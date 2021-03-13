@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
 class NewExpense extends StatefulWidget {
@@ -53,10 +51,19 @@ class _NewExpenseState extends State<NewExpense> {
                 onSubmitted: (_) => _onSubmit(),
               ),
               SizedBox(height: 30),
-              ElevatedButton(
-                child: Text('Add Expense'),
-                onPressed: _onSubmit,
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    child: Text('Exclude'),
+                    onPressed: () {}, // TODO implement the choice
+                  ),
+                  ElevatedButton(
+                    child: Text('Add Expense'),
+                    onPressed: _onSubmit,
+                  ),
+                ],
+              )
             ],
           ),
         ),

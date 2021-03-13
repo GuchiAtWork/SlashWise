@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/user_auth.dart';
-import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/screens/setting_screen.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import "package:slash_wise/models/user.dart" as UserModel;
@@ -115,11 +114,6 @@ class _MainDrawerState extends State<MainDrawer> {
                 'Settings',
                 Icons.settings,
                 () => Navigator.pushNamed(context, SettingScreen.routeName),
-              ),
-              buildListTile(
-                'Scan code',
-                Icons.qr_code_scanner,
-                () => _createWipDialog(context),
               ),
               buildListTile(
                 'Rate me',
