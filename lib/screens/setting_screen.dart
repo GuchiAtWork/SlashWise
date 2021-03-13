@@ -56,7 +56,7 @@ void _usernamePopup(
       });
 }
 
-void _createLogoPopup(BuildContext context, File file, Function pickImage) {
+void _logoPopup(BuildContext context, pickImage, file) {
   showDialog(
       context: context,
       builder: (_) {
@@ -69,15 +69,111 @@ void _createLogoPopup(BuildContext context, File file, Function pickImage) {
                   child: Text('Choose an Image'),
                   onPressed: pickImage,
                 ),
-                file != null
-                    ? Text('No file selected!')
-                    : Text(file.toString()),
               ],
             ),
           ),
           actions: [
             ElevatedButton(
               child: Text('Apply'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      });
+}
+
+void _passwordPopup(
+    BuildContext context,
+    TextEditingController oldPassword,
+    TextEditingController newPassword,
+    TextEditingController confirmationPassword) {
+  showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('Change Password'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Old Password',
+                    icon: Icon(Icons.lock),
+                  ),
+                  controller: oldPassword,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'New Password',
+                    icon: Icon(Icons.vpn_key),
+                  ),
+                  controller: newPassword,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Confirmation Password',
+                    icon: Icon(Icons.vpn_key),
+                  ),
+                  controller: confirmationPassword,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: Text('Confirm'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      });
+}
+
+void _emailPopup(BuildContext context, TextEditingController oldEmail,
+    TextEditingController newEmail, TextEditingController confirmationEmail) {
+  showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('Change Email'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Old Email',
+                    icon: Icon(Icons.mail),
+                  ),
+                  controller: oldEmail,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'New Email',
+                    icon: Icon(Icons.mail_outline),
+                  ),
+                  controller: newEmail,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Confirmation Email',
+                    icon: Icon(Icons.mail_outline),
+                  ),
+                  controller: confirmationEmail,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: Text('Confirm'),
               onPressed: () => Navigator.pop(context),
             ),
           ],
@@ -118,9 +214,7 @@ class _SettingScreenState extends State<SettingScreen> {
   void pickImage() async {
     PickedFile pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
-    setState(() {
-      file = File(pickedFile.path);
-    });
+    file = File(pickedFile.path);
   }
 
   @override
@@ -130,6 +224,12 @@ class _SettingScreenState extends State<SettingScreen> {
 
     final userDatabase = DatabaseServiceUser();
     final _usernameController = TextEditingController();
+    final _oldPasswordController = TextEditingController();
+    final _newPassword = TextEditingController();
+    final _confirmationPassword = TextEditingController();
+    final _oldEmailController = TextEditingController();
+    final _newEmail = TextEditingController();
+    final _confirmationEmail = TextEditingController();
 
     final currUser = allUsers.firstWhere((user) => user.id == userAuthID);
 
@@ -142,16 +242,20 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              createSettingButton("Change Logo",
-                  () => _createLogoPopup(context, file, pickImage)),
               createSettingButton(
-                  "Change Email", () => _createWipPopup(context)),
+                  "Change Logo", () => _logoPopup(context, pickImage, file)),
+              createSettingButton(
+                  "Change Email",
+                  () => _emailPopup(context, _oldEmailController, _newEmail,
+                      _confirmationEmail)),
               createSettingButton(
                 "Change Username",
                 () => _usernamePopup(context, currUser, _usernameController),
               ),
               createSettingButton(
-                  "Change Password", () => _createWipPopup(context)),
+                  "Change Password",
+                  () => _passwordPopup(context, _oldPasswordController,
+                      _newPassword, _confirmationPassword)),
             ],
           ),
         ));
