@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
 class NewExpense extends StatefulWidget {
@@ -29,8 +31,47 @@ class _NewExpenseState extends State<NewExpense> {
     Navigator.pop(context);
   }
 
+  List<User> usersToInclude = [];
+
+  void _choicesMembersDialog(BuildContext context, List<User> allUsers) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Select Member to Include'),
+            content: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: allUsers
+                      .map((user) => CheckboxListTile(
+                            title: Text(user.name),
+                            onChanged: (value) {
+                              value
+                                  ? usersToInclude.add(user)
+                                  : usersToInclude.remove(user);
+                            },
+                            value: usersToInclude.contains(user.name),
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final users = Provider.of<List<User>>(context);
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -55,8 +96,9 @@ class _NewExpenseState extends State<NewExpense> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    child: Text('Exclude'),
-                    onPressed: () {}, // TODO implement the choice
+                    child: Text('Include Only'),
+                    onPressed: () => _choicesMembersDialog(
+                        context, users), // TODO implement the choice
                   ),
                   ElevatedButton(
                     child: Text('Add Expense'),
