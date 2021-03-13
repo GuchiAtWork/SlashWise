@@ -14,7 +14,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return '''
       <html>
         <body onload="document.f.submit();">
-          <form id="f" name="f" method="post" action="http://10.0.2.2:8000/pay">
+          <form id="f" name="f" method="post" action="https://slashwise-backend.herokuapp.com/pay">
             <input type="hidden" name="price" value="${widget.price}" />
           </form>
         </body>
@@ -27,9 +27,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: WebView(
         onPageFinished: (page)
         {
-          // if (page.contains('/success')) {
-          //   Navigator.pop(context);
-          // }
+          if (page.contains('/success')) {
+            Navigator.pop(context);
+          }
         },
         javascriptMode: JavascriptMode.unrestricted,
         initialUrl: new Uri.dataFromString(_loadHTML(), mimeType: 'text/html').toString(),
