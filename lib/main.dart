@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:slash_wise/models/notifiers.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/screens/setting_screen.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
           initialData: [],
           value: DatabaseServiceExpense().expenses(),
         ),
+        ChangeNotifierProvider<MultipleNotifier>(
+          create: (_) => MultipleNotifier([]),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash_wise/models/notifiers.dart';
 import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
@@ -31,9 +32,8 @@ class _NewExpenseState extends State<NewExpense> {
     Navigator.pop(context);
   }
 
-  List<User> usersToInclude = [];
-
-  void _choicesMembersDialog(BuildContext context, List<User> allUsers) {
+  void _choicesMembersDialog(BuildContext context, List<User> allUsers,
+      MultipleNotifier _multipleNotifier) {
     showDialog(
         context: context,
         builder: (context) {
@@ -45,14 +45,16 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: allUsers
-                      .map((user) => CheckboxListTile(
-                            title: Text(user.name),
-                            onChanged: (value) {
-                              value
-                                  ? usersToInclude.add(user)
-                                  : usersToInclude.remove(user);
-                            },
-                            value: usersToInclude.contains(user.name),
+                      .map((user) => StatefulBuilder(
+                            builder: (context, _setState) => CheckboxListTile(
+                              title: Text(user.name),
+                              value: _multipleNotifier.isHaveUser(user),
+                              onChanged: (value) {
+                                _setState(() => value
+                                    ? _multipleNotifier.addUser(user)
+                                    : _multipleNotifier.removeUser(user));
+                              },
+                            ),
                           ))
                       .toList(),
                 ),
@@ -70,7 +72,9 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
+    final allUsers = Provider.of<List<User>>(context);
+    final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+    _multipleNotifier.selectedUsers();
 
     return SingleChildScrollView(
       child: Card(
@@ -98,7 +102,7 @@ class _NewExpenseState extends State<NewExpense> {
                   ElevatedButton(
                     child: Text('Include Only'),
                     onPressed: () => _choicesMembersDialog(
-                        context, users), // TODO implement the choice
+                        context, allUsers, _multipleNotifier),
                   ),
                   ElevatedButton(
                     child: Text('Add Expense'),
