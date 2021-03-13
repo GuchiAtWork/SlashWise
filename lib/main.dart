@@ -21,12 +21,13 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-/*
-  final test =
-      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
-  print(test["name"]);
-  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
-  */
+
+  print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+  final test = await DatabaseServiceGroup().uploadGroupIcon("testID");
+  print(test);
+
+  print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+
   runApp(MyApp());
 }
 
@@ -74,10 +75,10 @@ class MyApp extends StatelessWidget {
 //       child: MaterialApp(
 //         theme: ThemeData(primarySwatch: Colors.purple),
 //         initialRoute: '/',
-        // routes: {
-        //   '/': (context) => Wrapper(),
-        //   GroupScreen.routeName: (context) => GroupScreen(),
-        // },
+// routes: {
+//   '/': (context) => Wrapper(),
+//   GroupScreen.routeName: (context) => GroupScreen(),
+// },
 //       ),
 //     );
 //   }
