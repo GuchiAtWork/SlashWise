@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:slash_wise/models/dbUser.dart';
 import "package:slash_wise/models/user.dart";
 
@@ -95,5 +99,31 @@ class DatabaseServiceUser {
 
   Future<void> changeUserName(String userID, String newName) async {
     await userCollection.doc(userID).update({'username': newName});
+  }
+
+  Future<String> uploadUserIcon(String userID, PickedFile pickedImage) {
+    File img = File(pickedImage.path);
+
+    return FirebaseStorage.instance
+        .ref('$userID')
+        .getMetadata()
+        .then((image) async {
+      await FirebaseStorage.instance.ref(userID).delete();
+      await FirebaseStorage.instance.ref(userID).putFile(img);
+      String downloadURL =
+          await FirebaseStorage.instance.ref(userID).getDownloadURL();
+      return downloadURL;
+    }).catchError((onError) async {
+      await FirebaseStorage.instance.ref(userID).putFile(img);
+      String downloadURL =
+          await FirebaseStorage.instance.ref(userID).getDownloadURL();
+      return downloadURL;
+    });
+  }
+
+  Future<String> getUserIcon(String userID) async {
+    String downloadURL =
+        await FirebaseStorage.instance.ref(userID).getDownloadURL();
+    return downloadURL;
   }
 }
