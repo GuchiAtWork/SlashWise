@@ -2,20 +2,29 @@ const paypal = require('paypal-rest-sdk');
 const express = require('express');
 const app = express();
 
+app.use(express.urlencoded({ extended:false }));
+app.use(express.json());
+
+let amount;
+
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': 'AYlmUFKawzpk_ud8eL_Fly4_UxgQF8E1JIgShw3EjD0gzK5l0MSyuO-GNgfw6fDQhAbOe6MSIfnmZdxs',
   'client_secret': 'EK8VQRKHFrPxRjf8Xd5F7IObwZhQnG9pueQ47kJphfTsTYymLaMUZ7VoxJNQHPcas6JwHEfSoDirtcaL'
 });
 
-app.get('/pay', (req, res) => {
+app.post('/pay', (req, res) => {
+
+  console.log(req.body);
+  amount = req.body.price;
+
   var create_payment_json = {
     "intent": "sale",
     "payer": {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:8000/success",
+        "return_url": "http://10.0.2.2:8000/success",
         "cancel_url": "http://cancel.url"
     },
     "transactions": [{
@@ -23,14 +32,14 @@ app.get('/pay', (req, res) => {
             "items": [{
                 "name": "item",
                 "sku": "item",
-                "price": "100",
+                "price": amount,
                 "currency": "USD",
                 "quantity": 1
             }]
         },
         "amount": {
             "currency": "USD",
-            "total": "100"
+            "total": amount
         },
         "description": "This is the payment description."
     }]
@@ -57,7 +66,7 @@ app.get('/success', (req, res) => {
     "transactions": [{
         "amount": {
             "currency": "USD",
-            "total": "100"
+            "total": amount
         }
     }]
   };
@@ -75,7 +84,7 @@ app.get('/success', (req, res) => {
   });
 });
 
-app.listen(8000, (req, res) => 
+app.listen(8000, '127.0.0.1', (req, res) => 
 {
   console.log('server started')
 });
