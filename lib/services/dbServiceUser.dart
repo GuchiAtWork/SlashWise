@@ -47,7 +47,7 @@ class DatabaseServiceUser {
         .snapshots()
         .map((QuerySnapshot querySnapshot) => querySnapshot.docs
             .map(
-              (e) => User(e.id, e.data()['name'], e.data()['email']),
+              (e) => User(e.id, e.data()['username'], e.data()['email']),
             )
             .toList());
   }
