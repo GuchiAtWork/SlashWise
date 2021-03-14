@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
+import 'package:slash_wise/screens/setting_screen.dart';
 import 'package:slash_wise/screens/wrapper.dart';
 import 'package:slash_wise/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,12 +21,7 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-/*
-  final test =
-      await dbInterface.addGroup("RFHPJcUFxcf0q5BqxHGiG2UooT63", "Test2");
-  print(test["name"]);
-  dbInterface.deleteGroup("Agvo8XSlcjEAOqd3QoFO");
-  */
+
   runApp(MyApp());
 }
 
@@ -57,6 +53,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => Wrapper(),
           GroupScreen.routeName: (context) => GroupScreen(),
+          SettingScreen.routeName: (context) => SettingScreen(),
         },
       ),
     );
@@ -72,10 +69,10 @@ class MyApp extends StatelessWidget {
 //       child: MaterialApp(
 //         theme: ThemeData(primarySwatch: Colors.purple),
 //         initialRoute: '/',
-        // routes: {
-        //   '/': (context) => Wrapper(),
-        //   GroupScreen.routeName: (context) => GroupScreen(),
-        // },
+// routes: {
+//   '/': (context) => Wrapper(),
+//   GroupScreen.routeName: (context) => GroupScreen(),
+// },
 //       ),
 //     );
 //   }
