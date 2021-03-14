@@ -82,8 +82,13 @@ class DatabaseServiceGroup {
 
     if (updatedMemberList.length == 0) {
       await groupCollection.doc(groupID).delete();
-      await expenseCollection.where("groupID", isEqualTo: groupID).get().then(
-          (QuerySnapshot q) => q.docs.forEach((doc) => doc.reference.delete()));
+      await expenseCollection
+          .where("groupID", isEqualTo: groupID)
+          .get()
+          .then((QuerySnapshot q) => q.docs.forEach((doc) {
+                FirebaseStorage.instance.ref(doc.reference.id).delete();
+                doc.reference.delete();
+              }));
     } else {
       await groupCollection
           .doc(groupID)
