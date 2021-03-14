@@ -23,7 +23,11 @@ Map<String, num> owe = {};
 class _GroupScreenState extends State<GroupScreen> {
   final expenseDatabase = DatabaseServiceExpense();
   final userDatabase = DatabaseServiceUser();
+  final groupDatabase = DatabaseServiceGroup();
   final _emailController = TextEditingController();
+
+  String groupImageURL =
+      "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png";
 
   String _showUsernameByID(String userID) {
     String username = "";
@@ -205,9 +209,23 @@ class _GroupScreenState extends State<GroupScreen> {
 
     group = allGroup.firstWhere((oneGroup) => oneGroup.id == group.id);
 
+    returnGroupImage(group.id);
     _getOtherExpenses(userID, group.id);
     _getListUsers(group, userID);
     super.didChangeDependencies();
+  }
+
+  Future<String> returnUserImage(String user) async {
+    final urlString = await userDatabase.getUserIcon(user);
+    return urlString;
+  }
+
+  Future<void> returnGroupImage(String groupID) async {
+    final urlString = await groupDatabase.getGroupIcon(groupID);
+    setState(() {
+      print("setState() 6 CALLED");
+      groupImageURL = urlString;
+    });
   }
 
   @override
@@ -259,7 +277,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                     ClipOval(
                       child: Image.network(
-                        "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
+                        groupImageURL,
                         fit: BoxFit.cover,
                         width: 70.0,
                         height: 70.0,
@@ -282,64 +300,151 @@ class _GroupScreenState extends State<GroupScreen> {
                     ? Container(
                         child: ListView.builder(
                           itemBuilder: (_, index) {
-                            return Card(
-                              elevation: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: ListTile(
-                                  leading: ClipOval(
-                                      child: Image.network(
-                                    "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
-                                    fit: BoxFit.cover,
-                                    width: 60.0,
-                                    height: 60.0,
-                                  )),
-                                  title: Text(
-                                    team[index].name,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      owe[team[index].name] != null
-                                          ? owe[team[index].name] < 0
-                                              ? Text(
-                                                  '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .errorColor),
-                                                )
-                                              : Text(
-                                                  '¥ ${owe[team[index].name].toStringAsFixed(0)}',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.green),
-                                                )
-                                          : Text(
-                                              '¥ \$0',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .errorColor),
+                            return FutureBuilder(
+                                future: returnUserImage(team[index].id),
+                                builder:
+                                    (context, AsyncSnapshot<String> snapshot) {
+                                  return snapshot.connectionState ==
+                                          ConnectionState.done
+                                      ? Card(
+                                          elevation: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: ListTile(
+                                              leading: ClipOval(
+                                                child: Image.network(
+                                                  snapshot.data,
+                                                  fit: BoxFit.cover,
+                                                  width: 60.0,
+                                                  height: 60.0,
+                                                ),
+                                              ),
+                                              title: Text(
+                                                team[index].name,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              trailing: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  owe[team[index].name] != null
+                                                      ? owe[team[index].name] <
+                                                              0
+                                                          ? Text(
+                                                              '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .errorColor),
+                                                            )
+                                                          : Text(
+                                                              '¥ ${owe[team[index].name].toStringAsFixed(0)}',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .green),
+                                                            )
+                                                      : Text(
+                                                          '¥ \$0',
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .errorColor),
+                                                        ),
+                                                  IconButton(
+                                                    icon: Icon(Icons.payment),
+                                                    onPressed: () =>
+                                                        _singlePaymentDialog(
+                                                            context),
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                      IconButton(
-                                        icon: Icon(Icons.payment),
-                                        onPressed: () =>
-                                            _singlePaymentDialog(context),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
+                                          ),
+                                        )
+                                      : Card(
+                                          elevation: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: ListTile(
+                                              leading: ClipOval(
+                                                child: Image.network(
+                                                  "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
+                                                  fit: BoxFit.cover,
+                                                  width: 60.0,
+                                                  height: 60.0,
+                                                ),
+                                              ),
+                                              title: Text(
+                                                team[index].name,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              trailing: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  owe[team[index].name] != null
+                                                      ? owe[team[index].name] <
+                                                              0
+                                                          ? Text(
+                                                              '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .errorColor),
+                                                            )
+                                                          : Text(
+                                                              '¥ ${owe[team[index].name].toStringAsFixed(0)}',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .green),
+                                                            )
+                                                      : Text(
+                                                          '¥ \$0',
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .errorColor),
+                                                        ),
+                                                  IconButton(
+                                                    icon: Icon(Icons.payment),
+                                                    onPressed: () =>
+                                                        _singlePaymentDialog(
+                                                            context),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                });
                           },
                           itemCount: team.length,
                         ),

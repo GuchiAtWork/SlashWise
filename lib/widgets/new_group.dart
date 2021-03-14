@@ -14,25 +14,26 @@ class NewGroup extends StatefulWidget {
 
 class _NewGroupState extends State<NewGroup> {
   final _nameController = TextEditingController();
+  File file;
 
   void _submitData() {
     if (_nameController.text.isEmpty) return;
     final enteredName = _nameController.text;
+    print(file);
 
-    widget._addNewGroup(enteredName, widget._userID);
+    widget._addNewGroup(enteredName, widget._userID, file);
 
     Navigator.of(context).pop();
   }
 
+  void pickImage() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    file = File(pickedFile.path);
+  }
+
   @override
   Widget build(BuildContext context) {
-    File file;
-    void pickImage() async {
-      PickedFile pickedFile =
-          await ImagePicker().getImage(source: ImageSource.gallery);
-      file = File(pickedFile.path);
-    }
-
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -61,7 +62,7 @@ class _NewGroupState extends State<NewGroup> {
                   ),
                   ElevatedButton(
                     child: Text('Add Group'),
-                    onPressed: _submitData,
+                    onPressed: () => _submitData(),
                   ),
                 ],
               ),
