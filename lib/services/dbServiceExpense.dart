@@ -3,7 +3,6 @@ import 'package:slash_wise/models/expense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class DatabaseServiceExpense {
