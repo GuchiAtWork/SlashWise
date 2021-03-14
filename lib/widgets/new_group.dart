@@ -19,7 +19,6 @@ class _NewGroupState extends State<NewGroup> {
   void _submitData() {
     if (_nameController.text.isEmpty) return;
     final enteredName = _nameController.text;
-    print(file);
 
     widget._addNewGroup(enteredName, widget._userID, file);
 

@@ -20,8 +20,10 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  File file;
 
   void _onSubmit() {
+    print('+++++++++++++++++++++++++++++++++++++++++');
     if (_amountController.text.isEmpty) return;
 
     final _title = _titleController.text;
@@ -29,10 +31,19 @@ class _NewExpenseState extends State<NewExpense> {
 
     if (_title.isEmpty || _amount <= 0) return;
 
-    DatabaseServiceExpense().addExpense(
-        _title, _amount, DateTime.now(), widget.userID, widget.groupID);
+    DatabaseServiceExpense()
+        .addExpense(
+            _title, _amount, DateTime.now(), widget.userID, widget.groupID)
+        .then((expense) =>
+            DatabaseServiceExpense().uploadReceipt(expense.id, file));
 
     Navigator.pop(context);
+  }
+
+  void pickImage() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    file = File(pickedFile.path);
   }
 
   void _choicesMembersDialog(BuildContext context, List<User> allUsers,
@@ -88,7 +99,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 child: Text('Confirm'),
-                onPressed: () => _onSubmit,
+                onPressed: () => _onSubmit(),
               ),
             ],
           );
@@ -100,13 +111,6 @@ class _NewExpenseState extends State<NewExpense> {
     final allUsers = Provider.of<List<User>>(context);
     final _multipleNotifier = Provider.of<MultipleNotifier>(context);
     final selectedUsers = _multipleNotifier.selectedUsers();
-    File file;
-
-    void pickImage() async {
-      PickedFile pickedFile =
-          await ImagePicker().getImage(source: ImageSource.gallery);
-      file = File(pickedFile.path);
-    }
 
     return SingleChildScrollView(
       child: Card(

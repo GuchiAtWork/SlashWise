@@ -38,7 +38,7 @@ how to use uploadReceiptURL/getReceiptURL
     return downloadURL;
   }
 
-  Future<void> addExpense(String expenseName, int amount, DateTime date,
+  Future<Expense> addExpense(String expenseName, int amount, DateTime date,
       String payerID, String groupID) async {
     final createdExpense = await expenseCollection.add({
       "name": expenseName,
