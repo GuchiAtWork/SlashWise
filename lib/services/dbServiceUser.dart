@@ -101,20 +101,18 @@ class DatabaseServiceUser {
     await userCollection.doc(userID).update({'username': newName});
   }
 
-  Future<String> uploadUserIcon(String userID, PickedFile pickedImage) {
-    File img = File(pickedImage.path);
-
+  Future<String> uploadUserIcon(String userID, File imageFile) {
     return FirebaseStorage.instance
         .ref('$userID')
         .getMetadata()
         .then((image) async {
       await FirebaseStorage.instance.ref(userID).delete();
-      await FirebaseStorage.instance.ref(userID).putFile(img);
+      await FirebaseStorage.instance.ref(userID).putFile(imageFile);
       String downloadURL =
           await FirebaseStorage.instance.ref(userID).getDownloadURL();
       return downloadURL;
     }).catchError((onError) async {
-      await FirebaseStorage.instance.ref(userID).putFile(img);
+      await FirebaseStorage.instance.ref(userID).putFile(imageFile);
       String downloadURL =
           await FirebaseStorage.instance.ref(userID).getDownloadURL();
       return downloadURL;
@@ -122,8 +120,14 @@ class DatabaseServiceUser {
   }
 
   Future<String> getUserIcon(String userID) async {
-    String downloadURL =
-        await FirebaseStorage.instance.ref(userID).getDownloadURL();
+    String downloadURL = await FirebaseStorage.instance
+        .ref(userID)
+        .getDownloadURL()
+        .then((imageURL) {
+      return imageURL;
+    }).catchError((onError) {
+      return "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg";
+    });
     return downloadURL;
   }
 }

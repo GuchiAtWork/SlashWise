@@ -15,11 +15,18 @@ class _MainDrawerState extends State<MainDrawer> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _userDatabase = DatabaseServiceUser();
   UserModel.User _userInfo = UserModel.User("", "", "");
+  String imageURL =
+      "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg";
 
   _getUsername(uid) {
     _userDatabase.getUser(uid).then((user) => setState(() {
           print('setState() called 3');
           _userInfo = user;
+        }));
+
+    _userDatabase.getUserIcon(uid).then((url) => setState(() {
+          print("USER ICON IN MAINDRAWER GET (setState() called 4)");
+          imageURL = url;
         }));
   }
 
@@ -80,9 +87,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: NetworkImage(
-                            'https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg'),
-                        fit: BoxFit.fill),
+                        image: NetworkImage(imageURL), fit: BoxFit.fill),
                   ),
                 ),
                 SizedBox(

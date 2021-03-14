@@ -278,109 +278,137 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
               Expanded(
-                child: Container(
-                  child: ListView.builder(
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: ListTile(
-                            leading: ClipOval(
-                                child: Image.network(
-                              "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
-                              fit: BoxFit.cover,
-                              width: 60.0,
-                              height: 60.0,
-                            )),
-                            title: Text(
-                              team[index].name,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                owe[team[index].name] < 0
-                                    ? Text(
-                                        '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).errorColor),
+                child: team.length > 0
+                    ? Container(
+                        child: ListView.builder(
+                          itemBuilder: (_, index) {
+                            return Card(
+                              elevation: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: ListTile(
+                                  leading: ClipOval(
+                                      child: Image.network(
+                                    "https://thumbs.dreamstime.com/b/default-avatar-profile-flat-icon-social-media-user-vector-portrait-unknown-human-image-default-avatar-profile-flat-icon-184330869.jpg",
+                                    fit: BoxFit.cover,
+                                    width: 60.0,
+                                    height: 60.0,
+                                  )),
+                                  title: Text(
+                                    team[index].name,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      owe[team[index].name] != null
+                                          ? owe[team[index].name] < 0
+                                              ? Text(
+                                                  '¥ ${owe[team[index].name].abs().toStringAsFixed(0)}',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .errorColor),
+                                                )
+                                              : Text(
+                                                  '¥ ${owe[team[index].name].toStringAsFixed(0)}',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green),
+                                                )
+                                          : Text(
+                                              '¥ \$0',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .errorColor),
+                                            ),
+                                      IconButton(
+                                        icon: Icon(Icons.payment),
+                                        onPressed: () =>
+                                            _singlePaymentDialog(context),
                                       )
-                                    : Text(
-                                        '¥ ${owe[team[index].name].toStringAsFixed(0)}',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green),
-                                      ),
-                                IconButton(
-                                  icon: Icon(Icons.payment),
-                                  onPressed: () =>
-                                      _singlePaymentDialog(context),
-                                )
-                              ],
-                            ),
-                          ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount: team.length,
                         ),
-                      );
-                    },
-                    itemCount: team.length,
-                  ),
-                ),
+                      )
+                    : Center(
+                        child: Text(
+                          'No Members Added Yet!',
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                      ),
               )
             ],
           ),
           // Second page ********************************=>
           Expanded(
-            child: Container(
-              child: ListView.builder(
-                itemBuilder: (_, index) {
-                  return Card(
-                    elevation: 4,
-                    //margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 30,
-                          child: ClipOval(
-                            child: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: Image.asset(
-                                'assets/money.png',
-                                fit: BoxFit.scaleDown,
+            child: filteredExpenses.length > 0
+                ? Container(
+                    child: ListView.builder(
+                      itemBuilder: (_, index) {
+                        return Card(
+                          elevation: 4,
+                          //margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                radius: 30,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: Image.asset(
+                                      'assets/money.png',
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                filteredExpenses[index].name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(_showUsernameByID(
+                                          filteredExpenses[index].payer) ==
+                                      ''
+                                  ? 'Remunerator: You'
+                                  : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
+                              trailing: Text(
+                                '\¥ ${filteredExpenses[index].amount}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                        ),
-                        title: Text(
-                          filteredExpenses[index].name,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(_showUsernameByID(
-                                    filteredExpenses[index].payer) ==
-                                ''
-                            ? 'Remunerator: You'
-                            : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
-                        trailing: Text(
-                          '\¥ ${filteredExpenses[index].amount}',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                        );
+                      },
+                      itemCount: filteredExpenses.length,
                     ),
-                  );
-                },
-                itemCount: filteredExpenses.length,
-              ),
-            ),
+                  )
+                : Center(
+                    child: Text(
+                      'No Expenses Added Yet!',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ),
           )
         ]),
         floatingActionButton: FloatingActionButton(

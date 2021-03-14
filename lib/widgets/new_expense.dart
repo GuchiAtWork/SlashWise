@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/notifiers.dart';
 import 'package:slash_wise/models/user.dart';
@@ -70,11 +73,40 @@ class _NewExpenseState extends State<NewExpense> {
         });
   }
 
+  void _createConfirmationDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: Text(
+                'Please note that after confirmation any modification will not be possible for security reason'),
+            actions: [
+              ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.pop(context),
+              ),
+              ElevatedButton(
+                child: Text('Confirm'),
+                onPressed: () => _onSubmit,
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final allUsers = Provider.of<List<User>>(context);
     final _multipleNotifier = Provider.of<MultipleNotifier>(context);
-    _multipleNotifier.selectedUsers();
+    final selectedUsers = _multipleNotifier.selectedUsers();
+    File file;
+
+    void pickImage() async {
+      PickedFile pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
+      file = File(pickedFile.path);
+    }
 
     return SingleChildScrollView(
       child: Card(
@@ -93,7 +125,7 @@ class _NewExpenseState extends State<NewExpense> {
                 decoration: InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _onSubmit(),
+                onSubmitted: (_) => _createConfirmationDialog(context),
               ),
               SizedBox(height: 30),
               Row(
@@ -105,8 +137,12 @@ class _NewExpenseState extends State<NewExpense> {
                         context, allUsers, _multipleNotifier),
                   ),
                   ElevatedButton(
-                    child: Text('Add Expense'),
-                    onPressed: _onSubmit,
+                    child: Text('Add Image'),
+                    onPressed: () => pickImage(),
+                  ),
+                  ElevatedButton(
+                    child: Text('Confirm'),
+                    onPressed: () => _createConfirmationDialog(context),
                   ),
                 ],
               )

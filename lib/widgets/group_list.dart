@@ -29,8 +29,11 @@ class _GroupListState extends State<GroupList> {
     return Container(
       height: 600,
       child: (filteredGroupList.isEmpty)
-          ? Column(
-              children: <Widget>[Text('No Group added yet!')],
+          ? Center(
+              child: Text(
+                'LOADING...',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
             )
           : ListView.builder(
               itemBuilder: (_, index) {

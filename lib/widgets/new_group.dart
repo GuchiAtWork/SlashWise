@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:flutter/material.dart';
 
 class NewGroup extends StatefulWidget {
@@ -23,11 +26,18 @@ class _NewGroupState extends State<NewGroup> {
 
   @override
   Widget build(BuildContext context) {
+    File file;
+    void pickImage() async {
+      PickedFile pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
+      file = File(pickedFile.path);
+    }
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
         child: Container(
-          //padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -41,10 +51,20 @@ class _NewGroupState extends State<NewGroup> {
                   _submitData();
                 },
               ),
-              ElevatedButton(
-                child: Text('Add Group'),
-                onPressed: _submitData,
-              )
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    child: Text('Add Image'),
+                    onPressed: () => pickImage(),
+                  ),
+                  ElevatedButton(
+                    child: Text('Add Group'),
+                    onPressed: _submitData,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
