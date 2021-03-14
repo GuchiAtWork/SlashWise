@@ -81,6 +81,7 @@ class DatabaseServiceGroup {
         memberList.where((member) => member != currUserID).toList();
 
     if (updatedMemberList.length == 0) {
+      FirebaseStorage.instance.ref(groupID).delete();
       await groupCollection.doc(groupID).delete();
       await expenseCollection
           .where("groupID", isEqualTo: groupID)
