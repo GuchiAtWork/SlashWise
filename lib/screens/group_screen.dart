@@ -228,6 +228,57 @@ class _GroupScreenState extends State<GroupScreen> {
     });
   }
 
+  void _showReceipt(String expenseID) {
+    // final imageURL = expenseDatabase.getReceipt(expenseID);
+
+    // imageURL = ""
+    // imageURL = "https://...."
+
+    showDialog(
+        context: context,
+        builder: (_) {
+          return FutureBuilder(
+            future: expenseDatabase.getReceipt(expenseID),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data == "") {
+                  return AlertDialog(
+                    title: Text("Receipt"),
+                    content: SingleChildScrollView(
+                      child: Container(
+                        child: Center(
+                          child: Text('No Receipt Found'),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return AlertDialog(
+                    title: Text('Receipt'),
+                    content: SingleChildScrollView(
+                      child: Container(
+                        child: Image.network(snapshot.data),
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                return AlertDialog(
+                  title: Text('Receipt'),
+                  content: SingleChildScrollView(
+                    child: Container(
+                      child: Center(
+                        child: Text('LOADING!'),
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthUser>(context).uid;
@@ -471,6 +522,8 @@ class _GroupScreenState extends State<GroupScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(8),
                             child: ListTile(
+                              onTap: () =>
+                                  _showReceipt(filteredExpenses[index].id),
                               leading: CircleAvatar(
                                 backgroundColor: Colors.grey,
                                 radius: 30,

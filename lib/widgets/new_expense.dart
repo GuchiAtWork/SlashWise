@@ -38,6 +38,7 @@ class _NewExpenseState extends State<NewExpense> {
             DatabaseServiceExpense().uploadReceipt(expense.id, file));
 
     Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   void pickImage() async {
