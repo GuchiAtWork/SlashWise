@@ -45,6 +45,7 @@ how to use uploadReceiptURL/getReceiptURL
       "price": amount,
       "payer": payerID,
       "groupID": groupID,
+      "payees": payees,
     }).then((ref) {
       final expense =
           Expense(ref.id, expenseName, amount, date, payerID, groupID, payees);

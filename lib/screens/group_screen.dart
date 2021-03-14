@@ -41,12 +41,12 @@ class _GroupScreenState extends State<GroupScreen> {
     return username;
   }
 
-  void _showNewExpense(BuildContext context, String userID, String groupID) {
+  void _showNewExpense(BuildContext context, String userID, DbGroup group) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (_) {
-          return NewExpense(userID, groupID);
+          return NewExpense(userID, group);
         });
   }
 
@@ -563,7 +563,7 @@ class _GroupScreenState extends State<GroupScreen> {
           )
         ]),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _showNewExpense(context, userID, group.id),
+          onPressed: () => _showNewExpense(context, userID, group),
           child: Icon(Icons.add), // Add a member to the team
         ),
       ),
