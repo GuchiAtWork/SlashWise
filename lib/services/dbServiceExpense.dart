@@ -95,7 +95,6 @@ how to use uploadReceiptURL/getReceiptURL
   Future<Map<String, num>> calculateExpenses(
       String userID, String groupID) async {
     final groupDbInterface = DatabaseServiceGroup();
-    final userDbInterface = DatabaseServiceUser();
 
     final Map<String, num> calculatedDebtID = {};
 
@@ -112,27 +111,32 @@ how to use uploadReceiptURL/getReceiptURL
     }
 
     for (var j = 0; j < expenses.length; j++) {
-      final amount = expenses[j].amount;
-      final payerID = expenses[j].payer;
-      final splitAmount = amount / amountOfMembers;
+      final curExpense = expenses[j];
+      final amount = curExpense.amount;
+      final payerID = curExpense.payer;
+      final payees = curExpense.payees;
+      final splitAmount = amount / payees.length;
 
       if (payerID == userID) {
-        calculatedDebtID.forEach((key, _) {
-          calculatedDebtID[key] += splitAmount;
-        });
+        for (int payee = 0; payee < payees.length; payee++) {
+          if (payees[payee] != userID) {
+            calculatedDebtID[payees[payee]] += splitAmount;
+          }
+        }
       } else {
         calculatedDebtID[payerID] -= splitAmount;
       }
+
+      // if (payerID == userID) {
+      //   calculatedDebtID.forEach((key, _) {
+      //     calculatedDebtID[key] += splitAmount;
+      //   });
+      // } else {
+      //   calculatedDebtID[payerID] -= splitAmount;
+      // }
     }
 
-    final Map<String, num> calculatedDebtName = {};
-
-    for (var key in calculatedDebtID.keys) {
-      final user = await userDbInterface.getUser(key);
-      calculatedDebtName[user.name] = calculatedDebtID[key];
-    }
-
-    return calculatedDebtName;
+    return calculatedDebtID;
   }
 
   Future<void> deleteExpense(String expenseID) async {
