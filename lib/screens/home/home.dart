@@ -17,7 +17,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final groupDatabase = DatabaseServiceGroup();
-  var count = 0;
 
   void _addNewGroup(String newGroupName, String userID, File file) async {
     final addedGroup =
@@ -37,12 +36,6 @@ class _HomeState extends State<Home> {
         });
   }
 
-  void refresh() {
-    setState(() {
-      count++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthUser>(context);
@@ -51,12 +44,6 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text("Home"),
         actions: <Widget>[
-          TextButton.icon(
-            style: TextButton.styleFrom(primary: Colors.white),
-            icon: Icon(Icons.refresh),
-            label: Text("Refresh"),
-            onPressed: () => refresh,
-          ),
           TextButton.icon(
             style: TextButton.styleFrom(primary: Colors.white),
             icon: Icon(Icons.person),
