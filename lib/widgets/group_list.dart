@@ -18,6 +18,11 @@ class _GroupListState extends State<GroupList> {
     groupDatabase.removeMemberFromGroup(groupID, currUserID);
   }
 
+  Future<String> returnGroupImage(String groupID) {
+    final urlString = groupDatabase.getGroupIcon(groupID);
+    return urlString;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DbGroup> groupList = Provider.of<List<DbGroup>>(context);
@@ -29,40 +34,85 @@ class _GroupListState extends State<GroupList> {
     return Container(
       height: 600,
       child: (filteredGroupList.isEmpty)
-          ? Column(
-              children: <Widget>[Text('No Group added yet!')],
+          ? Center(
+              child: Text(
+                'LOADING...',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
             )
           : ListView.builder(
               itemBuilder: (_, index) {
-                return Card(
-                  elevation: 5,
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                  child: ListTile(
-                    leading: ClipOval(
-                      child: Image.network(
-                        "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
-                        fit: BoxFit.cover,
-                        width: 60.0,
-                        height: 60.0,
-                      ),
-                    ),
-                    title: Text(filteredGroupList[index].name),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(filteredGroupList[index].date),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.exit_to_app),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () => _deleteGroup(
-                          filteredGroupList[index].id, authUser.uid),
-                    ),
-                    onTap: () {
-                      // pass to the GroupScreen _groupList[index]
-                      Navigator.pushNamed(context, GroupScreen.routeName,
-                          arguments: filteredGroupList[index]);
-                    },
-                  ),
-                );
+                return FutureBuilder(
+                    future: returnGroupImage(filteredGroupList[index].id),
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      return snapshot.connectionState == ConnectionState.done
+                          ? Card(
+                              elevation: 5,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 8),
+                              child: ListTile(
+                                leading: ClipOval(
+                                  child: Image.network(
+                                    snapshot.data,
+                                    fit: BoxFit.cover,
+                                    width: 60.0,
+                                    height: 60.0,
+                                  ),
+                                ),
+                                title: Text(filteredGroupList[index].name),
+                                subtitle: Text(
+                                  DateFormat.yMMMd()
+                                      .format(filteredGroupList[index].date),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.exit_to_app),
+                                  color: Theme.of(context).errorColor,
+                                  onPressed: () => _deleteGroup(
+                                      filteredGroupList[index].id,
+                                      authUser.uid),
+                                ),
+                                onTap: () {
+                                  // pass to the GroupScreen _groupList[index]
+                                  Navigator.pushNamed(
+                                      context, GroupScreen.routeName,
+                                      arguments: filteredGroupList[index]);
+                                },
+                              ),
+                            )
+                          : Card(
+                              elevation: 5,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 8),
+                              child: ListTile(
+                                leading: ClipOval(
+                                  child: Image.network(
+                                    "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png",
+                                    fit: BoxFit.cover,
+                                    width: 60.0,
+                                    height: 60.0,
+                                  ),
+                                ),
+                                title: Text(filteredGroupList[index].name),
+                                subtitle: Text(
+                                  DateFormat.yMMMd()
+                                      .format(filteredGroupList[index].date),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.exit_to_app),
+                                  color: Theme.of(context).errorColor,
+                                  onPressed: () => _deleteGroup(
+                                      filteredGroupList[index].id,
+                                      authUser.uid),
+                                ),
+                                onTap: () {
+                                  // pass to the GroupScreen _groupList[index]
+                                  Navigator.pushNamed(
+                                      context, GroupScreen.routeName,
+                                      arguments: filteredGroupList[index]);
+                                },
+                              ),
+                            );
+                    });
               },
               itemCount: filteredGroupList.length,
             ),

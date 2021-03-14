@@ -56,7 +56,14 @@ void _usernamePopup(
       });
 }
 
-void _logoPopup(BuildContext context, pickImage, file) {
+void _logoPopup(BuildContext context, String userID) {
+  File file;
+  void pickImage() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    file = File(pickedFile.path);
+  }
+
   showDialog(
       context: context,
       builder: (_) {
@@ -75,7 +82,13 @@ void _logoPopup(BuildContext context, pickImage, file) {
           actions: [
             ElevatedButton(
               child: Text('Apply'),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                print(file);
+                DatabaseServiceUser().uploadUserIcon(userID, file);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
             ),
           ],
         );
@@ -210,16 +223,16 @@ Widget createSettingButton(String settingButtonName, Function action) {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  File file;
-  void pickImage() async {
-    PickedFile pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    file = File(pickedFile.path);
-  }
+  // File file;
+  // void pickImage() async {
+  //   PickedFile pickedFile =
+  //       await ImagePicker().getImage(source: ImageSource.gallery);
+  //   file = File(pickedFile.path);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final userAuthID = Provider.of<AuthUser>(context).uid;
+    final userID = Provider.of<AuthUser>(context).uid;
     final allUsers = Provider.of<List<User>>(context);
 
     final userDatabase = DatabaseServiceUser();
@@ -231,7 +244,7 @@ class _SettingScreenState extends State<SettingScreen> {
     final _newEmail = TextEditingController();
     final _confirmationEmail = TextEditingController();
 
-    final currUser = allUsers.firstWhere((user) => user.id == userAuthID);
+    final currUser = allUsers.firstWhere((user) => user.id == userID);
 
     return Scaffold(
         appBar: AppBar(
@@ -243,7 +256,7 @@ class _SettingScreenState extends State<SettingScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               createSettingButton(
-                  "Change Logo", () => _logoPopup(context, pickImage, file)),
+                  "Change Logo", () => _logoPopup(context, userID)),
               createSettingButton(
                   "Change Email",
                   () => _emailPopup(context, _oldEmailController, _newEmail,

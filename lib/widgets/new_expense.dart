@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:slash_wise/models/expense.dart';
+import 'package:slash_wise/models/notifiers.dart';
+import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
 class NewExpense extends StatefulWidget {
@@ -16,8 +20,10 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  File file;
 
   void _onSubmit() {
+    print('+++++++++++++++++++++++++++++++++++++++++');
     if (_amountController.text.isEmpty) return;
 
     final _title = _titleController.text;
@@ -25,14 +31,88 @@ class _NewExpenseState extends State<NewExpense> {
 
     if (_title.isEmpty || _amount <= 0) return;
 
-    DatabaseServiceExpense().addExpense(
-        _title, _amount, DateTime.now(), widget.userID, widget.groupID);
+    DatabaseServiceExpense()
+        .addExpense(
+            _title, _amount, DateTime.now(), widget.userID, widget.groupID)
+        .then((expense) =>
+            DatabaseServiceExpense().uploadReceipt(expense.id, file));
 
     Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  void pickImage() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    file = File(pickedFile.path);
+  }
+
+  void _choicesMembersDialog(BuildContext context, List<User> allUsers,
+      MultipleNotifier _multipleNotifier) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Select Member to Include'),
+            content: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: allUsers
+                      .map((user) => StatefulBuilder(
+                            builder: (context, _setState) => CheckboxListTile(
+                              title: Text(user.name),
+                              value: _multipleNotifier.isHaveUser(user),
+                              onChanged: (value) {
+                                _setState(() => value
+                                    ? _multipleNotifier.addUser(user)
+                                    : _multipleNotifier.removeUser(user));
+                              },
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _createConfirmationDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: Text(
+                'Please note that after confirmation any modification will not be possible for security reason'),
+            actions: [
+              ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.pop(context),
+              ),
+              ElevatedButton(
+                child: Text('Confirm'),
+                onPressed: () => _onSubmit(),
+              ),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    final allUsers = Provider.of<List<User>>(context);
+    final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+    final selectedUsers = _multipleNotifier.selectedUsers();
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -50,13 +130,27 @@ class _NewExpenseState extends State<NewExpense> {
                 decoration: InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _onSubmit(),
+                onSubmitted: (_) => _createConfirmationDialog(context),
               ),
               SizedBox(height: 30),
-              ElevatedButton(
-                child: Text('Add Expense'),
-                onPressed: _onSubmit,
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    child: Text('Include Only'),
+                    onPressed: () => _choicesMembersDialog(
+                        context, allUsers, _multipleNotifier),
+                  ),
+                  ElevatedButton(
+                    child: Text('Add Image'),
+                    onPressed: () => pickImage(),
+                  ),
+                  ElevatedButton(
+                    child: Text('Confirm'),
+                    onPressed: () => _createConfirmationDialog(context),
+                  ),
+                ],
+              )
             ],
           ),
         ),

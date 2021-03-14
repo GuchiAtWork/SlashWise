@@ -18,9 +18,7 @@ how to use uploadReceiptURL/getReceiptURL
   await DatabaseServiceExpense().uploadReceipt("expenseID", pickedImage);
   final url = await DatabaseServiceExpense().getReceiptURL("expenseID");
 */
-  Future<String> uploadReceipt(String expenseID, PickedFile pickedImage) async {
-    File img = File(pickedImage.path);
-
+  Future<String> uploadReceipt(String expenseID, File img) async {
     await FirebaseStorage.instance.ref('$expenseID').putFile(img);
     String downloadURL =
         await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
@@ -28,13 +26,19 @@ how to use uploadReceiptURL/getReceiptURL
   }
 
   Future<String> getReceipt(String expenseID) async {
-    String downloadURL =
-        await FirebaseStorage.instance.ref('$expenseID').getDownloadURL();
+    String downloadURL = await FirebaseStorage.instance
+        .ref('$expenseID')
+        .getDownloadURL()
+        .then((imageURL) {
+      return imageURL;
+    }).catchError((onError) {
+      return "";
+    });
 
     return downloadURL;
   }
 
-  Future<void> addExpense(String expenseName, int amount, DateTime date,
+  Future<Expense> addExpense(String expenseName, int amount, DateTime date,
       String payerID, String groupID) async {
     final createdExpense = await expenseCollection.add({
       "name": expenseName,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/user_auth.dart';
@@ -16,8 +18,13 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final groupDatabase = DatabaseServiceGroup();
 
-  void _addNewGroup(String newGroupName, String userID) {
-    groupDatabase.addGroup(userID, newGroupName, DateTime.now());
+  void _addNewGroup(String newGroupName, String userID, File file) async {
+    final addedGroup =
+        await groupDatabase.addGroup(userID, newGroupName, DateTime.now());
+
+    if (file != null) {
+      groupDatabase.uploadGroupIcon(addedGroup.id, file);
+    }
   }
 
   void _showAddNewGroup(BuildContext context, String userID) {
