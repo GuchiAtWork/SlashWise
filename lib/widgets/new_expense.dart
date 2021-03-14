@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/notifiers.dart';
 import 'package:slash_wise/models/user.dart';
+import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
 
 class NewExpense extends StatefulWidget {
-  NewExpense(this.userID, this.groupID);
+  NewExpense(this.userID, this.group);
 
   final String userID;
-  final String groupID;
+  final DbGroup group;
 
   @override
   _NewExpenseState createState() => _NewExpenseState();
@@ -22,8 +24,10 @@ class _NewExpenseState extends State<NewExpense> {
   final _amountController = TextEditingController();
   File file;
 
-  void _onSubmit() {
+  void _onSubmit(MultipleNotifier _multipleNotifier, String currUserID) {
     print('+++++++++++++++++++++++++++++++++++++++++');
+    final selectedUsers = _multipleNotifier.selectedUsers();
+
     if (_amountController.text.isEmpty) return;
 
     final _title = _titleController.text;
@@ -31,11 +35,23 @@ class _NewExpenseState extends State<NewExpense> {
 
     if (_title.isEmpty || _amount <= 0) return;
 
+    List<String> payees = [];
+
+    if (selectedUsers.length == 0) {
+      payees = widget.group.users?.cast<String>();
+    } else {
+      payees = selectedUsers.map((user) => user.id).toList();
+      payees.add(currUserID);
+    }
+
     DatabaseServiceExpense()
-        .addExpense(
-            _title, _amount, DateTime.now(), widget.userID, widget.groupID)
-        .then((expense) =>
-            DatabaseServiceExpense().uploadReceipt(expense.id, file));
+        .addExpense(_title, _amount, DateTime.now(), widget.userID,
+            widget.group.id, payees)
+        .then((expense) {
+      if (file != null) {
+        DatabaseServiceExpense().uploadReceipt(expense.id, file);
+      }
+    });
 
     Navigator.pop(context);
     Navigator.pop(context);
@@ -47,7 +63,7 @@ class _NewExpenseState extends State<NewExpense> {
     file = File(pickedFile.path);
   }
 
-  void _choicesMembersDialog(BuildContext context, List<User> allUsers,
+  void _choicesMembersDialog(BuildContext context, List<User> groupMembers,
       MultipleNotifier _multipleNotifier) {
     showDialog(
         context: context,
@@ -59,7 +75,7 @@ class _NewExpenseState extends State<NewExpense> {
                 width: double.infinity,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: allUsers
+                  children: groupMembers
                       .map((user) => StatefulBuilder(
                             builder: (context, _setState) => CheckboxListTile(
                               title: Text(user.name),
@@ -85,7 +101,8 @@ class _NewExpenseState extends State<NewExpense> {
         });
   }
 
-  void _createConfirmationDialog(BuildContext context) {
+  void _createConfirmationDialog(BuildContext context,
+      MultipleNotifier _multipleNotifier, String currUserID) {
     showDialog(
         context: context,
         builder: (_) {
@@ -100,7 +117,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 child: Text('Confirm'),
-                onPressed: () => _onSubmit(),
+                onPressed: () => _onSubmit(_multipleNotifier, currUserID),
               ),
             ],
           );
@@ -109,9 +126,14 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
+    final currUserID = Provider.of<AuthUser>(context).uid;
     final allUsers = Provider.of<List<User>>(context);
     final _multipleNotifier = Provider.of<MultipleNotifier>(context);
-    final selectedUsers = _multipleNotifier.selectedUsers();
+
+    final groupMembers = allUsers
+        .where((user) =>
+            widget.group.users.contains(user.id) && user.id != currUserID)
+        .toList();
 
     return SingleChildScrollView(
       child: Card(
@@ -124,13 +146,14 @@ class _NewExpenseState extends State<NewExpense> {
               TextField(
                 decoration: InputDecoration(labelText: 'Name'),
                 controller: _titleController,
-                onSubmitted: (_) => _onSubmit(),
+                onSubmitted: (_) => _onSubmit(_multipleNotifier, currUserID),
               ),
               TextField(
                 decoration: InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _createConfirmationDialog(context),
+                onSubmitted: (_) => _createConfirmationDialog(
+                    context, _multipleNotifier, currUserID),
               ),
               SizedBox(height: 30),
               Row(
@@ -139,7 +162,7 @@ class _NewExpenseState extends State<NewExpense> {
                   ElevatedButton(
                     child: Text('Include Only'),
                     onPressed: () => _choicesMembersDialog(
-                        context, allUsers, _multipleNotifier),
+                        context, groupMembers, _multipleNotifier),
                   ),
                   ElevatedButton(
                     child: Text('Add Image'),
@@ -147,7 +170,8 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                   ElevatedButton(
                     child: Text('Confirm'),
-                    onPressed: () => _createConfirmationDialog(context),
+                    onPressed: () => _createConfirmationDialog(
+                        context, _multipleNotifier, currUserID),
                   ),
                 ],
               )

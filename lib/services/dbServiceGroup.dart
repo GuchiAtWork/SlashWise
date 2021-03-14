@@ -2,6 +2,7 @@ import 'dart:io';
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceUser.dart";
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,8 @@ class DatabaseServiceGroup {
   //collection reference
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
+  final CollectionReference expenseCollection =
+      FirebaseFirestore.instance.collection('expenses');
 
   Stream<List<DbGroup>> groups() {
     return groupCollection
@@ -78,7 +81,15 @@ class DatabaseServiceGroup {
         memberList.where((member) => member != currUserID).toList();
 
     if (updatedMemberList.length == 0) {
+      FirebaseStorage.instance.ref(groupID).delete();
       await groupCollection.doc(groupID).delete();
+      await expenseCollection
+          .where("groupID", isEqualTo: groupID)
+          .get()
+          .then((QuerySnapshot q) => q.docs.forEach((doc) {
+                FirebaseStorage.instance.ref(doc.reference.id).delete();
+                doc.reference.delete();
+              }));
     } else {
       await groupCollection
           .doc(groupID)
