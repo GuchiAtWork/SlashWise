@@ -101,26 +101,17 @@ class _GroupScreenState extends State<GroupScreen> {
                     child: Text('Pay With Cash'),
                     onPressed: () {}, // TODO make the payment function
                   ),
-<<<<<<< HEAD
-                  SizedBox(height: 10),
-                  ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: 50),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => PaymentScreen(150)// to be changed (static => dynamic)
-                          ));
-                      },
-                      child: Text('PAYPAL'),
-=======
                   SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 20),
->>>>>>> staging
                     ),
                     child: Text('Pay With PayPal'),
-                    onPressed: () {}, // TODO make the payment function
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => PaymentScreen(150)// TODO make the param static => dynamic
+                        ));
+                    }, // TODO make the payment function
                   ),
                 ],
               ),
