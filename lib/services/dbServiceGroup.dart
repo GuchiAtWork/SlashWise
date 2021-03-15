@@ -2,6 +2,7 @@ import 'dart:io';
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:slash_wise/models/dbGroup.dart';
+import 'package:slash_wise/services/dbServiceExpense.dart';
 import "package:slash_wise/services/dbServiceUser.dart";
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,8 @@ class DatabaseServiceGroup {
   //collection reference
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
+  final CollectionReference expenseCollection =
+      FirebaseFirestore.instance.collection('expenses');
 
   Stream<List<DbGroup>> groups() {
     return groupCollection
@@ -78,7 +81,15 @@ class DatabaseServiceGroup {
         memberList.where((member) => member != currUserID).toList();
 
     if (updatedMemberList.length == 0) {
+      FirebaseStorage.instance.ref(groupID).delete();
       await groupCollection.doc(groupID).delete();
+      await expenseCollection
+          .where("groupID", isEqualTo: groupID)
+          .get()
+          .then((QuerySnapshot q) => q.docs.forEach((doc) {
+                FirebaseStorage.instance.ref(doc.reference.id).delete();
+                doc.reference.delete();
+              }));
     } else {
       await groupCollection
           .doc(groupID)
@@ -109,20 +120,18 @@ class DatabaseServiceGroup {
     await groupCollection.doc(groupID).update({'name': groupName});
   }
 
-  Future<String> uploadGroupIcon(String groupID, PickedFile pickedImage) async {
-    File img = File(pickedImage.path);
-
+  Future<String> uploadGroupIcon(String groupID, File fileImage) async {
     return FirebaseStorage.instance
         .ref('$groupID')
         .getMetadata()
         .then((image) async {
       await FirebaseStorage.instance.ref(groupID).delete();
-      await FirebaseStorage.instance.ref(groupID).putFile(img);
+      await FirebaseStorage.instance.ref(groupID).putFile(fileImage);
       String downloadURL =
           await FirebaseStorage.instance.ref(groupID).getDownloadURL();
       return downloadURL;
     }).catchError((onError) async {
-      await FirebaseStorage.instance.ref(groupID).putFile(img);
+      await FirebaseStorage.instance.ref(groupID).putFile(fileImage);
       String downloadURL =
           await FirebaseStorage.instance.ref(groupID).getDownloadURL();
       return downloadURL;
@@ -130,8 +139,14 @@ class DatabaseServiceGroup {
   }
 
   Future<String> getGroupIcon(String groupID) async {
-    String downloadURL =
-        await FirebaseStorage.instance.ref(groupID).getDownloadURL();
+    String downloadURL = await FirebaseStorage.instance
+        .ref(groupID)
+        .getDownloadURL()
+        .then((image) {
+      return image;
+    }).catchError((onError) {
+      return "https://he.cecollaboratory.com/public/layouts/images/group-default-logo.png";
+    });
     return downloadURL;
   }
 
