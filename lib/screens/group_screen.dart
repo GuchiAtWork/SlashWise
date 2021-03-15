@@ -108,9 +108,12 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                     child: Text('Pay With PayPal'),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => PaymentScreen(150)// TODO make the param static => dynamic
-                        ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PaymentScreen(
+                                  150) // TODO make the param static => dynamic
+                              ));
                     }, // TODO make the payment function
                   ),
                 ],
@@ -315,7 +318,7 @@ class _GroupScreenState extends State<GroupScreen> {
           Column(
             children: [
               Container(
-                height: 150,
+                height: 170,
                 color: Theme.of(context).colorScheme.background,
                 width: double.infinity,
                 child: Column(
@@ -327,8 +330,8 @@ class _GroupScreenState extends State<GroupScreen> {
                       child: Image.network(
                         groupImageURL,
                         fit: BoxFit.cover,
-                        width: 70.0,
-                        height: 70.0,
+                        width: 90.0,
+                        height: 90.0,
                       ),
                     ),
                     Text(
