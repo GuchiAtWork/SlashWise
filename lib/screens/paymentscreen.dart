@@ -14,12 +14,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return '''
       <html>
         <body onload="document.f.submit();">
-          <form id="f" name="f" method="post" action="https://slashwise-backend.herokuapp.com/pay">
+          <form id="f" name="f" method="post" action="http://localhost:8000/pay">
             <input type="hidden" name="price" value="${widget.price}" />
           </form>
         </body>
       </html>
     ''';
+    // return '''
+    //   <html>
+    //     <body onload="document.f.submit();">
+    //       <form id="f" name="f" method="post" action="https://slashwise-backend.herokuapp.com/pay">
+    //         <input type="hidden" name="price" value="${widget.price}" />
+    //       </form>
+    //     </body>
+    //   </html>
+    // ''';
   }
   @override
   Widget build(BuildContext context) {
