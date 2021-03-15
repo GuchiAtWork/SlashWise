@@ -9,6 +9,7 @@ import 'package:slash_wise/services/dbServiceExpense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
+import 'package:slash_wise/screens/paymentscreen.dart';
 
 class GroupScreen extends StatefulWidget {
   static const routeName = '/group';
@@ -106,7 +107,11 @@ class _GroupScreenState extends State<GroupScreen> {
                       padding: EdgeInsets.symmetric(vertical: 20),
                     ),
                     child: Text('Pay With PayPal'),
-                    onPressed: () {}, // TODO make the payment function
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => PaymentScreen(150)// TODO make the param static => dynamic
+                        ));
+                    }, // TODO make the payment function
                   ),
                 ],
               ),
