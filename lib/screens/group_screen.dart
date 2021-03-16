@@ -51,81 +51,213 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
-  void _generalPaymentDialog(BuildContext context) {
+  Widget generalPayment(BuildContext context, String currUserID, String groupID,
+      List<User> usersToOwe) {
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text('Pay Everyone'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                    ),
-                    child: Text('Pay With Cash'),
-                    onPressed: () {}, // TODO make the payment function
-                  ),
-                ],
-              ),
-            ),
+            title: Text('Confirm Your Payment'),
+            content: Text('Pay back everyone'),
             actions: [
-              TextButton(
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                ),
-                onPressed: () => Navigator.pop(context),
+              ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  for (int i = 0; i < usersToOwe.length; i++) {
+                    List<String> payees = [];
+                    payees.add(usersToOwe[i].id);
+
+                    expenseDatabase.addExpense(
+                        'Pay back ${usersToOwe[i].name}',
+                        owe[usersToOwe[i].id].toInt().abs(),
+                        DateTime.now(),
+                        currUserID,
+                        groupID,
+                        payees);
+                  }
+
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
               ),
             ],
           );
         });
   }
 
-  void _singlePaymentDialog(BuildContext context) {
+  void _generalPaymentDialog(
+      BuildContext context, String currUserID, String groupID) {
+    num allAmounts = 0;
+
+    owe.forEach((_, num amount) {
+      allAmounts += amount;
+    });
+
+    List<User> usersToOwe = team.where((user) {
+      if (owe[user.id] < 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }).toList();
+
+    showDialog(
+        context: context,
+        builder: (_) {
+          return allAmounts < 0
+              ? AlertDialog(
+                  title: Text('Pay Everyone'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                          ),
+                          child: Text('Pay With Cash'),
+                          onPressed: () {
+                            generalPayment(
+                                context, currUserID, groupID, usersToOwe);
+                          }, // TODO make the payment function
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Theme.of(context).errorColor),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                )
+              : AlertDialog(
+                  title: Text('You don\'t own money to anyone.'),
+                  actions: [
+                    ElevatedButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+        });
+  }
+
+  Widget singlePayment(BuildContext context, String currUserID, User payee,
+      num amount, String groupID) {
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text('Pay Individualy'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                    ),
-                    child: Text('Pay With Cash'),
-                    onPressed: () {}, // TODO make the payment function
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                    ),
-                    child: Text('Pay With PayPal'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => PaymentScreen(150)// TODO make the param static => dynamic
-                        ));
-                    }, // TODO make the payment function
-                  ),
-                ],
-              ),
-            ),
+            title: Text('Confirm Your Payment'),
+            content:
+                Text('Pay ${payee.name} ¥${amount.abs().toStringAsFixed(0)}'),
             actions: [
-              TextButton(
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                ),
-                onPressed: () => Navigator.pop(context),
+              ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  List<String> payees = [];
+                  payees.add(payee.id);
+
+                  expenseDatabase.addExpense(
+                      'Pay back ${payee.name}',
+                      //-(amount.count()),
+                      amount.toInt().abs(),
+                      DateTime.now(),
+                      currUserID,
+                      groupID,
+                      payees);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
               ),
             ],
           );
+        });
+  }
+
+  void _singlePaymentDialog(BuildContext context, String currUserID, User payee,
+      num amount, String groupID) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return amount < 0
+              ? AlertDialog(
+                  title: Text('Pay Individually'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                          ),
+                          child: Text('Pay With Cash'),
+                          onPressed: () => singlePayment(
+                              context,
+                              currUserID,
+                              payee,
+                              amount,
+                              groupID), // TODO make the payment function
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                          ),
+                          child: Text('Pay With PayPal'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PaymentScreen(
+                                        150) // TODO make the param static => dynamic
+                                    ));
+                          }, // TODO make the payment function
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Theme.of(context).errorColor),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                )
+              : AlertDialog(
+                  title: Text('You don\'t own any money.'),
+                  actions: [
+                    ElevatedButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ); //second dialogue here
         });
   }
 
@@ -296,7 +428,7 @@ class _GroupScreenState extends State<GroupScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.payment),
-              onPressed: () => _generalPaymentDialog(context),
+              onPressed: () => _generalPaymentDialog(context, userID, group.id),
             ),
             IconButton(
               icon: Icon(Icons.add),
@@ -315,7 +447,7 @@ class _GroupScreenState extends State<GroupScreen> {
           Column(
             children: [
               Container(
-                height: 150,
+                height: 170,
                 color: Theme.of(context).colorScheme.background,
                 width: double.infinity,
                 child: Column(
@@ -327,8 +459,8 @@ class _GroupScreenState extends State<GroupScreen> {
                       child: Image.network(
                         groupImageURL,
                         fit: BoxFit.cover,
-                        width: 70.0,
-                        height: 70.0,
+                        width: 90.0,
+                        height: 90.0,
                       ),
                     ),
                     Text(
@@ -415,7 +547,11 @@ class _GroupScreenState extends State<GroupScreen> {
                                                     icon: Icon(Icons.payment),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
-                                                            context),
+                                                            context,
+                                                            userID,
+                                                            team[index],
+                                                            owe[team[index].id],
+                                                            group.id),
                                                   )
                                                 ],
                                               ),
@@ -476,7 +612,11 @@ class _GroupScreenState extends State<GroupScreen> {
                                                     icon: Icon(Icons.payment),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
-                                                            context),
+                                                            context,
+                                                            userID,
+                                                            team[index],
+                                                            owe[team[index].id],
+                                                            group.id),
                                                   )
                                                 ],
                                               ),
