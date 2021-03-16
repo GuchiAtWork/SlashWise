@@ -130,10 +130,13 @@ class _NewExpenseState extends State<NewExpense> {
     final allUsers = Provider.of<List<User>>(context);
     final _multipleNotifier = Provider.of<MultipleNotifier>(context);
 
+    print('**********************');
     final groupMembers = allUsers
         .where((user) =>
             widget.group.users.contains(user.id) && user.id != currUserID)
         .toList();
+
+    print(groupMembers);
 
     return SingleChildScrollView(
       child: Card(

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/expense.dart';
+import 'package:slash_wise/models/notifiers.dart';
 import 'package:slash_wise/models/user.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/services/dbServiceExpense.dart';
@@ -95,10 +96,13 @@ class _GroupScreenState extends State<GroupScreen> {
   void _generalPaymentDialog(
       BuildContext context, String currUserID, String groupID) {
     num allAmounts = 0;
+    bool flag = false;
 
     owe.forEach((_, num amount) {
+      if (amount < 0) flag = true;
       allAmounts += amount;
     });
+    print(allAmounts);
 
     List<User> usersToOwe = team.where((user) {
       if (owe[user.id] < 0) {
@@ -111,7 +115,7 @@ class _GroupScreenState extends State<GroupScreen> {
     showDialog(
         context: context,
         builder: (_) {
-          return allAmounts < 0
+          return flag
               ? AlertDialog(
                   title: Text('Pay Everyone'),
                   content: SingleChildScrollView(
@@ -264,7 +268,7 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
-  void _submitData(String groupID) async {
+  void _submitData(String groupID, MultipleNotifier _multipleNotifier) async {
     if (_emailController.text.isEmpty) return;
     final enteredEmail = _emailController.text;
     var result = 'User doesn\'t exist';
@@ -276,6 +280,8 @@ class _GroupScreenState extends State<GroupScreen> {
       setState(() {
         print('setState() called when add a member');
         team.add(userToAdd);
+        _multipleNotifier.addUser(userToAdd);
+
         print(team);
       });
     }
@@ -289,7 +295,8 @@ class _GroupScreenState extends State<GroupScreen> {
     );
   }
 
-  void _createAddMemberDialog(BuildContext context, String groupID) {
+  void _createAddMemberDialog(BuildContext context, String groupID,
+      MultipleNotifier _multipleNotifier) {
     showDialog(
         context: context,
         builder: (_) {
@@ -302,13 +309,13 @@ class _GroupScreenState extends State<GroupScreen> {
               ),
               controller: _emailController,
               onSubmitted: (_) => () {
-                _submitData(groupID);
+                _submitData(groupID, _multipleNotifier);
               },
             ),
             actions: [
               ElevatedButton(
                 child: Text('Add Member'),
-                onPressed: () => _submitData(groupID),
+                onPressed: () => _submitData(groupID, _multipleNotifier),
               ),
             ],
           );
@@ -414,7 +421,13 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthUser>(context).uid;
-    final group = ModalRoute.of(context).settings.arguments as DbGroup;
+    final defaultGroup = ModalRoute.of(context).settings.arguments as DbGroup;
+    final groupId = defaultGroup.id;
+    var group = defaultGroup;
+
+    DatabaseServiceGroup().getGroup(groupId).then((value) => group = value);
+
+    final _multipleNotifier = Provider.of<MultipleNotifier>(context);
 
     // All expenses from the database - NEEDS TO BE FILTERED
     final allExpenses = Provider.of<List<Expense>>(context);
@@ -438,7 +451,8 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => _createAddMemberDialog(context, group.id),
+              onPressed: () =>
+                  _createAddMemberDialog(context, group.id, _multipleNotifier),
             ),
           ],
           bottom: TabBar(

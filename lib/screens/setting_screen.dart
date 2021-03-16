@@ -244,7 +244,8 @@ class _SettingScreenState extends State<SettingScreen> {
     final _newEmail = TextEditingController();
     final _confirmationEmail = TextEditingController();
 
-    final currUser = allUsers.firstWhere((user) => user.id == userID);
+    final currUser =
+        allUsers.firstWhere((user) => user.id == userID, orElse: () => null);
 
     return Scaffold(
         appBar: AppBar(
