@@ -27,8 +27,16 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    rebuildAllChildren(context);
     return MultiProvider(
       providers: [
         StreamProvider<AuthUser>.value(
