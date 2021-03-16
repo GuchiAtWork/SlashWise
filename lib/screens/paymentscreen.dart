@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentScreen extends StatefulWidget {
-  PaymentScreen(this.price);
+  PaymentScreen(this.email, this.price);
   final price;
+  final email;
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
@@ -14,8 +15,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return '''
       <html>
         <body onload="document.f.submit();">
-          <form id="f" name="f" method="post" action="http://localhost:8000/pay">
-            <input type="hidden" name="price" value="${widget.price}" />
+          <form id="f" name="f" method="post" action="https://slashwise-backend-live.herokuapp.com/pay?price=${widget.price}&email=${widget.email}">
           </form>
         </body>
       </html>

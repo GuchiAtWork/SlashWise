@@ -230,7 +230,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => PaymentScreen(
-                                        150) // TODO make the param static => dynamic
+                                      "sb-ht23x5377411@personal.example.com",
+                                      80) // TODO make the param static => dynamic
                                     ));
                           }, // TODO make the payment function
                         ),
