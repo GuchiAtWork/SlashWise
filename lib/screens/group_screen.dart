@@ -433,7 +433,8 @@ class _GroupScreenState extends State<GroupScreen> {
     final allExpenses = Provider.of<List<Expense>>(context);
 
     final allUsers = Provider.of<List<User>>(context);
-    final currUser = allUsers.firstWhere((user) => user.id == userID);
+    final currUser =
+        allUsers.firstWhere((user) => user.id == userID, orElse: () => null);
 
     // Expenses made by group
     var filteredExpenses =
