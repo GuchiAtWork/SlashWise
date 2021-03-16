@@ -195,7 +195,7 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
-  void _singlePaymentDialog(BuildContext context, String currUserID, User payee,
+  void _singlePaymentDialog(BuildContext context, User currUser, User payee,
       num amount, String groupID) {
     showDialog(
         context: context,
@@ -214,7 +214,7 @@ class _GroupScreenState extends State<GroupScreen> {
                           child: Text('Pay With Cash'),
                           onPressed: () => singlePayment(
                               context,
-                              currUserID,
+                              currUser.id,
                               payee,
                               amount,
                               groupID), // TODO make the payment function
@@ -230,8 +230,10 @@ class _GroupScreenState extends State<GroupScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => PaymentScreen(
-                                      "sb-ht23x5377411@personal.example.com",
-                                      80) // TODO make the param static => dynamic
+                                        currUser,
+                                        payee,
+                                        amount.toInt().abs(),
+                                        groupID) // TODO make the param static => dynamic
                                     ));
                           }, // TODO make the payment function
                         ),
@@ -417,6 +419,9 @@ class _GroupScreenState extends State<GroupScreen> {
     // All expenses from the database - NEEDS TO BE FILTERED
     final allExpenses = Provider.of<List<Expense>>(context);
 
+    final allUsers = Provider.of<List<User>>(context);
+    final currUser = allUsers.firstWhere((user) => user.id == userID);
+
     // Expenses made by group
     var filteredExpenses =
         allExpenses.where((expense) => expense.groupID == group.id).toList();
@@ -549,7 +554,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
-                                                            userID,
+                                                            currUser,
                                                             team[index],
                                                             owe[team[index].id],
                                                             group.id),
@@ -614,7 +619,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
-                                                            userID,
+                                                            currUser,
                                                             team[index],
                                                             owe[team[index].id],
                                                             group.id),
