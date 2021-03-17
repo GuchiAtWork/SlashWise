@@ -20,7 +20,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("SignIn"), actions: <Widget>[
+      appBar: AppBar(title: Text("Welcome back!"), actions: <Widget>[
         TextButton.icon(
           style: TextButton.styleFrom(
             primary: Colors.white,
@@ -33,22 +33,34 @@ class _SignInState extends State<SignIn> {
         )
       ]),
       body: Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+        ),
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 20.0),
                 TextFormField(
-                  decoration: InputDecoration(hintText: "Email"),
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                    fillColor: Colors.white,
+                    filled: true
+                    ),
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
                   onChanged: (val) {
                     setState(() => email = val);
                   },
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 40.0),
                 TextFormField(
-                    decoration: InputDecoration(hintText: "Password"),
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      fillColor: Colors.white,
+                      filled: true,
+                      ),
                     validator: (val) => val.length < 6
                         ? 'Enter an password 6+ chars long'
                         : null,
@@ -56,11 +68,9 @@ class _SignInState extends State<SignIn> {
                     onChanged: (val) {
                       setState(() => password = val);
                     }),
-                SizedBox(height: 20.0),
+                SizedBox(height: 40.0),
                 ElevatedButton(
-                    child: Text(
-                      "Sign in",
-                    ),
+                    child: Text("Log In"),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         dynamic result = await _auth.signInWithEmailAndPassword(
@@ -70,12 +80,31 @@ class _SignInState extends State<SignIn> {
                               "could not sign in with those credentials");
                         }
                       }
-                    }),
-                SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.indigo[700],
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+                      elevation: 5.0,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+                    ),
+                SizedBox(height: 40.0),
+                ElevatedButton(
+                    child: Text("Sign Up"),
+                    onPressed: () {
+                      widget.toggleView();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.indigo[900],
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+                      elevation: 5.0,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+                    ),
               ],
             )),
       ),
