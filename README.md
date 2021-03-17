@@ -18,7 +18,6 @@ Our project was built using the following technologies:
 # Building this Project Locally
 
 ## Prerequisites
----
 In order to run this app locally, you will need the following technologies:
 * Android Studio (and the emulators that come with it)
 * VSCode (if you want to, Android Studio will suffice)
@@ -28,7 +27,6 @@ In order to run this app locally, you will need the following technologies:
 If you don't have any of these following technologies already set up, please take a look at this [guide](https://flutter.dev/docs/get-started/install). It does a great job explaining how to set Flutter up, along with the other technologies above.
 
 ## Installation
----
 1. Clone the repository
 2. Open a terminal in the SlashWise folder (the repository folder)
 3. Open an Android emulator 
