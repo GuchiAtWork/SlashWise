@@ -5,6 +5,7 @@ import 'package:slash_wise/models/dbGroup.dart';
 import 'package:slash_wise/models/user_auth.dart';
 import 'package:slash_wise/screens/group_screen.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 
 class GroupList extends StatefulWidget {
   @override
@@ -65,12 +66,20 @@ class _GroupListState extends State<GroupList> {
                                       .format(filteredGroupList[index].date),
                                 ),
                                 trailing: IconButton(
-                                  icon: Icon(Icons.exit_to_app),
-                                  color: Theme.of(context).errorColor,
-                                  onPressed: () => _deleteGroup(
-                                      filteredGroupList[index].id,
-                                      authUser.uid),
-                                ),
+                                    icon: Icon(Icons.exit_to_app),
+                                    color: Theme.of(context).errorColor,
+                                    //onPressed: () => _deleteGroup(
+                                    //  filteredGroupList[index].id,
+                                    //authUser.uid),
+                                    onPressed: () async {
+                                      if (await confirm(context,
+                                          content: Text(
+                                              'Would you like to remove this group?'))) {
+                                        return _deleteGroup(
+                                            filteredGroupList[index].id,
+                                            authUser.uid);
+                                      }
+                                    }),
                                 onTap: () {
                                   // pass to the GroupScreen _groupList[index]
                                   Navigator.pushNamed(
@@ -98,12 +107,20 @@ class _GroupListState extends State<GroupList> {
                                       .format(filteredGroupList[index].date),
                                 ),
                                 trailing: IconButton(
-                                  icon: Icon(Icons.exit_to_app),
-                                  color: Theme.of(context).errorColor,
-                                  onPressed: () => _deleteGroup(
-                                      filteredGroupList[index].id,
-                                      authUser.uid),
-                                ),
+                                    icon: Icon(Icons.exit_to_app),
+                                    color: Theme.of(context).errorColor,
+                                    //onPressed: () => _deleteGroup(
+                                    //  filteredGroupList[index].id,
+                                    //authUser.uid),
+                                    onPressed: () async {
+                                      if (await confirm(context,
+                                          content: Text(
+                                              'Would you like to remove this group?'))) {
+                                        return _deleteGroup(
+                                            filteredGroupList[index].id,
+                                            authUser.uid);
+                                      }
+                                    }),
                                 onTap: () {
                                   // pass to the GroupScreen _groupList[index]
                                   Navigator.pushNamed(
