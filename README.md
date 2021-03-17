@@ -43,7 +43,7 @@ If you don't have any of these following technologies already set up, please tak
 * Changing user credentials
 
 # Contributors
-* Frédéric Wojcikowski ([GitHub](https://github.com/GuchiAtWork))
+* Frédéric Wojcikowski ([GitHub](https://github.com/oFrederic))
 * Hiroki Otani ([GitHub](https://github.com/HirokiOtani))
-* Keizo Hamaguchi ([GitHub](https://github.com/oFrederic))
+* Keizo Hamaguchi ([GitHub](https://github.com/GuchiAtWork))
 * Nahoko Toyota ([GitHub](https://github.com/tNahoko))
