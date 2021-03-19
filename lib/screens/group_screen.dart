@@ -452,7 +452,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   _createAddMemberDialog(context, group.id, _multipleNotifier),
             ),
             IconButton(
-              icon: Icon(Icons.navigate_next),
+              icon: Icon(Icons.attach_money),
               onPressed: () => _generalPaymentDialog(context, userID, group.id),
             ),
           ],
