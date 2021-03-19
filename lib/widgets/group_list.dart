@@ -65,7 +65,21 @@ class _GroupListState extends State<GroupList> {
                                   DateFormat.yMMMd()
                                       .format(filteredGroupList[index].date),
                                 ),
-                                trailing: IconButton(
+                                trailing: Wrap(
+                                  spacing: 5,
+                                  children: [
+                                    SizedBox(
+                                      width: 40.0,
+                                      child: Text(
+                                        "Leave this group",
+                                        style: TextStyle(
+                                          color: Theme.of(context).errorColor,
+                                          fontWeight: FontWeight.bold
+                                          ),
+                                      ),
+                                    ),
+                                    
+                                    IconButton(
                                     icon: Icon(Icons.exit_to_app),
                                     color: Theme.of(context).errorColor,
                                     //onPressed: () => _deleteGroup(
@@ -80,6 +94,9 @@ class _GroupListState extends State<GroupList> {
                                             authUser.uid);
                                       }
                                     }),
+                                  ],
+                                ),
+                                
                                 onTap: () {
                                   // pass to the GroupScreen _groupList[index]
                                   Navigator.pushNamed(

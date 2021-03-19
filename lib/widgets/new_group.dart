@@ -50,7 +50,7 @@ class _NewGroupState extends State<NewGroup> {
                 height: 100,
                 child: TextField(
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 25.0,
                     height: 2.0,
                     color: Colors.black                  
                   ),
