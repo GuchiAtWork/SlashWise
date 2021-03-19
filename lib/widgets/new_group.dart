@@ -41,26 +41,38 @@ class _NewGroupState extends State<NewGroup> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'name',
-                  icon: Icon(Icons.group_add),
+              AppBar(
+                title: Text(
+                "Create a new group"
                 ),
-                controller: _nameController,
-                onSubmitted: (_) => () {
-                  _submitData();
-                },
+              ),
+              Container(              
+                height: 100,
+                child: TextField(
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    height: 2.0,
+                    color: Colors.black                  
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Enter group name',
+                  ),
+                  controller: _nameController,
+                  onSubmitted: (_) => () {
+                    _submitData();
+                  },
+                ),
               ),
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    child: Text('Add Image'),
+                    child: Text('Add Group Image 📷'),
                     onPressed: () => pickImage(),
                   ),
                   ElevatedButton(
-                    child: Text('Add Group'),
+                    child: Text('Done ✅'),
                     onPressed: () => _submitData(),
                   ),
                 ],
