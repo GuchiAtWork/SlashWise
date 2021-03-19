@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           TextButton.icon(
             style: TextButton.styleFrom(primary: Colors.white),
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.logout),
             label: Text("Logout"),
             onPressed: () async {
               await _auth.signOut();
@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
       drawer: MainDrawer(),
       body: GroupList(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.group_add),
         onPressed: () => {_showAddNewGroup(context, user.uid)},
       ),
     );

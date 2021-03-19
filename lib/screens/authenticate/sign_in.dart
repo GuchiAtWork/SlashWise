@@ -20,18 +20,9 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Welcome back!"), actions: <Widget>[
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            primary: Colors.white,
-          ),
-          icon: Icon(Icons.person),
-          label: Text("Register"),
-          onPressed: () {
-            widget.toggleView();
-          },
-        )
-      ]),
+      appBar: AppBar(
+        title: Text("Welcome back!")
+        ),
       body: Container(
         decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
@@ -69,8 +60,12 @@ class _SignInState extends State<SignIn> {
                       setState(() => password = val);
                     }),
                 SizedBox(height: 40.0),
-                ElevatedButton(
-                    child: Text("Log In"),
+                SizedBox(
+                  width: 400,
+                  child: ElevatedButton(
+                    child: Text(
+                      "Log In"
+                      ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         dynamic result = await _auth.signInWithEmailAndPassword(
@@ -90,8 +85,11 @@ class _SignInState extends State<SignIn> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
                     ),
+                  ),
                 SizedBox(height: 40.0),
-                ElevatedButton(
+                SizedBox(
+                  width: 400,
+                  child: ElevatedButton(
                     child: Text("Sign Up"),
                     onPressed: () {
                       widget.toggleView();
@@ -105,6 +103,7 @@ class _SignInState extends State<SignIn> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
                     ),
+                  ),
               ],
             )),
       ),

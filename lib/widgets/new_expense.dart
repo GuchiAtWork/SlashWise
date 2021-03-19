@@ -69,7 +69,7 @@ class _NewExpenseState extends State<NewExpense> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Select Member to Include'),
+            title: Text('Select Members to Include:'),
             content: SingleChildScrollView(
               child: Container(
                 width: double.infinity,
@@ -93,7 +93,7 @@ class _NewExpenseState extends State<NewExpense> {
             ),
             actions: [
               ElevatedButton(
-                child: Text('Ok'),
+                child: Text('Done'),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -146,8 +146,13 @@ class _NewExpenseState extends State<NewExpense> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              AppBar(
+                title: Text(
+                "Create a new expense"
+                ),
+              ),
               TextField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Description'),
                 controller: _titleController,
                 onSubmitted: (_) => _onSubmit(_multipleNotifier, currUserID),
               ),
@@ -163,16 +168,16 @@ class _NewExpenseState extends State<NewExpense> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    child: Text('Include Only'),
+                    child: Text('Select Members'),
                     onPressed: () => _choicesMembersDialog(
                         context, groupMembers, _multipleNotifier),
                   ),
                   ElevatedButton(
-                    child: Text('Add Image'),
+                    child: Text('Upload Receipt'),
                     onPressed: () => pickImage(),
                   ),
                   ElevatedButton(
-                    child: Text('Confirm'),
+                    child: Text('Done'),
                     onPressed: () => _createConfirmationDialog(
                         context, _multipleNotifier, currUserID),
                   ),

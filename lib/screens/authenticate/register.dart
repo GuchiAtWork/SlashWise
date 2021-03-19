@@ -21,20 +21,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Welcome to SlashWise"), actions: <Widget>[
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            primary: Colors.white,
-          ),
-          icon: Icon(Icons.person),
-          label: Text(
-            "Sign In",
-          ),
-          onPressed: () {
-            widget.toggleView();
-          },
-        )
-      ]),
+      appBar: AppBar(
+        title: Text("Welcome to SlashWise")
+        ),
       body: Container(
         decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
@@ -84,7 +73,9 @@ class _RegisterState extends State<Register> {
                       setState(() => password = val);
                     }),
                 SizedBox(height: 40.0),
-                ElevatedButton(
+                SizedBox(
+                  width: 400,
+                  child: ElevatedButton(
                     child: Text("Sign Up",),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
@@ -97,7 +88,7 @@ class _RegisterState extends State<Register> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.indigo,
+                      primary: Colors.indigo[900],
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
                       elevation: 5.0,
                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
@@ -105,8 +96,11 @@ class _RegisterState extends State<Register> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
                   ),
+                ),
                 SizedBox(height: 40.0),
-                ElevatedButton(
+                SizedBox(
+                  width: 400,
+                  child: ElevatedButton(
                     child: Text("Log In"),
                     onPressed: () {
                       widget.toggleView();
@@ -120,8 +114,10 @@ class _RegisterState extends State<Register> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
                     ),
+                )
               ],
-            )),
+            )
+          ),
       ),
     );
   }
