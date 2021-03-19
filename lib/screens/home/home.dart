@@ -43,16 +43,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
-        actions: <Widget>[
-          TextButton.icon(
-            style: TextButton.styleFrom(primary: Colors.white),
-            icon: Icon(Icons.logout),
-            label: Text("Logout"),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
       ),
       drawer: MainDrawer(),
       body: GroupList(),
