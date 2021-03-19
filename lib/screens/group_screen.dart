@@ -440,6 +440,8 @@ class _GroupScreenState extends State<GroupScreen> {
     var filteredExpenses =
         allExpenses.where((expense) => expense.groupID == group.id).toList();
 
+    filteredExpenses.sort((a, b) => a.date.compareTo(b.date));
+    filteredExpenses = filteredExpenses.reversed.toList();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
