@@ -36,11 +36,11 @@ void _usernamePopup(
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text('Change Username'),
+          title: Text('Change Your Username'),
           content: TextField(
             decoration: InputDecoration(
               hintText: currUser.name,
-              icon: Icon(Icons.attribution_outlined),
+              // icon: Icon(Icons.attribution_outlined),
             ),
             controller: userInput,
             onSubmitted: (_) =>
@@ -48,7 +48,7 @@ void _usernamePopup(
           ),
           actions: [
             ElevatedButton(
-              child: Text('Change'),
+              child: Text('Apply Change'),
               onPressed: () => _submitUsername(userInput, currUser, context),
             ),
           ],
@@ -68,12 +68,12 @@ void _logoPopup(BuildContext context, String userID) {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text('Change Logo'),
+          title: Text("Change Your Profile Picture"),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 ElevatedButton(
-                  child: Text('Choose an Image'),
+                  child: Icon(Icons.add_a_photo),
                   onPressed: pickImage,
                 ),
               ],
@@ -81,7 +81,7 @@ void _logoPopup(BuildContext context, String userID) {
           ),
           actions: [
             ElevatedButton(
-              child: Text('Apply'),
+              child: Text('Apply Change'),
               onPressed: () {
                 print(file);
                 DatabaseServiceUser().uploadUserIcon(userID, file);
@@ -104,7 +104,7 @@ void _passwordPopup(
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text('Change Password'),
+          title: Text('Change Your Password'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -124,7 +124,7 @@ void _passwordPopup(
                 ),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'Confirmation Password',
+                    hintText: 'New Password (Confirmation)',
                     icon: Icon(Icons.vpn_key),
                   ),
                   controller: confirmationPassword,
@@ -138,7 +138,7 @@ void _passwordPopup(
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
-              child: Text('Confirm'),
+              child: Text('Apply Change'),
               onPressed: () => Navigator.pop(context),
             ),
           ],
@@ -152,7 +152,7 @@ void _emailPopup(BuildContext context, TextEditingController oldEmail,
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text('Change Email'),
+          title: Text('Change Your Email Address'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -172,7 +172,7 @@ void _emailPopup(BuildContext context, TextEditingController oldEmail,
                 ),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'Confirmation Email',
+                    hintText: 'New Email (Confirmation)',
                     icon: Icon(Icons.mail_outline),
                   ),
                   controller: confirmationEmail,
@@ -186,7 +186,7 @@ void _emailPopup(BuildContext context, TextEditingController oldEmail,
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
-              child: Text('Confirm'),
+              child: Text('Apply Change'),
               onPressed: () => Navigator.pop(context),
             ),
           ],
@@ -252,20 +252,27 @@ class _SettingScreenState extends State<SettingScreen> {
           title: Text('Settings'),
         ),
         body: Container(
-          margin: EdgeInsets.only(top: 20),
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+          ),
+          // margin: EdgeInsets.only(top: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              createSettingButton(
-                  "Change Logo", () => _logoPopup(context, userID)),
-              createSettingButton(
-                  "Change Email",
-                  () => _emailPopup(context, _oldEmailController, _newEmail,
-                      _confirmationEmail)),
               createSettingButton(
                 "Change Username",
                 () => _usernamePopup(context, currUser, _usernameController),
               ),
+              SizedBox(height: 30),
+              createSettingButton(
+                  "Change Email Address",
+                  () => _emailPopup(context, _oldEmailController, _newEmail,
+                      _confirmationEmail)),
+              SizedBox(height: 30),
+              createSettingButton(
+                  "Change Profile Picture", () => _logoPopup(context, userID)),
+              SizedBox(height: 30),
               createSettingButton(
                   "Change Password",
                   () => _passwordPopup(context, _oldPasswordController,
