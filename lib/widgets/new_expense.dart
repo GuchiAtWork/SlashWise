@@ -146,10 +146,20 @@ class _NewExpenseState extends State<NewExpense> {
         child: Container(
           padding: EdgeInsets.all(10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              AppBar(
-                title: Text("Create a new expense"),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
+                //color: Theme.of(context).primaryColor,
+                decoration: BoxDecoration(
+                  boxShadow: kElevationToShadow[4],
+                  color: Theme.of(context).primaryColor,
+                  //border: Border.all(width: 2),
+                ), //             <--- BoxDecoration here
+                child: Text(
+                  "Create New Transaction",
+                  style: TextStyle(fontSize: 28.0, color: Colors.white),
+                ),
               ),
               TextField(
                 decoration: InputDecoration(labelText: 'Description'),

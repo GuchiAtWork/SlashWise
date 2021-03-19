@@ -56,13 +56,9 @@ class _NewGroupState extends State<NewGroup> {
                 ),
               ),
               Container(
-                //height: 100,
-                margin: EdgeInsets.symmetric(horizontal: 30),
                 child: TextField(
-                  style: TextStyle(
-                      fontSize: 25.0, height: 2.0, color: Colors.black),
                   decoration: InputDecoration(
-                    hintText: 'Enter group name',
+                    labelText: 'Enter group name',
                   ),
                   controller: _nameController,
                   onSubmitted: (_) => () {
