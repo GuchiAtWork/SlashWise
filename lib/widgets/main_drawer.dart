@@ -75,15 +75,17 @@ class _MainDrawerState extends State<MainDrawer> {
       child: Column(
         children: [
           Container(
+            decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+            ),
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            color: Theme.of(context).primaryColor,
             child: Column(
               children: [
                 Container(
                   margin: EdgeInsets.all(10),
-                  width: 60,
-                  height: 60,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -98,11 +100,11 @@ class _MainDrawerState extends State<MainDrawer> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 20),
+                      fontSize: 30),
                 ),
                 Text(
                   _userInfo.email,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ],
             ),
