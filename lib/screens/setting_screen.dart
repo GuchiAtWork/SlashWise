@@ -18,6 +18,7 @@ void _createWipPopup(BuildContext context) {
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: Colors.indigo[50],
           title: Text('Work In Progress'),
           content: Text('Please Come Back Later!'),
           actions: [
@@ -36,6 +37,7 @@ void _usernamePopup(
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: Colors.indigo[50],
           title: Text('Change Your Username'),
           content: TextField(
             decoration: InputDecoration(
@@ -68,6 +70,7 @@ void _logoPopup(BuildContext context, String userID) {
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: Colors.indigo[50],
           title: Text("Change Your Profile Picture"),
           content: SingleChildScrollView(
             child: Column(
@@ -104,6 +107,7 @@ void _passwordPopup(
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: Colors.indigo[50],
           title: Text('Change Your Password'),
           content: SingleChildScrollView(
             child: Column(
@@ -152,6 +156,7 @@ void _emailPopup(BuildContext context, TextEditingController oldEmail,
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: Colors.indigo[50],
           title: Text('Change Your Email Address'),
           content: SingleChildScrollView(
             child: Column(
@@ -253,7 +258,8 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+            image: DecorationImage(
+                image: AssetImage('assets/signin.jpeg'), fit: BoxFit.cover),
           ),
           // margin: EdgeInsets.only(top: 20),
           child: Column(

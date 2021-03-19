@@ -48,6 +48,7 @@ class _GroupListState extends State<GroupList> {
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return snapshot.connectionState == ConnectionState.done
                           ? Card(
+                              color: Colors.indigo[100],
                               elevation: 5,
                               margin: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 8),
@@ -60,10 +61,16 @@ class _GroupListState extends State<GroupList> {
                                     height: 60.0,
                                   ),
                                 ),
-                                title: Text(filteredGroupList[index].name),
+                                title: Text(
+                                  filteredGroupList[index].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                                 subtitle: Text(
-                                  DateFormat.yMMMd()
-                                      .format(filteredGroupList[index].date),
+                                  'Created on: ${DateFormat.yMMMd().format(filteredGroupList[index].date)}',
+                                  style: TextStyle(fontSize: 12),
                                 ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,

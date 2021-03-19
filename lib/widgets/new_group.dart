@@ -35,25 +35,32 @@ class _NewGroupState extends State<NewGroup> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Card(
+        color: Colors.indigo[50],
         elevation: 5,
         child: Container(
           padding: EdgeInsets.all(10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              AppBar(
-                title: Text(
-                "Create a new group"
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
+                //color: Theme.of(context).primaryColor,
+                decoration: BoxDecoration(
+                  boxShadow: kElevationToShadow[4],
+                  color: Theme.of(context).primaryColor,
+                  //border: Border.all(width: 2),
+                ), //             <--- BoxDecoration here
+                child: Text(
+                  "Create New Group",
+                  style: TextStyle(fontSize: 30.0, color: Colors.white),
                 ),
               ),
-              Container(              
-                height: 100,
+              Container(
+                //height: 100,
+                margin: EdgeInsets.symmetric(horizontal: 30),
                 child: TextField(
                   style: TextStyle(
-                    fontSize: 25.0,
-                    height: 2.0,
-                    color: Colors.black                  
-                  ),
+                      fontSize: 25.0, height: 2.0, color: Colors.black),
                   decoration: InputDecoration(
                     hintText: 'Enter group name',
                   ),
@@ -68,11 +75,11 @@ class _NewGroupState extends State<NewGroup> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    child: Text('Add Group Image 📷'),
+                    child: Text('Add Group Image'),
                     onPressed: () => pickImage(),
                   ),
                   ElevatedButton(
-                    child: Text('Done ✅'),
+                    child: Text('Done'),
                     onPressed: () => _submitData(),
                   ),
                 ],

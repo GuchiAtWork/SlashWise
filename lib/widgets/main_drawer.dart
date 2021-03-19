@@ -20,12 +20,10 @@ class _MainDrawerState extends State<MainDrawer> {
 
   _getUsername(uid) {
     _userDatabase.getUser(uid).then((user) => setState(() {
-          print('setState() called 3');
           _userInfo = user;
         }));
 
     _userDatabase.getUserIcon(uid).then((url) => setState(() {
-          print("USER ICON IN MAINDRAWER GET (setState() called 4)");
           imageURL = url;
         }));
   }
@@ -56,6 +54,7 @@ class _MainDrawerState extends State<MainDrawer> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Work In Progress'),
             content: Text('Please Come Back Later!'),
             actions: [
@@ -76,7 +75,8 @@ class _MainDrawerState extends State<MainDrawer> {
         children: [
           Container(
             decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage('assets/signin.jpeg'), fit: BoxFit.cover),
             ),
             width: double.infinity,
             padding: EdgeInsets.all(20),

@@ -41,6 +41,7 @@ class _HomeState extends State<Home> {
     final user = Provider.of<AuthUser>(context);
 
     return Scaffold(
+      backgroundColor: Colors.indigo[50],
       appBar: AppBar(
         title: Text("Home"),
       ),

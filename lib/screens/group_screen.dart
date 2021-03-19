@@ -58,6 +58,7 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
             content: Text('Pay back everyone'),
             actions: [
@@ -117,6 +118,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return flag
               ? AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Pay Back to Everyone:'),
                   content: SingleChildScrollView(
                     child: Column(
@@ -146,6 +148,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('You don\'t owe money to anyone.'),
                   actions: [
                     ElevatedButton(
@@ -165,6 +168,7 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
             content:
                 Text('Pay ${payee.name} ¥${amount.abs().toStringAsFixed(0)}'),
@@ -206,6 +210,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return amount < 0
               ? AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Choose an option:'),
                   content: SingleChildScrollView(
                     child: Column(
@@ -255,6 +260,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('You don\'t owe money.'),
                   actions: [
                     ElevatedButton(
@@ -301,6 +307,7 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Add a new member:'),
             content: TextField(
               decoration: InputDecoration(
@@ -382,6 +389,7 @@ class _GroupScreenState extends State<GroupScreen> {
               if (snapshot.hasData) {
                 if (snapshot.data == "") {
                   return AlertDialog(
+                    backgroundColor: Colors.indigo[50],
                     title: Text("Receipt"),
                     content: SingleChildScrollView(
                       child: Container(
@@ -393,6 +401,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   );
                 } else {
                   return AlertDialog(
+                    backgroundColor: Colors.indigo[50],
                     title: Text('Receipt'),
                     content: SingleChildScrollView(
                       child: Container(
@@ -403,6 +412,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 }
               } else {
                 return AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Receipt'),
                   content: SingleChildScrollView(
                     child: Container(
@@ -445,6 +455,7 @@ class _GroupScreenState extends State<GroupScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.indigo[50],
         appBar: AppBar(
           title: Text('Group Details'),
           actions: <Widget>[
@@ -471,7 +482,9 @@ class _GroupScreenState extends State<GroupScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+                  image: DecorationImage(
+                      image: AssetImage('assets/signin.jpeg'),
+                      fit: BoxFit.cover),
                 ),
                 height: 185,
                 width: double.infinity,
@@ -490,25 +503,21 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                     Text(
                       group.name,
-                      style:
-                          TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                            ),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
                       DateFormat.yMMMd().format(group.date),
-                      style:
-                          TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                            ),
-                      ),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
                   ],
                 ),
               ),
@@ -524,6 +533,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   return snapshot.connectionState ==
                                           ConnectionState.done
                                       ? Card(
+                                          color: Colors.indigo[100],
                                           elevation: 4,
                                           child: Padding(
                                             padding: const EdgeInsets.all(5),
@@ -581,7 +591,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.navigate_next),
+                                                    icon: Icon(
+                                                        Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -646,7 +657,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.navigate_next),
+                                                    icon: Icon(
+                                                        Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -682,6 +694,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     child: ListView.builder(
                       itemBuilder: (_, index) {
                         return Card(
+                          color: Colors.indigo[100],
                           elevation: 4,
                           //margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                           child: Padding(
