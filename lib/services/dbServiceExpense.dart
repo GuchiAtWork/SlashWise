@@ -88,6 +88,9 @@ how to use uploadReceiptURL/getReceiptURL
         groupExpenses.add(newExpense);
       });
     });
+    //print("##########");
+    //print(groupExpenses[0].date);
+    groupExpenses.sort((a, b) => a.date.compareTo(b.date));
 
     return groupExpenses;
   }
