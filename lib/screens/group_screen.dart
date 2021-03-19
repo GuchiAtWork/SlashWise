@@ -117,7 +117,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return flag
               ? AlertDialog(
-                  title: Text('Pay Everyone'),
+                  title: Text('Pay Back to Everyone:'),
                   content: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,7 +126,7 @@ class _GroupScreenState extends State<GroupScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 20),
                           ),
-                          child: Text('Pay With Cash'),
+                          child: Text('Record Cash Payment'),
                           onPressed: () {
                             generalPayment(
                                 context, currUserID, groupID, usersToOwe);
@@ -146,7 +146,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
-                  title: Text('You don\'t own money to anyone.'),
+                  title: Text('You don\'t owe money to anyone.'),
                   actions: [
                     ElevatedButton(
                       child: Text('Ok'),
@@ -206,7 +206,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return amount < 0
               ? AlertDialog(
-                  title: Text('Pay Individually'),
+                  title: Text('Choose an option:'),
                   content: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -215,7 +215,7 @@ class _GroupScreenState extends State<GroupScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 20),
                           ),
-                          child: Text('Pay With Cash'),
+                          child: Text('Record Cash Payment'),
                           onPressed: () => singlePayment(
                               context,
                               currUser.id,
@@ -255,7 +255,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
-                  title: Text('You don\'t own any money.'),
+                  title: Text('You don\'t owe money.'),
                   actions: [
                     ElevatedButton(
                       child: Text('Ok'),
@@ -301,10 +301,10 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text('Add member'),
+            title: Text('Add a new member:'),
             content: TextField(
               decoration: InputDecoration(
-                hintText: 'Email',
+                hintText: 'Enter Email address',
                 icon: Icon(Icons.group_add),
               ),
               controller: _emailController,
@@ -314,7 +314,7 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
             actions: [
               ElevatedButton(
-                child: Text('Add Member'),
+                child: Text('Done'),
                 onPressed: () => _submitData(groupID, _multipleNotifier),
               ),
             ],
@@ -447,19 +447,19 @@ class _GroupScreenState extends State<GroupScreen> {
           title: Text('Group Details'),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.payment),
-              onPressed: () => _generalPaymentDialog(context, userID, group.id),
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.person_add),
               onPressed: () =>
                   _createAddMemberDialog(context, group.id, _multipleNotifier),
+            ),
+            IconButton(
+              icon: Icon(Icons.navigate_next),
+              onPressed: () => _generalPaymentDialog(context, userID, group.id),
             ),
           ],
           bottom: TabBar(
             tabs: [
               Tab(text: 'Members'),
-              Tab(text: 'Expenses'),
+              Tab(text: 'Transactions'),
             ],
           ),
         ),
@@ -468,8 +468,10 @@ class _GroupScreenState extends State<GroupScreen> {
           Column(
             children: [
               Container(
-                height: 170,
-                color: Theme.of(context).colorScheme.background,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+                ),
+                height: 185,
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -487,12 +489,24 @@ class _GroupScreenState extends State<GroupScreen> {
                     Text(
                       group.name,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                            ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(DateFormat.yMMMd().format(group.date)),
+                    Text(
+                      DateFormat.yMMMd().format(group.date),
+                      style:
+                          TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                            ),
+                      ),
                   ],
                 ),
               ),
@@ -565,7 +579,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.payment),
+                                                    icon: Icon(Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -630,7 +644,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.payment),
+                                                    icon: Icon(Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -711,7 +725,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   )
                 : Center(
                     child: Text(
-                      'No Expenses Added Yet!',
+                      'No Transactions Yet',
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
