@@ -60,7 +60,20 @@ class _GroupScreenState extends State<GroupScreen> {
           return AlertDialog(
             backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
-            content: Text('Pay back everyone'),
+            content: Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(),
+              ),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Text(
+                    'Pay back everyone',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
             actions: [
               ElevatedButton(
                 child: Text('Cancel'),
@@ -70,7 +83,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 },
               ),
               ElevatedButton(
-                child: Text('Ok'),
+                child: Text('Confirm'),
                 onPressed: () {
                   for (int i = 0; i < usersToOwe.length; i++) {
                     List<String> payees = [];
@@ -170,8 +183,28 @@ class _GroupScreenState extends State<GroupScreen> {
           return AlertDialog(
             backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
-            content:
-                Text('Pay ${payee.name} ¥${amount.abs().toStringAsFixed(0)}'),
+            content: SingleChildScrollView(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Pay ${payee.name}:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '¥${amount.abs().toStringAsFixed(0)}',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             actions: [
               ElevatedButton(
                 child: Text('Cancel'),
@@ -181,7 +214,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 },
               ),
               ElevatedButton(
-                child: Text('Ok'),
+                child: Text('Confirm'),
                 onPressed: () {
                   List<String> payees = [];
                   payees.add(payee.id);
