@@ -519,7 +519,7 @@ class _GroupScreenState extends State<GroupScreen> {
                       image: AssetImage('assets/signin.jpeg'),
                       fit: BoxFit.cover),
                 ),
-                height: 185,
+                height: 210,
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -534,22 +534,34 @@ class _GroupScreenState extends State<GroupScreen> {
                         height: 90.0,
                       ),
                     ),
-                    Text(
-                      group.name,
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      DateFormat.yMMMd().format(group.date),
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      color: Colors.black45,
+                      child: Column(
+                        children: [
+                          Text(
+                            group.name,
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            DateFormat.yMMMd().format(group.date),
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

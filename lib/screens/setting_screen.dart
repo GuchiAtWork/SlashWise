@@ -267,6 +267,9 @@ class _SettingScreenState extends State<SettingScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               createSettingButton(
+                  "Change Profile Picture", () => _logoPopup(context, userID)),
+              SizedBox(height: 30),
+              createSettingButton(
                 "Change Username",
                 () => _usernamePopup(context, currUser, _usernameController),
               ),
@@ -275,9 +278,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   "Change Email Address",
                   () => _emailPopup(context, _oldEmailController, _newEmail,
                       _confirmationEmail)),
-              SizedBox(height: 30),
-              createSettingButton(
-                  "Change Profile Picture", () => _logoPopup(context, userID)),
               SizedBox(height: 30),
               createSettingButton(
                   "Change Password",
