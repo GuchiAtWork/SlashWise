@@ -735,30 +735,40 @@ class _GroupScreenState extends State<GroupScreen> {
                             child: ListTile(
                               onTap: () =>
                                   _showReceipt(filteredExpenses[index].id),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 30,
-                                child: ClipOval(
-                                  child: SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Image.asset(
-                                      'assets/money.png',
-                                      fit: BoxFit.scaleDown,
+                              leading: Container(
+                                width: 110,
+                                child: Center(
+                                    child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 2)),
+                                  child: Center(
+                                    child: FittedBox(
+                                      child: Text(
+                                        filteredExpenses[index].name,
+                                        style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                )),
                               ),
                               title: Text(
-                                filteredExpenses[index].name,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                _showUsernameByID(
+                                            filteredExpenses[index].payer) ==
+                                        ''
+                                    ? 'You paid'
+                                    : 'Paid by: ${_showUsernameByID(filteredExpenses[index].payer)}',
+                                style: TextStyle(fontSize: 16),
                               ),
-                              subtitle: Text(_showUsernameByID(
-                                          filteredExpenses[index].payer) ==
-                                      ''
-                                  ? 'Remunerator: You'
-                                  : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
+                              subtitle: Text(
+                                  DateFormat.yMMMd()
+                                      .add_jm()
+                                      .format(filteredExpenses[index].date),
+                                  style: TextStyle(fontSize: 12)),
                               trailing: Text(
                                 '\¥ ${filteredExpenses[index].amount}',
                                 style: TextStyle(
