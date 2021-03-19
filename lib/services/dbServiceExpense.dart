@@ -118,7 +118,7 @@ how to use uploadReceiptURL/getReceiptURL
       final amount = curExpense.amount;
       final payerID = curExpense.payer;
       final payees = curExpense.payees;
-      final splitAmount = amount / payees.length;
+      final splitAmount = amount ~/ payees.length;
 
       if (payerID == userID) {
         for (int payee = 0; payee < payees.length; payee++) {
