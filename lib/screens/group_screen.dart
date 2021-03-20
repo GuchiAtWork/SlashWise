@@ -557,11 +557,8 @@ class _GroupScreenState extends State<GroupScreen> {
                             height: 10,
                           ),
                           Text(
-                            DateFormat.yMMMd().format(group.date),
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            'Created on: ${DateFormat.yMMMd().format(group.date)}',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ],
                       ),
