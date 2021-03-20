@@ -597,9 +597,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                               title: Text(
                                                 team[index].name,
                                                 style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 22,
+                                                ),
                                               ),
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
