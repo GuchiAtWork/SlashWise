@@ -76,7 +76,19 @@ void _logoPopup(BuildContext context, String userID) {
             child: Column(
               children: [
                 ElevatedButton(
-                  child: Icon(Icons.add_a_photo),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Select Picture  ",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        WidgetSpan(
+                          child: Icon(Icons.add_a_photo),
+                        ),
+                      ],
+                    ),
+                  ),
                   onPressed: pickImage,
                 ),
               ],
