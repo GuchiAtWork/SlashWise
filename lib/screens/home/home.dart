@@ -43,7 +43,10 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.indigo[50],
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text(
+          "Home",
+          style: TextStyle(fontFamily: 'Anton'),
+        ),
       ),
       drawer: MainDrawer(),
       body: GroupList(),

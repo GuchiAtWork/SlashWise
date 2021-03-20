@@ -61,7 +61,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.indigo),
+        theme: ThemeData(
+            primarySwatch: Colors.indigo, fontFamily: 'RobotoCondensed'),
         initialRoute: '/',
         routes: {
           '/': (context) => Wrapper(),

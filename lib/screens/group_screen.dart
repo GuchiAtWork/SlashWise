@@ -490,7 +490,10 @@ class _GroupScreenState extends State<GroupScreen> {
       child: Scaffold(
         backgroundColor: Colors.indigo[50],
         appBar: AppBar(
-          title: Text('Group Details'),
+          title: Text(
+            'Group Details',
+            style: TextStyle(fontFamily: 'Anton'),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.person_add),
