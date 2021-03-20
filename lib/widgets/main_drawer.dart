@@ -79,7 +79,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   image: AssetImage('assets/signin.jpeg'), fit: BoxFit.cover),
             ),
             width: double.infinity,
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: Column(
               children: [
                 Container(
@@ -95,16 +95,25 @@ class _MainDrawerState extends State<MainDrawer> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  _userInfo.name,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 30),
-                ),
-                Text(
-                  _userInfo.email,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  color: Colors.black45,
+                  child: Column(
+                    children: [
+                      Text(
+                        _userInfo.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30),
+                      ),
+                      Text(
+                        _userInfo.email,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

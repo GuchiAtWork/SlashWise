@@ -152,13 +152,14 @@ class _NewExpenseState extends State<NewExpense> {
                 padding: const EdgeInsets.all(10.0),
                 //color: Theme.of(context).primaryColor,
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: kElevationToShadow[4],
                   color: Theme.of(context).primaryColor,
                   //border: Border.all(width: 2),
                 ), //             <--- BoxDecoration here
                 child: Text(
-                  "Create New Transaction",
-                  style: TextStyle(fontSize: 28.0, color: Colors.white),
+                  "New Transaction",
+                  style: TextStyle(fontSize: 30.0, color: Colors.white),
                 ),
               ),
               TextField(
