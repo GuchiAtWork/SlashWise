@@ -10,7 +10,6 @@ import 'package:slash_wise/services/dbServiceExpense.dart';
 import 'package:slash_wise/services/dbServiceGroup.dart';
 import 'package:slash_wise/services/dbServiceUser.dart';
 import 'package:slash_wise/widgets/new_expense.dart';
-import 'package:slash_wise/screens/paymentscreen.dart';
 
 class GroupScreen extends StatefulWidget {
   static const routeName = '/group';
@@ -267,17 +266,8 @@ class _GroupScreenState extends State<GroupScreen> {
                             padding: EdgeInsets.symmetric(vertical: 20),
                           ),
                           child: Text('Pay With PayPal'),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(
-                                        currUser,
-                                        payee,
-                                        amount.toInt().abs(),
-                                        groupID) // TODO make the param static => dynamic
-                                    ));
-                          }, // TODO make the payment function
+                          onPressed: () => _createSoonDialog(
+                              context), // TODO make the payment function
                         ),
                       ],
                     ),
@@ -304,6 +294,24 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                   ],
                 ); //second dialogue here
+        });
+  }
+
+  void _createSoonDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            backgroundColor: Colors.indigo[50],
+            title: Text('Coming Soon'),
+            content: Text('Please Come Back Later!'),
+            actions: [
+              ElevatedButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
         });
   }
 
