@@ -20,12 +20,10 @@ class _MainDrawerState extends State<MainDrawer> {
 
   _getUsername(uid) {
     _userDatabase.getUser(uid).then((user) => setState(() {
-          print('setState() called 3');
           _userInfo = user;
         }));
 
     _userDatabase.getUserIcon(uid).then((url) => setState(() {
-          print("USER ICON IN MAINDRAWER GET (setState() called 4)");
           imageURL = url;
         }));
   }
@@ -56,6 +54,7 @@ class _MainDrawerState extends State<MainDrawer> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Work In Progress'),
             content: Text('Please Come Back Later!'),
             actions: [
@@ -76,10 +75,11 @@ class _MainDrawerState extends State<MainDrawer> {
         children: [
           Container(
             decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage('assets/signin.jpeg'), fit: BoxFit.cover),
             ),
             width: double.infinity,
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: Column(
               children: [
                 Container(
@@ -95,16 +95,25 @@ class _MainDrawerState extends State<MainDrawer> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  _userInfo.name,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 30),
-                ),
-                Text(
-                  _userInfo.email,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  color: Colors.black45,
+                  child: Column(
+                    children: [
+                      Text(
+                        _userInfo.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30),
+                      ),
+                      Text(
+                        _userInfo.email,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

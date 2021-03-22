@@ -58,8 +58,22 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
-            content: Text('Pay back everyone'),
+            content: Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(),
+              ),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Text(
+                    'Pay back everyone',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
             actions: [
               ElevatedButton(
                 child: Text('Cancel'),
@@ -69,7 +83,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 },
               ),
               ElevatedButton(
-                child: Text('Ok'),
+                child: Text('Confirm'),
                 onPressed: () {
                   for (int i = 0; i < usersToOwe.length; i++) {
                     List<String> payees = [];
@@ -117,6 +131,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return flag
               ? AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Pay Back to Everyone:'),
                   content: SingleChildScrollView(
                     child: Column(
@@ -146,6 +161,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('You don\'t owe money to anyone.'),
                   actions: [
                     ElevatedButton(
@@ -165,9 +181,30 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Confirm Your Payment'),
-            content:
-                Text('Pay ${payee.name} ¥${amount.abs().toStringAsFixed(0)}'),
+            content: SingleChildScrollView(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Pay ${payee.name}:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '¥${amount.abs().toStringAsFixed(0)}',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             actions: [
               ElevatedButton(
                 child: Text('Cancel'),
@@ -177,7 +214,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 },
               ),
               ElevatedButton(
-                child: Text('Ok'),
+                child: Text('Confirm'),
                 onPressed: () {
                   List<String> payees = [];
                   payees.add(payee.id);
@@ -206,6 +243,7 @@ class _GroupScreenState extends State<GroupScreen> {
         builder: (_) {
           return amount < 0
               ? AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Choose an option:'),
                   content: SingleChildScrollView(
                     child: Column(
@@ -255,6 +293,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   ],
                 )
               : AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('You don\'t owe money.'),
                   actions: [
                     ElevatedButton(
@@ -301,6 +340,7 @@ class _GroupScreenState extends State<GroupScreen> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Add a new member:'),
             content: TextField(
               decoration: InputDecoration(
@@ -382,6 +422,7 @@ class _GroupScreenState extends State<GroupScreen> {
               if (snapshot.hasData) {
                 if (snapshot.data == "") {
                   return AlertDialog(
+                    backgroundColor: Colors.indigo[50],
                     title: Text("Receipt"),
                     content: SingleChildScrollView(
                       child: Container(
@@ -393,6 +434,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   );
                 } else {
                   return AlertDialog(
+                    backgroundColor: Colors.indigo[50],
                     title: Text('Receipt'),
                     content: SingleChildScrollView(
                       child: Container(
@@ -403,6 +445,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 }
               } else {
                 return AlertDialog(
+                  backgroundColor: Colors.indigo[50],
                   title: Text('Receipt'),
                   content: SingleChildScrollView(
                     child: Container(
@@ -445,8 +488,12 @@ class _GroupScreenState extends State<GroupScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.indigo[50],
         appBar: AppBar(
-          title: Text('Group Details'),
+          title: Text(
+            'Group Details',
+            style: TextStyle(fontFamily: 'Anton'),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.person_add),
@@ -471,9 +518,11 @@ class _GroupScreenState extends State<GroupScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/signin.jpeg'), fit :BoxFit.cover),
+                  image: DecorationImage(
+                      image: AssetImage('assets/signin.jpeg'),
+                      fit: BoxFit.cover),
                 ),
-                height: 185,
+                height: 210,
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -488,27 +537,32 @@ class _GroupScreenState extends State<GroupScreen> {
                         height: 90.0,
                       ),
                     ),
-                    Text(
-                      group.name,
-                      style:
-                          TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                            ),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      DateFormat.yMMMd().format(group.date),
-                      style:
-                          TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                            ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      color: Colors.black45,
+                      child: Column(
+                        children: [
+                          Text(
+                            group.name,
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Created on: ${DateFormat.yMMMd().format(group.date)}',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ],
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -524,6 +578,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   return snapshot.connectionState ==
                                           ConnectionState.done
                                       ? Card(
+                                          color: Colors.indigo[100],
                                           elevation: 4,
                                           child: Padding(
                                             padding: const EdgeInsets.all(5),
@@ -539,9 +594,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                               title: Text(
                                                 team[index].name,
                                                 style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 22,
+                                                ),
                                               ),
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -581,7 +635,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.navigate_next),
+                                                    icon: Icon(
+                                                        Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -646,7 +701,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                                                   .errorColor),
                                                         ),
                                                   IconButton(
-                                                    icon: Icon(Icons.navigate_next),
+                                                    icon: Icon(
+                                                        Icons.navigate_next),
                                                     onPressed: () =>
                                                         _singlePaymentDialog(
                                                             context,
@@ -682,6 +738,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     child: ListView.builder(
                       itemBuilder: (_, index) {
                         return Card(
+                          color: Colors.indigo[100],
                           elevation: 4,
                           //margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                           child: Padding(
@@ -689,30 +746,40 @@ class _GroupScreenState extends State<GroupScreen> {
                             child: ListTile(
                               onTap: () =>
                                   _showReceipt(filteredExpenses[index].id),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 30,
-                                child: ClipOval(
-                                  child: SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Image.asset(
-                                      'assets/money.png',
-                                      fit: BoxFit.scaleDown,
+                              leading: Container(
+                                width: 110,
+                                child: Center(
+                                    child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 2)),
+                                  child: Center(
+                                    child: FittedBox(
+                                      child: Text(
+                                        filteredExpenses[index].name,
+                                        style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                )),
                               ),
                               title: Text(
-                                filteredExpenses[index].name,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                _showUsernameByID(
+                                            filteredExpenses[index].payer) ==
+                                        ''
+                                    ? 'You paid'
+                                    : 'Paid by: ${_showUsernameByID(filteredExpenses[index].payer)}',
+                                style: TextStyle(fontSize: 16),
                               ),
-                              subtitle: Text(_showUsernameByID(
-                                          filteredExpenses[index].payer) ==
-                                      ''
-                                  ? 'Remunerator: You'
-                                  : 'Remunerator: ${_showUsernameByID(filteredExpenses[index].payer)}'),
+                              subtitle: Text(
+                                  DateFormat.yMMMd()
+                                      .add_jm()
+                                      .format(filteredExpenses[index].date),
+                                  style: TextStyle(fontSize: 12)),
                               trailing: Text(
                                 '\¥ ${filteredExpenses[index].amount}',
                                 style: TextStyle(

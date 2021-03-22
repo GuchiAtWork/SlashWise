@@ -39,20 +39,21 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthUser>(context);
-
+    // return Stack(children: <Widget>[
+    //   Image.asset(
+    //     "assets/signin.jpeg",
+    //     height: MediaQuery.of(context).size.height,
+    //     width: MediaQuery.of(context).size.width,
+    //     fit: BoxFit.cover,
+    //   ),
     return Scaffold(
+      //backgroundColor: Colors.transparent,
+      backgroundColor: Colors.indigo[50],
       appBar: AppBar(
-        title: Text("Home"),
-        actions: <Widget>[
-          TextButton.icon(
-            style: TextButton.styleFrom(primary: Colors.white),
-            icon: Icon(Icons.logout),
-            label: Text("Logout"),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
+        title: Text(
+          "Home",
+          style: TextStyle(fontFamily: 'Anton'),
+        ),
       ),
       drawer: MainDrawer(),
       body: GroupList(),
@@ -61,5 +62,6 @@ class _HomeState extends State<Home> {
         onPressed: () => {_showAddNewGroup(context, user.uid)},
       ),
     );
+    //]);
   }
 }

@@ -48,6 +48,7 @@ class _GroupListState extends State<GroupList> {
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return snapshot.connectionState == ConnectionState.done
                           ? Card(
+                              color: Colors.indigo[100],
                               elevation: 5,
                               margin: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 8),
@@ -60,45 +61,41 @@ class _GroupListState extends State<GroupList> {
                                     height: 60.0,
                                   ),
                                 ),
-                                title: Text(filteredGroupList[index].name),
-                                subtitle: Text(
-                                  DateFormat.yMMMd()
-                                      .format(filteredGroupList[index].date),
+                                title: Text(
+                                  filteredGroupList[index].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                                trailing: Wrap(
-                                  spacing: 5,
+                                subtitle: Text(
+                                  'Created on: ${DateFormat.yMMMd().format(filteredGroupList[index].date)}',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(
-                                      width: 40.0,
-                                      child: Text(
-                                        "Leave this group",
-                                        style: TextStyle(
-                                          color: Theme.of(context).errorColor,
-                                          fontWeight: FontWeight.bold
-                                          ),
-                                      ),
+                                    Text(
+                                      'Quit',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).errorColor),
                                     ),
-                                    
                                     IconButton(
-                                    icon: Icon(Icons.exit_to_app),
-                                    color: Theme.of(context).errorColor,
-                                    //onPressed: () => _deleteGroup(
-                                    //  filteredGroupList[index].id,
-                                    //authUser.uid),
-                                    onPressed: () async {
-                                      if (await confirm(context,
-                                          content: Text(
-                                              'Would you like to remove this group?'))) {
-                                        return _deleteGroup(
-                                            filteredGroupList[index].id,
-                                            authUser.uid);
-                                      }
-                                    }),
+                                        icon: Icon(Icons.logout),
+                                        color: Theme.of(context).errorColor,
+                                        onPressed: () async {
+                                          if (await confirm(context,
+                                              content: Text(
+                                                  'Would you like to Leave this group?'))) {
+                                            return _deleteGroup(
+                                                filteredGroupList[index].id,
+                                                authUser.uid);
+                                          }
+                                        }),
                                   ],
                                 ),
-                                
                                 onTap: () {
-                                  // pass to the GroupScreen _groupList[index]
                                   Navigator.pushNamed(
                                       context, GroupScreen.routeName,
                                       arguments: filteredGroupList[index]);

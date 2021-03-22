@@ -69,6 +69,7 @@ class _NewExpenseState extends State<NewExpense> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Select Members to Include:'),
             content: SingleChildScrollView(
               child: Container(
@@ -107,6 +108,7 @@ class _NewExpenseState extends State<NewExpense> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            backgroundColor: Colors.indigo[50],
             title: Text('Confirmation'),
             content: Text(
                 'Please note that after confirmation any modification will not be possible for security reason'),
@@ -144,11 +146,22 @@ class _NewExpenseState extends State<NewExpense> {
         child: Container(
           padding: EdgeInsets.all(10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              AppBar(
-                title: Text(
-                "Create a new expense"
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: kElevationToShadow[4],
+                  color: Theme.of(context).primaryColor,
+                  //border: Border.all(width: 2),
+                ), //             <--- BoxDecoration here
+                child: Center(
+                  child: Text(
+                    "New Transaction",
+                    style: TextStyle(fontSize: 30.0, color: Colors.white),
+                  ),
                 ),
               ),
               TextField(
