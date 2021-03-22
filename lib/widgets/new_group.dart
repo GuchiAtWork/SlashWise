@@ -44,6 +44,7 @@ class _NewGroupState extends State<NewGroup> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 padding: const EdgeInsets.all(10.0),
+                width: double.infinity,
                 //color: Theme.of(context).primaryColor,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -51,9 +52,11 @@ class _NewGroupState extends State<NewGroup> {
                   color: Theme.of(context).primaryColor,
                   //border: Border.all(width: 2),
                 ), //             <--- BoxDecoration here
-                child: Text(
-                  "New Group",
-                  style: TextStyle(fontSize: 30.0, color: Colors.white),
+                child: Center(
+                  child: Text(
+                    "New Group",
+                    style: TextStyle(fontSize: 30.0, color: Colors.white),
+                  ),
                 ),
               ),
               Container(

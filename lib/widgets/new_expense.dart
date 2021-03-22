@@ -150,16 +150,18 @@ class _NewExpenseState extends State<NewExpense> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 padding: const EdgeInsets.all(10.0),
-                //color: Theme.of(context).primaryColor,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: kElevationToShadow[4],
                   color: Theme.of(context).primaryColor,
                   //border: Border.all(width: 2),
                 ), //             <--- BoxDecoration here
-                child: Text(
-                  "New Transaction",
-                  style: TextStyle(fontSize: 30.0, color: Colors.white),
+                child: Center(
+                  child: Text(
+                    "New Transaction",
+                    style: TextStyle(fontSize: 30.0, color: Colors.white),
+                  ),
                 ),
               ),
               TextField(
